@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hub Planilhas | Gestão Simplificada & Cursos de Excel Corporativo</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts: Montserrat & Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            navy: '#0D264C',
+                            navyDark: '#081933',
+                            emerald: '#26C983',
+                            emeraldHover: '#1eb072',
+                            grayLight: '#EBEBEB',
+                            orange: '#FF9012'
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['Montserrat', 'sans-serif'],
+                        body: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Montserrat', sans-serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #26C983;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased selection:bg-brand-emerald selection:text-white">
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="sticky top-0 z-50 bg-brand-navyDark/95 text-white backdrop-blur border-b border-white/10 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- LOGO -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-navy to-brand-emerald p-0.5 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+                    <div class="w-full h-full bg-brand-navyDark rounded-[10px] flex items-center justify-center">
+                        <i data-lucide="layout-grid" class="w-5 h-5 text-brand-emerald"></i>
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-heading text-xl font-extrabold tracking-tight text-white leading-none">
+                        HUB <span class="text-brand-emerald">PLANILHAS</span>
+                    </span>
+                    <span class="text-[10px] text-gray-400 font-medium tracking-widest uppercase mt-0.5">Gestão & Inteligência</span>
+                </div>
+            </a>
+
+            <!-- DESKTOP MENU -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
+                <a href="#cursos" class="hover:text-brand-emerald transition-colors">Cursos Ao Vivo</a>
+                <a href="#planilhas" class="hover:text-brand-emerald transition-colors">Planilhas Prontas</a>
+                <a href="#calculadora" class="hover:text-brand-emerald transition-colors flex items-center gap-1.5 text-brand-emerald">
+                    <i data-lucide="calculator" class="w-4 h-4"></i> Simular Funil
+                </a>
+                <a href="#mentor" class="hover:text-brand-emerald transition-colors">O Mentor</a>
+                <a href="#faq" class="hover:text-brand-emerald transition-colors">Dúvidas</a>
+            </nav>
+
+            <!-- CTA BUTTONS -->
+            <div class="hidden md:flex items-center gap-3">
+                <a href="https://wa.me/5521988845872?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20os%20cursos%20e%20planilhas%20do%20Hub%20Planilhas" target="_blank" class="bg-brand-emerald hover:bg-brand-emeraldHover text-brand-navyDark font-heading font-bold px-5 py-2.5 rounded-lg text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-2">
+                    <i data-lucide="message-circle" class="w-4 h-4"></i> Falar no WhatsApp
+                </a>
+            </div>
+
+            <!-- MOBILE MENU BUTTON -->
+            <button id="mobile-menu-btn" class="md:hidden text-gray-300 hover:text-white p-2">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <!-- MOBILE MENU CONTAINER -->
+        <div id="mobile-menu" class="hidden md:hidden bg-brand-navyDark border-b border-white/10 px-4 pt-2 pb-6 space-y-3">
+            <a href="#cursos" class="block py-2 text-gray-300 hover:text-brand-emerald">Cursos Ao Vivo</a>
+            <a href="#planilhas" class="block py-2 text-gray-300 hover:text-brand-emerald">Planilhas Prontas</a>
+            <a href="#calculadora" class="block py-2 text-brand-emerald font-semibold">Simular Funil de Vendas</a>
+            <a href="#mentor" class="block py-2 text-gray-300 hover:text-brand-emerald">O Mentor</a>
+            <a href="#faq" class="block py-2 text-gray-300 hover:text-brand-emerald">Dúvidas Frequentes</a>
+            <a href="https://wa.me/5521988845872?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20os%20cursos%20e%20planilhas" target="_blank" class="w-full bg-brand-emerald text-brand-navyDark font-bold py-3 rounded-lg text-center flex items-center justify-center gap-2 mt-4">
+                <i data-lucide="message-circle" class="w-5 h-5"></i> Conversar no WhatsApp
+            </a>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="relative bg-gradient-to-b from-brand-navyDark via-brand-navy to-gray-900 text-white pt-12 pb-24 md:pt-20 md:pb-32 overflow-hidden">
+        <!-- Abstract Tech Grid Background -->
+        <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#26C983 1px, transparent 1px); background-size: 24px 24px;"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Content -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-emerald/10 border border-brand-emerald/30 text-brand-emerald text-xs font-semibold uppercase tracking-wider">
+                        <span class="w-2 h-2 rounded-full bg-brand-emerald animate-ping"></span>
+                        Inscrições Abertas • Turmas Reduzidas (Máx. 10 Alunos)
+                    </div>
+
+                    <h1 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
+                        Pare de perder horas limpando tabelas. Transforme dados brutos em <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-emerald via-emerald-300 to-teal-200">decisões estratégicas</span>.
+                    </h1>
+
+                    <p class="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 font-light leading-relaxed">
+                        O Ponto Central de Referência para Empreendedores e Analistas. Domine o Excel & Google Sheets focado 100% no mercado corporativo ou utilize nossas planilhas de gestão automatizadas.
+                    </p>
+
+                    <!-- CTA Group -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                        <a href="#cursos" class="w-full sm:w-auto bg-brand-emerald hover:bg-brand-emeraldHover text-brand-navyDark font-heading font-bold px-8 py-4 rounded-xl text-base shadow-xl hover:shadow-emerald-500/20 transition-all flex items-center justify-center gap-2 transform hover:-translate-y-0.5">
+                            Ver Curso de Excel Ao Vivo <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#planilhas" class="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white border border-white/20 font-heading font-medium px-6 py-4 rounded-xl text-base transition-all flex items-center justify-center gap-2">
+                            <i data-lucide="download" class="w-5 h-5 text-brand-emerald"></i> Explorar Planilhas Prontas
+                        </a>
+                    </div>
+
+                    <!-- Trust Indicators -->
+                    <div class="pt-8 border-t border-white/10 grid grid-cols-3 gap-4 text-center lg:text-left">
+                        <div>
+                            <p class="font-heading text-2xl font-bold text-white">100%</p>
+                            <p class="text-xs text-gray-400">Aulas Ao Vivo com Casos Reais</p>
+                        </div>
+                        <div>
+                            <p class="font-heading text-2xl font-bold text-brand-emerald">10 Alunos</p>
+                            <p class="text-xs text-gray-400">Limite Por Turma p/ Suporte</p>
+                        </div>
+                        <div>
+                            <p class="font-heading text-2xl font-bold text-white">0% Teoria Rasa</p>
+                            <p class="text-xs text-gray-400">Foco em Soluções Corporativas</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Card / Interactive Preview Mockup -->
+                <div class="lg:col-span-5">
+                    <div class="glass-card bg-brand-navyDark/90 border border-white/15 rounded-2xl p-6 shadow-2xl relative">
+                        <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
+                                <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+                                <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
+                            </div>
+                            <span class="text-xs text-gray-400 font-mono">Hub_Dashboard_Preview.xlsx</span>
+                        </div>
+
+                        <!-- Mini Dashboard Graphic Representation -->
+                        <div class="space-y-4">
+                            <!-- KPI Cards -->
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="bg-white/5 p-3 rounded-xl border border-white/10">
+                                    <span class="text-[11px] text-gray-400 block">Faturamento Previsto</span>
+                                    <span class="text-lg font-bold text-brand-emerald font-heading">R$ 197.450</span>
+                                    <span class="text-[10px] text-emerald-400 flex items-center gap-1 mt-1"><i data-lucide="trending-up" class="w-3 h-3"></i> +14.2% vs Meta</span>
+                                </div>
+                                <div class="bg-white/5 p-3 rounded-xl border border-white/10">
+                                    <span class="text-[11px] text-gray-400 block">SLA de Entregas</span>
+                                    <span class="text-lg font-bold text-white font-heading">98,4%</span>
+                                    <span class="text-[10px] text-brand-emerald flex items-center gap-1 mt-1"><i data-lucide="check-circle" class="w-3 h-3"></i> Dentro do Alvo</span>
+                                </div>
+                            </div>
+
+                            <!-- Fake Excel Table -->
+                            <div class="bg-white/5 rounded-xl border border-white/10 overflow-hidden text-xs">
+                                <div class="bg-brand-navy p-2 font-semibold text-gray-300 grid grid-cols-4 gap-2 border-b border-white/10">
+                                    <span>Região</span>
+                                    <span>Contratos</span>
+                                    <span>Faturamento</span>
+                                    <span class="text-right">Status SLA</span>
+                                </div>
+                                <div class="p-2 grid grid-cols-4 gap-2 border-b border-white/5 text-gray-300 items-center">
+                                    <span>Sudeste</span>
+                                    <span>1.420</span>
+                                    <span>R$ 84.500</span>
+                                    <span class="text-right text-brand-emerald font-semibold">100% OK</span>
+                                </div>
+                                <div class="p-2 grid grid-cols-4 gap-2 border-b border-white/5 text-gray-300 items-center bg-white/[0.02]">
+                                    <span>Sul</span>
+                                    <span>890</span>
+                                    <span>R$ 52.100</span>
+                                    <span class="text-right text-brand-emerald font-semibold">100% OK</span>
+                                </div>
+                                <div class="p-2 grid grid-cols-4 gap-2 text-gray-300 items-center">
+                                    <span>Nordeste</span>
+                                    <span>650</span>
+                                    <span>R$ 41.200</span>
+                                    <span class="text-right text-brand-orange font-bold">Atenção</span>
+                                </div>
+                            </div>
+
+                            <!-- Interactive Tool Callout -->
+                            <div class="bg-gradient-to-r from-brand-emerald/20 to-teal-500/20 border border-brand-emerald/40 p-3 rounded-xl flex items-center justify-between">
+                                <div class="flex items-center gap-2.5">
+                                    <i data-lucide="sparkles" class="w-5 h-5 text-brand-emerald"></i>
+                                    <span class="text-xs font-medium text-white">Calculadora de Funil de Vendas incluída!</span>
+                                </div>
+                                <a href="#calculadora" class="text-xs bg-brand-emerald text-brand-navyDark font-bold px-2.5 py-1.5 rounded hover:bg-white transition-colors">Testar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- CURSOS AO VIVO SECTION -->
+    <section id="cursos" class="py-20 bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+                <span class="text-brand-emerald font-semibold text-sm uppercase tracking-widest bg-brand-emerald/10 px-3 py-1 rounded-full">Capacitação Profissional</span>
+                <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-brand-navy">
+                    Treinamentos 100% Voltados para o Ambiente Corporativo
+                </h2>
+                <p class="text-gray-600 text-base">
+                    Esqueça o "curso básico" de lista de compras. Aqui você aprende resolvendo estudos de caso reais de empresas, com turmas reduzidas e suporte direto do instrutor.
+                </p>
+            </div>
+
+            <!-- COURSE CARD FEATURED -->
+            <div class="bg-white rounded-2xl border-2 border-brand-emerald/30 shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 mb-12">
+                <!-- Left Details -->
+                <div class="lg:col-span-8 p-6 sm:p-8 lg:p-10 flex flex-col justify-between">
+                    <div>
+                        <div class="flex flex-wrap items-center gap-3 mb-4">
+                            <span class="bg-brand-navy text-white text-xs font-bold px-3 py-1 rounded-md">MÓDULO 1</span>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-3 py-1 rounded-md flex items-center gap-1">
+                                <i data-lucide="video" class="w-3.5 h-3.5"></i> 100% Ao Vivo via Google Meet
+                            </span>
+                            <span class="bg-orange-100 text-orange-800 text-xs font-semibold px-3 py-1 rounded-md flex items-center gap-1">
+                                <i data-lucide="users" class="w-3.5 h-3.5"></i> Máximo 10 Alunos
+                            </span>
+                        </div>
+
+                        <h3 class="font-heading text-2xl sm:text-3xl font-bold text-brand-navy mb-3">
+                            Produtividade Essencial e Lógica de Dados para Negócios
+                        </h3>
+
+                        <p class="text-gray-600 text-sm sm:text-base mb-6">
+                            O ponto de partida ideal para quem quer sair do zero e dominar a construção de relatórios funcionais e limpos sem perder horas limpando dados manualmente.
+                        </p>
+
+                        <!-- PILARES DO MÓDULO 1 -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                            <div class="p-4 rounded-xl bg-gray-50 border border-gray-100 space-y-1">
+                                <div class="w-8 h-8 rounded-lg bg-brand-navy/10 text-brand-navy flex items-center justify-center mb-2">
+                                    <i data-lucide="navigation" class="w-4 h-4"></i>
+                                </div>
+                                <h4 class="font-bold text-sm text-brand-navy">1. Navegação & Limpeza</h4>
+                                <p class="text-xs text-gray-500">Atalhos supremos, higienização de textos e datas de sistemas ERP.</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-gray-50 border border-gray-100 space-y-1">
+                                <div class="w-8 h-8 rounded-lg bg-brand-emerald/20 text-emerald-700 flex items-center justify-center mb-2">
+                                    <i data-lucide="lock" class="w-4 h-4"></i>
+                                </div>
+                                <h4 class="font-bold text-sm text-brand-navy">2. Trava Absoluta ($)</h4>
+                                <p class="text-xs text-gray-500">A lógica dos cifrões, formulas blindadas e cálculo de prazos úteis (SLA).</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-gray-50 border border-gray-100 space-y-1">
+                                <div class="w-8 h-8 rounded-lg bg-brand-orange/20 text-brand-orange flex items-center justify-center mb-2">
+                                    <i data-lucide="pie-chart" class="w-4 h-4"></i>
+                                </div>
+                                <h4 class="font-bold text-sm text-brand-navy">3. Tabelas & Gráficos</h4>
+                                <p class="text-xs text-gray-500">Agrupamentos dinâmicos, SOMASE, CONT.SE e visualização executiva.</p>
+                            </div>
+                        </div>
+
+                        <!-- LOGISTICA & AGENDA -->
+                        <div class="flex flex-wrap items-center gap-y-2 gap-x-6 text-xs text-gray-600 border-t border-gray-100 pt-4">
+                            <div class="flex items-center gap-1.5">
+                                <i data-lucide="calendar" class="w-4 h-4 text-brand-emerald"></i>
+                                <span><strong>Dias:</strong> Terças e Quintas</span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <i data-lucide="clock" class="w-4 h-4 text-brand-emerald"></i>
+                                <span><strong>Horário:</strong> 18h30 às 19h30</span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <i data-lucide="book-open" class="w-4 h-4 text-brand-emerald"></i>
+                                <span><strong>Duração:</strong> 8 Encontros Ao Vivo</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Price & CTA Box -->
+                <div class="lg:col-span-4 bg-brand-navy text-white p-6 sm:p-8 flex flex-col justify-between border-t lg:border-t-0 lg:border-l border-white/10">
+                    <div class="space-y-6">
+                        <div class="space-y-1">
+                            <span class="text-xs text-gray-400 uppercase tracking-widest font-semibold block">Condição de Lançamento</span>
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-gray-400 line-through text-sm">R$ 347,00</span>
+                                <span class="text-3xl font-extrabold text-brand-emerald font-heading">R$ 179,90</span>
+                            </div>
+                            <p class="text-xs text-gray-300">ou em até <strong>4x de R$ 49,90</strong> no cartão de crédito</p>
+                        </div>
+
+                        <div class="space-y-2 text-xs text-gray-300">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-brand-emerald"></i>
+                                <span>Aulas 100% ao vivo + gravações liberadas</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-brand-emerald"></i>
+                                <span>Estudos de caso reais a cada aula</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-brand-emerald"></i>
+                                <span>Suporte individual nas suas planilhas</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-brand-emerald"></i>
+                                <span>Certificado oficial de conclusão</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded-lg bg-white/5 border border-white/10 text-center">
+                            <span class="text-xs text-brand-emerald font-semibold flex items-center justify-center gap-1">
+                                <i data-lucide="shield-check" class="w-4 h-4"></i> Garantia de Aprendizado
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="pt-6 mt-6 border-t border-white/10 space-y-3">
+                        <button onclick="openModal('Módulo 1: Produtividade Essencial')" class="w-full bg-brand-emerald hover:bg-brand-emeraldHover text-brand-navyDark font-heading font-bold py-3.5 px-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+                            Garantir Minha Vaga <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                        <p class="text-[11px] text-center text-gray-400">Restam poucas vagas para a próxima turma.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROXIMO MODULO PREVIEW -->
+            <div class="bg-gray-100 rounded-2xl p-6 sm:p-8 border border-gray-200 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="space-y-2 text-center md:text-left">
+                    <span class="bg-gray-200 text-gray-700 text-xs font-bold px-2.5 py-1 rounded">EM BREVE</span>
+                    <h4 class="font-heading font-bold text-xl text-brand-navy">Módulo 2: Automação Analítica & Dashboards Gerenciais</h4>
+                    <p class="text-xs sm:text-sm text-gray-600 max-w-2xl">
+                        Voltado para quem já domina os fundamentos e quer aprender PROCX, ÍNDICE+CORRESP, cruzamento de dados, SE aninhado e dashboards interativos.
+                    </p>
+                </div>
+                <button onclick="openModal('Lista de Espera Módulo 2')" class="bg-brand-navy text-white hover:bg-brand-navyDark font-medium text-xs sm:text-sm px-5 py-3 rounded-xl transition-colors whitespace-nowrap">
+                    Entrar na Lista de Espera
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- SIMULADOR INTERATIVO / CALCULADORA DE FUNIL DE VENDAS -->
+    <section id="calculadora" class="py-20 bg-brand-navy text-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            
+            <div class="text-center max-w-3xl mx-auto space-y-3 mb-12">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-emerald/20 text-brand-emerald text-xs font-semibold">
+                    <i data-lucide="calculator" class="w-4 h-4"></i> Ferramenta Gratuita Hub Planilhas
+                </div>
+                <h2 class="font-heading text-3xl sm:text-4xl font-extrabold">
+                    Simulador de Previsibilidade de Vendas
+                </h2>
+                <p class="text-gray-300 text-sm sm:text-base">
+                    Calcule exatamente a quantidade de visitantes, leads e oportunidades necessárias para atingir sua meta comercial.
+                </p>
+            </div>
+
+            <div class="bg-brand-navyDark border border-white/10 rounded-2xl p-6 sm:p-10 shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- INPUTS FORM -->
+                <div class="lg:col-span-6 space-y-5">
+                    <h3 class="font-heading font-bold text-lg text-brand-emerald flex items-center gap-2">
+                        <i data-lucide="sliders" class="w-5 h-5"></i> 1. Insira os Dados do Seu Negócio
+                    </h3>
+
+                    <div>
+                        <label class="block text-xs font-medium text-gray-300 mb-1">Meta de Receita Mensal (R$)</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-3 text-gray-400 text-sm">R$</span>
+                            <input type="number" id="input-meta" value="50000" class="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-white focus:outline-none focus:border-brand-emerald text-sm">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-300 mb-1">Ticket Médio (R$)</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-3 text-gray-400 text-sm">R$</span>
+                                <input type="number" id="input-ticket" value="2500" class="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-white focus:outline-none focus:border-brand-emerald text-sm">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-300 mb-1">Clientes Necessários</label>
+                            <input type="text" id="calc-clientes-req" readonly value="20" class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-2.5 text-brand-emerald font-bold text-sm cursor-not-allowed">
+                        </div>
+                    </div>
+
+                    <div class="pt-2 border-t border-white/10 space-y-3">
+                        <span class="text-xs font-semibold text-gray-400 block">Taxas de Conversão do Seu Funil (%)</span>
+                        
+                        <div class="grid grid-cols-3 gap-3 text-xs">
+                            <div>
+                                <label class="block text-gray-400 mb-1">Visitante ➔ Lead</label>
+                                <input type="number" id="tx-vis-lead" value="5" step="0.5" class="w-full bg-white/5 border border-white/10 rounded-lg p-2 text-white focus:outline-none focus:border-brand-emerald">
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 mb-1">Lead ➔ Oportunidade</label>
+                                <input type="number" id="tx-lead-opp" value="20" step="0.5" class="w-full bg-white/5 border border-white/10 rounded-lg p-2 text-white focus:outline-none focus:border-brand-emerald">
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 mb-1">Oportunidade ➔ Cliente</label>
+                                <input type="number" id="tx-opp-cli" value="25" step="0.5" class="w-full bg-white/5 border border-white/10 rounded-lg p-2 text-white focus:outline-none focus:border-brand-emerald">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="calcularFunil()" class="w-full bg-brand-emerald hover:bg-brand-emeraldHover text-brand-navyDark font-bold py-3 rounded-xl transition-all shadow-md flex items-center justify-center gap-2">
+                        <i data-lucide="refresh-cw" class="w-4 h-4"></i> Recalcular Previsibilidade
+                    </button>
+                </div>
+
+                <!-- CALCULATED RESULTS FUNNEL -->
+                <div class="lg:col-span-6 bg-white/5 border border-white/10 rounded-xl p-6 flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-heading font-bold text-lg text-white mb-4 flex items-center justify-between">
+                            <span>2. Necessidade do Funil</span>
+                            <span class="text-xs font-normal text-gray-400">Metas Mensais</span>
+                        </h3>
+
+                        <!-- Funnel Visual Stack -->
+                        <div class="space-y-3">
+                            <!-- Visitantes -->
+                            <div class="bg-brand-navy p-3 rounded-xl border-l-4 border-blue-400 flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="globe" class="w-4 h-4 text-blue-400"></i>
+                                    <span class="text-xs text-gray-300">Visitantes Mês</span>
+                                </div>
+                                <span id="res-vis" class="font-heading font-bold text-lg text-white">8.000</span>
+                            </div>
+
+                            <!-- Leads -->
+                            <div class="bg-brand-navy p-3 rounded-xl border-l-4 border-indigo-400 flex items-center justify-between ml-2">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="users" class="w-4 h-4 text-indigo-400"></i>
+                                    <span class="text-xs text-gray-300">Leads Necessários</span>
+                                </div>
+                                <span id="res-leads" class="font-heading font-bold text-lg text-white">400</span>
+                            </div>
+
+                            <!-- Oportunidades -->
+                            <div class="bg-brand-navy p-3 rounded-xl border-l-4 border-teal-400 flex items-center justify-between ml-4">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="target" class="w-4 h-4 text-teal-400"></i>
+                                    <span class="text-xs text-gray-300">Oportunidades (SQL)</span>
+                                </div>
+                                <span id="res-opps" class="font-heading font-bold text-lg text-white">80</span>
+                            </div>
+
+                            <!-- Clientes -->
+                            <div class="bg-brand-emerald/20 p-3 rounded-xl border-l-4 border-brand-emerald flex items-center justify-between ml-6">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-emerald"></i>
+                                    <span class="text-xs font-bold text-brand-emerald">Clientes Fechados</span>
+                                </div>
+                                <span id="res-clientes" class="font-heading font-bold text-xl text-brand-emerald">20</span>
+                            </div>
+                        </div>
+
+                        <!-- Daily / Weekly Run Rate -->
+                        <div class="mt-6 pt-4 border-t border-white/10 grid grid-cols-2 gap-3 text-center">
+                            <div class="bg-white/5 p-2.5 rounded-lg">
+                                <span class="text-[10px] text-gray-400 uppercase block">Meta de Leads / Dia</span>
+                                <span id="res-lead-dia" class="font-bold text-sm text-white">20 / dia</span>
+                            </div>
+                            <div class="bg-white/5 p-2.5 rounded-lg">
+                                <span class="text-[10px] text-gray-400 uppercase block">Meta de Leads / Semana</span>
+                                <span id="res-lead-sem" class="font-bold text-sm text-white">100 / sem</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <button onclick="downloadPlanilhaFunil()" class="w-full bg-white/10 hover:bg-white/20 border border-white/20 text-xs text-white font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+                            <i data-lucide="download" class="w-4 h-4 text-brand-emerald"></i> Baixar Planilha Completa de Funil (Grátis)
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- LOJA DE PLANILHAS PRONTAS SECTION -->
+    <section id="planilhas" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+                <span class="text-brand-navy font-semibold text-sm uppercase tracking-widest bg-gray-200 px-3 py-1 rounded-full">Ferramentas Prontas</span>
+                <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-brand-navy">
+                    Planilhas Inteligentes para Empreendedores
+                </h2>
+                <p class="text-gray-600 text-base">
+                    Modelos prontos, testados e automatizados para quem precisa acompanhar indicadores comerciais, financeiros e operacionais sem a complexidade de sistemas caros.
+                </p>
+            </div>
+
+            <!-- PRODUCT CARDS GRID -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- CARD 1 -->
+                <div class="bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col justify-between group">
+                    <div class="p-6 space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <i data-lucide="trending-up" class="w-6 h-6"></i>
+                        </div>
+                        <span class="text-[11px] font-bold text-blue-600 uppercase tracking-wider bg-blue-50 px-2.5 py-1 rounded">Gestão Comercial</span>
+                        <h3 class="font-heading font-bold text-xl text-brand-navy">Planilha de Funil de Vendas & Previsibilidade</h3>
+                        <p class="text-xs text-gray-600 leading-relaxed">
+                            Calcule automaticamente quantas conversões precisa por etapa, identifique gargalos e preveja seu faturamento mensal com base em histórico.
+                        </p>
+                        <ul class="text-xs text-gray-500 space-y-2 pt-2">
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-emerald"></i> Dashboard de Conversão em tempo real</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-emerald"></i> Cálculo automático de ticket médio</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-emerald"></i> Suporte para Excel & Google Sheets</li>
+                        </ul>
+                    </div>
+                    <div class="p-6 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs text-gray-400 block">Download Imediato</span>
+                            <span class="font-heading font-bold text-lg text-brand-navy">R$ 47,00</span>
+                        </div>
+                        <button onclick="comprarPlanilha('Funil de Vendas')" class="bg-brand-navy hover:bg-brand-navyDark text-white text-xs font-bold px-4 py-2.5 rounded-lg transition-colors flex items-center gap-1.5">
+                            Adquirir <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CARD 2 -->
+                <div class="bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col justify-between group">
+                    <div class="p-6 space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <i data-lucide="dollar-sign" class="w-6 h-6"></i>
+                        </div>
+                        <span class="text-[11px] font-bold text-emerald-600 uppercase tracking-wider bg-emerald-50 px-2.5 py-1 rounded">Finanças</span>
+                        <h3 class="font-heading font-bold text-xl text-brand-navy">DRE Gerencial & Fluxo de Caixa Integrado</h3>
+                        <p class="text-xs text-gray-600 leading-relaxed">
+                            Controle de entradas, saídas, DRE simplificada, margem de contribuição e ponto de equilíbrio sem complicar a rotina.
+                        </p>
+                        <ul class="text-xs text-gray-500 space-y-2 pt-2">
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-emerald"></i> DRE Gerencial automática</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-emerald"></i> Gráficos de resultado operacional</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-emerald"></i> Alerta de contas a pagar/receber</li>
+                        </ul>
+                    </div>
+                    <div class="p-6 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs text-gray-400 block">Download Imediato</span>
+                            <span class="font-heading font-bold text-lg text-brand-navy">R$ 67,00</span>
+                        </div>
+                        <button onclick="comprarPlanilha('DRE e Fluxo de Caixa')" class="bg-brand-navy hover:bg-brand-navyDark text-white text-xs font-bold px-4 py-2.5 rounded-lg transition-colors flex items-center gap-1.5">
+                            Adquirir <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CARD 3 -->
+                <div class="bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col justify-between group">
+                    <div class="p-6 space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-orange-50 text-brand-orange flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <i data-lucide="users" class="w-6 h-6"></i>
+                        </div>
+                        <span class="text-[11px] font-bold text-brand-orange uppercase tracking-wider bg-orange-50 px-2.5 py-1 rounded">Gestão de Pessoas</span>
+                        <h3 class="font-heading font-bold text-xl text-brand-navy">Painel de Indicadores de RH & Turnover</h3>
+                        <p class="text-xs text-gray-600 leading-relaxed">
+                            Acompanhe taxa de rotatividade (turnover), absenteísmo, custos por contratação e pesquisas de clima da equipe.
+                        </p>
+                        <ul class="text-xs text-gray-500 space-y-2 pt-2">
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-emerald"></i> Cálculo automático de Turnover</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-emerald"></i> Visão executiva de headcount</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-emerald"></i> Pronta para apresentações</li>
+                        </ul>
+                    </div>
+                    <div class="p-6 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs text-gray-400 block">Download Imediato</span>
+                            <span class="font-heading font-bold text-lg text-brand-navy">R$ 57,00</span>
+                        </div>
+                        <button onclick="comprarPlanilha('Indicadores de RH')" class="bg-brand-navy hover:bg-brand-navyDark text-white text-xs font-bold px-4 py-2.5 rounded-lg transition-colors flex items-center gap-1.5">
+                            Adquirir <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- SOBRE O INSTRUTOR / AUTORIDADE -->
+    <section id="mentor" class="py-20 bg-white border-y border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Instructor Image Container -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative rounded-2xl overflow-hidden shadow-2xl bg-brand-navy text-white p-2">
+                        <!-- Profile Card Representation -->
+                        <div class="bg-brand-navyDark rounded-xl p-6 sm:p-8 space-y-6 text-center">
+                            <div class="w-32 h-32 mx-auto rounded-full bg-gradient-to-tr from-brand-emerald to-teal-400 p-1 shadow-xl">
+                                <div class="w-full h-full bg-brand-navy rounded-full flex items-center justify-center overflow-hidden">
+                                    <i data-lucide="user-check" class="w-16 h-16 text-brand-emerald"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-heading text-2xl font-bold text-white">André Mano</h3>
+                                <p class="text-xs text-brand-emerald font-semibold uppercase tracking-wider mt-1">Especialista em Dados & Processos</p>
+                            </div>
+                            <div class="pt-4 border-t border-white/10 text-xs text-gray-300 space-y-2 text-left">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="graduation-cap" class="w-4 h-4 text-brand-emerald"></i>
+                                    <span>Graduado em Administração (UERJ)</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="award" class="w-4 h-4 text-brand-emerald"></i>
+                                    <span>MBA em Gestão Estratégica & Agilidade</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="briefcase" class="w-4 h-4 text-brand-emerald"></i>
+                                    <span>+7 anos de Feegow (by Doctoralia)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Instructor Bio & Authority -->
+                <div class="lg:col-span-7 space-y-6">
+                    <span class="text-brand-emerald font-semibold text-sm uppercase tracking-widest bg-brand-emerald/10 px-3 py-1 rounded-full">Quem Vai Te Guiar</span>
+                    
+                    <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-brand-navy">
+                        Aprenda com quem lida com dados corporativos todos os dias
+                    </h2>
+
+                    <p class="text-gray-600 text-sm sm:text-base leading-relaxed">
+                        Não perca tempo aprendendo Excel com teóricos que apenas decoraram manuais. O método da Hub Planilhas foi construído por quem está na linha de frente do mercado corporativo, gerenciando operações de alta performance e construindo indicadores reais.
+                    </p>
+
+                    <div class="space-y-4 pt-2">
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-brand-navy/5 text-brand-navy flex items-center justify-center flex-shrink-0 font-bold">01</div>
+                            <div>
+                                <h4 class="font-bold text-brand-navy text-sm">Experiência Real de Mercado</h4>
+                                <p class="text-xs text-gray-500">Mais de uma década estruturando painéis de KPIs, dashboards de resultados e monitoramento de SLAs complexos.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-brand-emerald/10 text-brand-emerald flex items-center justify-center flex-shrink-0 font-bold">02</div>
+                            <div>
+                                <h4 class="font-bold text-brand-navy text-sm">A Visão de Quem Contrata</h4>
+                                <p class="text-xs text-gray-500">Como líder de equipe, sei exatamente o que as empresas avaliam em testes práticos de Excel e dinâmicas de contratação.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-orange-50 text-brand-orange flex items-center justify-center flex-shrink-0 font-bold">03</div>
+                            <div>
+                                <h4 class="font-bold text-brand-navy text-sm">Foco em Tomada de Decisão</h4>
+                                <p class="text-xs text-gray-500">O objetivo não é decorador fórmula, mas sim extrair clareza do caos de dados para apoiar gestores e diretores.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-brand-navy/5 border-l-4 border-brand-navy text-xs text-gray-700 italic">
+                        "Decisões baseadas em achismo custam caro. O meu objetivo no Hub Planilhas é garantir que você domine o Excel essencial para se tornar o profissional analítico e seguro que o mercado disputa."
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- FAQ SECTION -->
+    <section id="faq" class="py-20 bg-gray-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center space-y-4 mb-14">
+                <span class="text-brand-navy font-semibold text-sm uppercase tracking-widest bg-gray-200 px-3 py-1 rounded-full">Tire Suas Dúvidas</span>
+                <h2 class="font-heading text-3xl font-extrabold text-brand-navy">Perguntas Frequentes (FAQ)</h2>
+            </div>
+
+            <div class="space-y-4" id="faq-accordion">
+                
+                <!-- FAQ Item 1 -->
+                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                    <button onclick="toggleFaq('faq-1')" class="w-full p-5 text-left font-heading font-bold text-sm sm:text-base text-brand-navy flex items-center justify-between hover:bg-gray-50 transition-colors">
+                        <span>1. Preciso ter o Excel pago instalado no meu computador?</span>
+                        <i data-lucide="chevron-down" id="faq-icon-1" class="w-5 h-5 text-gray-400 transition-transform"></i>
+                    </button>
+                    <div id="faq-1" class="hidden p-5 pt-0 text-xs sm:text-sm text-gray-600 border-t border-gray-100">
+                        Não. O nosso método foi desenhado para que você consiga executar absolutamente tudo utilizando o Excel Online (100% gratuito) integrado ao OneDrive ou Google Sheets. Você receberá o passo a passo para configurar seu acesso antes da primeira aula.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                    <button onclick="toggleFaq('faq-2')" class="w-full p-5 text-left font-heading font-bold text-sm sm:text-base text-brand-navy flex items-center justify-between hover:bg-gray-50 transition-colors">
+                        <span>2. Nunca mexi no Excel. Este curso serve para mim?</span>
+                        <i data-lucide="chevron-down" id="faq-icon-2" class="w-5 h-5 text-gray-400 transition-transform"></i>
+                    </button>
+                    <div id="faq-2" class="hidden p-5 pt-0 text-xs sm:text-sm text-gray-600 border-t border-gray-100">
+                        Com certeza! Nós começamos do absoluto zero, ensinando como a ferramenta enxerga os dados. A grande diferença é que não perdemos tempo com teoria rasa ou tabelas de "lista de compras"; você aprenderá a lógica direto em cenários corporativos reais.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                    <button onclick="toggleFaq('faq-3')" class="w-full p-5 text-left font-heading font-bold text-sm sm:text-base text-brand-navy flex items-center justify-between hover:bg-gray-50 transition-colors">
+                        <span>3. O curso emite certificado de conclusão?</span>
+                        <i data-lucide="chevron-down" id="faq-icon-3" class="w-5 h-5 text-gray-400 transition-transform"></i>
+                    </button>
+                    <div id="faq-3" class="hidden p-5 pt-0 text-xs sm:text-sm text-gray-600 border-t border-gray-100">
+                        Sim. Ao finalizar o módulo, você receberá um certificado oficial de conclusão para anexar ao seu currículo, utilizar como horas complementares na faculdade e destacar no seu perfil do LinkedIn.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                    <button onclick="toggleFaq('faq-4')" class="w-full p-5 text-left font-heading font-bold text-sm sm:text-base text-brand-navy flex items-center justify-between hover:bg-gray-50 transition-colors">
+                        <span>4. Eu utilizo computador Mac (Apple). Consigo acompanhar?</span>
+                        <i data-lucide="chevron-down" id="faq-icon-4" class="w-5 h-5 text-gray-400 transition-transform"></i>
+                    </button>
+                    <div id="faq-4" class="hidden p-5 pt-0 text-xs sm:text-sm text-gray-600 border-t border-gray-100">
+                        Sim. Como o foco do treinamento inclui o uso do Excel Online e Google Sheets diretamente pelo navegador, a interface, as fórmulas e os recursos funcionam exatamente da mesma forma no Windows ou no Mac.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 5 -->
+                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                    <button onclick="toggleFaq('faq-5')" class="w-full p-5 text-left font-heading font-bold text-sm sm:text-base text-brand-navy flex items-center justify-between hover:bg-gray-50 transition-colors">
+                        <span>5. Esse treinamento prepara para testes práticos de processos seletivos?</span>
+                        <i data-lucide="chevron-down" id="faq-icon-5" class="w-5 h-5 text-gray-400 transition-transform"></i>
+                    </button>
+                    <div id="faq-5" class="hidden p-5 pt-0 text-xs sm:text-sm text-gray-600 border-t border-gray-100">
+                        Totalmente. O conteúdo foi desenvolvido por quem lidera equipes e contrata profissionais. Os exercícios e dinâmicas são baseados nos testes práticos reais aplicados por grandes empresas em seleções de analistas e gestores.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- FOOTER / FINAL CTA -->
+    <footer class="bg-brand-navyDark text-white pt-16 pb-12 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 pb-12 border-b border-white/10">
+                
+                <div class="md:col-span-5 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-brand-emerald flex items-center justify-center text-brand-navyDark font-bold">
+                            <i data-lucide="layout-grid" class="w-4 h-4"></i>
+                        </div>
+                        <span class="font-heading font-extrabold text-lg">HUB <span class="text-brand-emerald">PLANILHAS</span></span>
+                    </div>
+                    <p class="text-xs text-gray-400 max-w-sm leading-relaxed">
+                        O centro de referência para empreendedores e profissionais. Ferramentas de gestão prontas, modelos em Excel/Sheets e cursos corporativos focados em clareza e resultados.
+                    </p>
+                </div>
+
+                <div class="md:col-span-3 space-y-3">
+                    <h4 class="font-heading font-bold text-sm text-white">Navegação</h4>
+                    <ul class="text-xs text-gray-400 space-y-2">
+                        <li><a href="#cursos" class="hover:text-brand-emerald">Curso de Excel Módulo 1</a></li>
+                        <li><a href="#planilhas" class="hover:text-brand-emerald">Planilhas Comerciais & DRE</a></li>
+                        <li><a href="#calculadora" class="hover:text-brand-emerald">Calculadora de Funil</a></li>
+                        <li><a href="#mentor" class="hover:text-brand-emerald">Sobre o Instrutor</a></li>
+                    </ul>
+                </div>
+
+                <div class="md:col-span-4 space-y-3">
+                    <h4 class="font-heading font-bold text-sm text-white">Contato & Suporte</h4>
+                    <p class="text-xs text-gray-400">Atendimento rápido via WhatsApp corporativo para dúvidas de inscrições ou suporte de arquivos.</p>
+                    <a href="https://wa.me/5521988845872?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Hub%20Planilhas" target="_blank" class="inline-flex items-center gap-2 text-xs bg-white/10 hover:bg-white/20 text-brand-emerald font-semibold px-4 py-2.5 rounded-lg border border-white/10 transition-colors">
+                        <i data-lucide="message-circle" class="w-4 h-4"></i> Chamar no WhatsApp
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-4">
+                <p>© 2026 Hub Planilhas. Todos os direitos reservados.</p>
+                <div class="flex items-center gap-6">
+                    <a href="#" class="hover:text-gray-400">Termos de Uso</a>
+                    <a href="#" class="hover:text-gray-400">Política de Privacidade</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- MODAL DE INSCRIÇÃO / CAPTURA DE LEAD -->
+    <div id="modal-inscricao" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative animate-in fade-in zoom-in duration-200">
+            <button onclick="closeModal()" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <div class="space-y-4">
+                <div class="w-12 h-12 rounded-xl bg-brand-emerald/20 text-brand-emerald flex items-center justify-center">
+                    <i data-lucide="check-circle" class="w-6 h-6"></i>
+                </div>
+
+                <div>
+                    <h3 class="font-heading font-bold text-xl text-brand-navy" id="modal-title">Garantir Inscrição no Curso</h3>
+                    <p class="text-xs text-gray-500 mt-1">Preencha seus dados para receber o link seguro de pagamento do Mercado Pago e o convite de turma.</p>
+                </div>
+
+                <form onsubmit="handleFormSubmit(event)" class="space-y-3 pt-2">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Nome Completo</label>
+                        <input type="text" required placeholder="Seu nome completo" class="w-full border border-gray-300 rounded-xl px-3.5 py-2 text-xs focus:ring-2 focus:ring-brand-emerald focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">WhatsApp de Contato</label>
+                        <input type="tel" required placeholder="(21) 98884-5872" class="w-full border border-gray-300 rounded-xl px-3.5 py-2 text-xs focus:ring-2 focus:ring-brand-emerald focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">E-mail Principal</label>
+                        <input type="email" required placeholder="seuemail@empresa.com" class="w-full border border-gray-300 rounded-xl px-3.5 py-2 text-xs focus:ring-2 focus:ring-brand-emerald focus:outline-none">
+                    </div>
+
+                    <div class="p-3 bg-gray-50 rounded-xl text-[11px] text-gray-600 border border-gray-200">
+                        <span class="font-bold text-brand-navy block mb-0.5">Investimento Módulo 1:</span>
+                        <span>R$ 179,90 no Pix ou em até 4x de R$ 49,90 no Cartão.</span>
+                    </div>
+
+                    <button type="submit" class="w-full bg-brand-emerald hover:bg-brand-emeraldHover text-brand-navyDark font-heading font-bold py-3 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 mt-4">
+                        Avançar para Pagamento <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- JAVASCRIPT FOR INTERACTIVITY -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Mobile Menu Toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // FAQ Accordion Toggle
+        function toggleFaq(id) {
+            const el = document.getElementById(id);
+            const icon = document.getElementById('faq-icon-' + id.split('-')[1]);
+            
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                el.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Funnel Calculator Logic
+        function calcularFunil() {
+            const meta = parseFloat(document.getElementById('input-meta').value) || 0;
+            const ticket = parseFloat(document.getElementById('input-ticket').value) || 1;
+            
+            const txVisLead = (parseFloat(document.getElementById('tx-vis-lead').value) || 1) / 100;
+            const txLeadOpp = (parseFloat(document.getElementById('tx-lead-opp').value) || 1) / 100;
+            const txOppCli = (parseFloat(document.getElementById('tx-opp-cli').value) || 1) / 100;
+
+            // Clientes requeridos
+            const clientesReq = Math.ceil(meta / ticket);
+            document.getElementById('calc-clientes-req').value = clientesReq;
+
+            // Oportunidades necessárias
+            const oppsReq = Math.ceil(clientesReq / txOppCli);
+            // Leads necessários
+            const leadsReq = Math.ceil(oppsReq / txLeadOpp);
+            // Visitantes necessários
+            const visReq = Math.ceil(leadsReq / txVisLead);
+
+            // Update Results
+            document.getElementById('res-clientes').innerText = clientesReq.toLocaleString('pt-BR');
+            document.getElementById('res-opps').innerText = oppsReq.toLocaleString('pt-BR');
+            document.getElementById('res-leads').innerText = leadsReq.toLocaleString('pt-BR');
+            document.getElementById('res-vis').innerText = visReq.toLocaleString('pt-BR');
+
+            // Daily & Weekly Run Rates (Assuming 20 business days or 4 weeks)
+            const leadDia = Math.ceil(leadsReq / 20);
+            const leadSem = Math.ceil(leadsReq / 4);
+
+            document.getElementById('res-lead-dia').innerText = leadDia.toLocaleString('pt-BR') + ' / dia';
+            document.getElementById('res-lead-sem').innerText = leadSem.toLocaleString('pt-BR') + ' / sem';
+        }
+
+        // Trigger calculation on load
+        window.addEventListener('DOMContentLoaded', () => {
+            calcularFunil();
+        });
+
+        // Download Free Funnel Sheet Mock Event
+        function downloadPlanilhaFunil() {
+            alert('A planilha gratuita de Funil de Vendas foi iniciada! Caso o download não comece em instantes, fale conosco no WhatsApp.');
+        }
+
+        // Modal Functionality
+        function openModal(title) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-inscricao').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modal-inscricao').classList.add('hidden');
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            alert('Inscrição pré-registrada com sucesso! Redirecionando para o fechamento e pagamento seguro...');
+            closeModal();
+            window.open('https://wa.me/5521988845872?text=Ol%C3%A1!%20Preenchi%20o%20formul%C3%A1rio%20no%20site%20e%20gostaria%20de%20receber%20o%20link%20do%20Mercado%20Pago%20para%20confirmar%20minha%20vaga.', '_blank');
+        }
+
+        function comprarPlanilha(nomePlanilha) {
+            window.open('https://wa.me/5521988845872?text=Ol%C3%A1!%20Gostaria%20de%20adquirir%20a%20' + encodeURIComponent(nomePlanilha), '_blank');
+        }
+    </script>
+</body>
+</html>
