@@ -59,19 +59,9 @@
     <!-- HEADER / NAVIGATION -->
     <header class="sticky top-0 z-50 bg-brand-navyDark/95 text-white backdrop-blur border-b border-white/10 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <!-- LOGO -->
+            <!-- LOGO COM URL OFICIAL E FALLBACK SE HOUVER FALHA -->
             <a href="#" class="flex items-center gap-3 group">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-navy to-brand-emerald p-0.5 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
-                    <div class="w-full h-full bg-brand-navyDark rounded-[10px] flex items-center justify-center">
-                        <i data-lucide="layout-grid" class="w-5 h-5 text-brand-emerald"></i>
-                    </div>
-                </div>
-                <div class="flex flex-col">
-                    <span class="font-heading text-xl font-extrabold tracking-tight text-white leading-none">
-                        HUB <span class="text-brand-emerald">PLANILHAS</span>
-                    </span>
-                    <span class="text-[10px] text-gray-400 font-medium tracking-widest uppercase mt-0.5">Gestão & Inteligência</span>
-                </div>
+                <img src="http://www.hubplanilhas.com.br/imagens/LogoHubPlanilhas.png" alt="Hub Planilhas" class="h-10 w-auto object-contain group-hover:scale-105 transition-transform" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'150\' height=\'40\'><text x=\'0\' y=\'25\' fill=\'%2326C983\' font-family=\'Montserrat\' font-size=\'18\' font-weight=\'bold\'>HUB PLANILHAS</text></svg>';">
             </a>
 
             <!-- DESKTOP MENU -->
@@ -329,7 +319,7 @@
                         <div class="space-y-2 text-xs text-gray-300">
                             <div class="flex items-center gap-2">
                                 <i data-lucide="check" class="w-4 h-4 text-brand-emerald"></i>
-                                <span>Aulas 100% ao vivo + gravações liberadas</span>
+                                <span>Aulas 100% ao vivo</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <i data-lucide="check" class="w-4 h-4 text-brand-emerald"></i>
@@ -510,9 +500,9 @@
                     </div>
 
                     <div class="mt-6">
-                        <button onclick="downloadPlanilhaFunil()" class="w-full bg-white/10 hover:bg-white/20 border border-white/20 text-xs text-white font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
-                            <i data-lucide="download" class="w-4 h-4 text-brand-emerald"></i> Baixar Planilha Completa de Funil (Grátis)
-                        </button>
+                        <a href="https://hotmart.com/pt-br/marketplace/produtos/planilha-de-gestao-de-vendas-otimize-seu-funil-e-alcance-suas-metas/F100803453E" target="_blank" class="w-full bg-white/10 hover:bg-white/20 border border-white/20 text-xs text-white font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 text-center">
+                            <i data-lucide="download" class="w-4 h-4 text-brand-emerald"></i> Baixar Planilha Completa de Funil
+                        </a>
                     </div>
                 </div>
 
@@ -538,7 +528,7 @@
             <!-- PRODUCT CARDS GRID -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 
-                <!-- CARD 1 -->
+                <!-- CARD 1 (Liberado com Hotmart) -->
                 <div class="bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col justify-between group">
                     <div class="p-6 space-y-4">
                         <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -558,18 +548,19 @@
                     <div class="p-6 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
                         <div>
                             <span class="text-xs text-gray-400 block">Download Imediato</span>
-                            <span class="font-heading font-bold text-lg text-brand-navy">R$ 47,00</span>
+                            <span class="font-heading font-bold text-lg text-brand-navy">R$ 49,90</span>
                         </div>
-                        <button onclick="comprarPlanilha('Funil de Vendas')" class="bg-brand-navy hover:bg-brand-navyDark text-white text-xs font-bold px-4 py-2.5 rounded-lg transition-colors flex items-center gap-1.5">
+                        <a href="https://hotmart.com/pt-br/marketplace/produtos/planilha-de-gestao-de-vendas-otimize-seu-funil-e-alcance-suas-metas/F100803453E" target="_blank" class="bg-brand-navy hover:bg-brand-navyDark text-white text-xs font-bold px-4 py-2.5 rounded-lg transition-colors flex items-center gap-1.5">
                             Adquirir <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
-                        </button>
+                        </a>
                     </div>
                 </div>
 
-                <!-- CARD 2 -->
-                <div class="bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col justify-between group">
-                    <div class="p-6 space-y-4">
-                        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <!-- CARD 2 (Em Breve) -->
+                <div class="bg-white rounded-2xl border border-gray-200 shadow-sm transition-all overflow-hidden flex flex-col justify-between opacity-80">
+                    <div class="p-6 space-y-4 relative">
+                        <span class="absolute right-4 top-4 bg-orange-100 text-brand-orange text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide">Em Breve</span>
+                        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
                             <i data-lucide="dollar-sign" class="w-6 h-6"></i>
                         </div>
                         <span class="text-[11px] font-bold text-emerald-600 uppercase tracking-wider bg-emerald-50 px-2.5 py-1 rounded">Finanças</span>
@@ -585,19 +576,20 @@
                     </div>
                     <div class="p-6 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
                         <div>
-                            <span class="text-xs text-gray-400 block">Download Imediato</span>
-                            <span class="font-heading font-bold text-lg text-brand-navy">R$ 67,00</span>
+                            <span class="text-xs text-gray-400 block">Lançamento</span>
+                            <span class="font-heading font-bold text-sm text-gray-500">Em Breve</span>
                         </div>
-                        <button onclick="comprarPlanilha('DRE e Fluxo de Caixa')" class="bg-brand-navy hover:bg-brand-navyDark text-white text-xs font-bold px-4 py-2.5 rounded-lg transition-colors flex items-center gap-1.5">
-                            Adquirir <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
+                        <button disabled class="bg-gray-300 text-gray-600 text-xs font-bold px-4 py-2.5 rounded-lg cursor-not-allowed">
+                            Indisponível
                         </button>
                     </div>
                 </div>
 
-                <!-- CARD 3 -->
-                <div class="bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col justify-between group">
-                    <div class="p-6 space-y-4">
-                        <div class="w-12 h-12 rounded-xl bg-orange-50 text-brand-orange flex items-center justify-center group-hover:scale-110 transition-transform">
+                <!-- CARD 3 (Em Breve) -->
+                <div class="bg-white rounded-2xl border border-gray-200 shadow-sm transition-all overflow-hidden flex flex-col justify-between opacity-80">
+                    <div class="p-6 space-y-4 relative">
+                        <span class="absolute right-4 top-4 bg-orange-100 text-brand-orange text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide">Em Breve</span>
+                        <div class="w-12 h-12 rounded-xl bg-orange-50 text-brand-orange flex items-center justify-center">
                             <i data-lucide="users" class="w-6 h-6"></i>
                         </div>
                         <span class="text-[11px] font-bold text-brand-orange uppercase tracking-wider bg-orange-50 px-2.5 py-1 rounded">Gestão de Pessoas</span>
@@ -613,11 +605,11 @@
                     </div>
                     <div class="p-6 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
                         <div>
-                            <span class="text-xs text-gray-400 block">Download Imediato</span>
-                            <span class="font-heading font-bold text-lg text-brand-navy">R$ 57,00</span>
+                            <span class="text-xs text-gray-400 block">Lançamento</span>
+                            <span class="font-heading font-bold text-sm text-gray-500">Em Breve</span>
                         </div>
-                        <button onclick="comprarPlanilha('Indicadores de RH')" class="bg-brand-navy hover:bg-brand-navyDark text-white text-xs font-bold px-4 py-2.5 rounded-lg transition-colors flex items-center gap-1.5">
-                            Adquirir <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
+                        <button disabled class="bg-gray-300 text-gray-600 text-xs font-bold px-4 py-2.5 rounded-lg cursor-not-allowed">
+                            Indisponível
                         </button>
                     </div>
                 </div>
@@ -649,7 +641,7 @@
                             <div class="pt-4 border-t border-white/10 text-xs text-gray-300 space-y-2 text-left">
                                 <div class="flex items-center gap-2">
                                     <i data-lucide="graduation-cap" class="w-4 h-4 text-brand-emerald"></i>
-                                    <span>Graduado em Administração (UERJ)</span>
+                                    <span>Graduado em Administração (UFRJ)</span>
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <i data-lucide="award" class="w-4 h-4 text-brand-emerald"></i>
@@ -790,10 +782,7 @@
                 
                 <div class="md:col-span-5 space-y-4">
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-lg bg-brand-emerald flex items-center justify-center text-brand-navyDark font-bold">
-                            <i data-lucide="layout-grid" class="w-4 h-4"></i>
-                        </div>
-                        <span class="font-heading font-extrabold text-lg">HUB <span class="text-brand-emerald">PLANILHAS</span></span>
+                        <img src="http://www.hubplanilhas.com.br/imagens/LogoHubPlanilhas.png" alt="Hub Planilhas" class="h-8 w-auto object-contain" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'130\' height=\'30\'><text x=\'0\' y=\'20\' fill=\'%2326C983\' font-family=\'Montserrat\' font-size=\'16\' font-weight=\'bold\'>HUB PLANILHAS</text></svg>';">
                     </div>
                     <p class="text-xs text-gray-400 max-w-sm leading-relaxed">
                         O centro de referência para empreendedores e profissionais. Ferramentas de gestão prontas, modelos em Excel/Sheets e cursos corporativos focados em clareza e resultados.
@@ -907,16 +896,29 @@
 
         // Funnel Calculator Logic
         function calcularFunil() {
-            const meta = parseFloat(document.getElementById('input-meta').value) || 0;
-            const ticket = parseFloat(document.getElementById('input-ticket').value) || 1;
+            const metaInput = document.getElementById('input-meta');
+            const ticketInput = document.getElementById('input-ticket');
+            const txVisLeadInput = document.getElementById('tx-vis-lead');
+            const txLeadOppInput = document.getElementById('tx-lead-opp');
+            const txOppCliInput = document.getElementById('tx-opp-cli');
+
+            if (!metaInput || !ticketInput || !txVisLeadInput || !txLeadOppInput || !txOppCliInput) {
+                return;
+            }
+
+            const meta = parseFloat(metaInput.value) || 0;
+            const ticket = parseFloat(ticketInput.value) || 1;
             
-            const txVisLead = (parseFloat(document.getElementById('tx-vis-lead').value) || 1) / 100;
-            const txLeadOpp = (parseFloat(document.getElementById('tx-lead-opp').value) || 1) / 100;
-            const txOppCli = (parseFloat(document.getElementById('tx-opp-cli').value) || 1) / 100;
+            const txVisLead = (parseFloat(txVisLeadInput.value) || 1) / 100;
+            const txLeadOpp = (parseFloat(txLeadOppInput.value) || 1) / 100;
+            const txOppCli = (parseFloat(txOppCliInput.value) || 1) / 100;
 
             // Clientes requeridos
             const clientesReq = Math.ceil(meta / ticket);
-            document.getElementById('calc-clientes-req').value = clientesReq;
+            const clientesReqEl = document.getElementById('calc-clientes-req');
+            if (clientesReqEl) {
+                clientesReqEl.value = clientesReq;
+            }
 
             // Oportunidades necessárias
             const oppsReq = Math.ceil(clientesReq / txOppCli);
@@ -926,17 +928,27 @@
             const visReq = Math.ceil(leadsReq / txVisLead);
 
             // Update Results
-            document.getElementById('res-clientes').innerText = clientesReq.toLocaleString('pt-BR');
-            document.getElementById('res-opps').innerText = oppsReq.toLocaleString('pt-BR');
-            document.getElementById('res-leads').innerText = leadsReq.toLocaleString('pt-BR');
-            document.getElementById('res-vis').innerText = visReq.toLocaleString('pt-BR');
+            const resClientes = document.getElementById('res-clientes');
+            if (resClientes) resClientes.innerText = clientesReq.toLocaleString('pt-PT');
+
+            const resOpps = document.getElementById('res-opps');
+            if (resOpps) resOpps.innerText = oppsReq.toLocaleString('pt-PT');
+
+            const resLeads = document.getElementById('res-leads');
+            if (resLeads) resLeads.innerText = leadsReq.toLocaleString('pt-PT');
+
+            const resVis = document.getElementById('res-vis');
+            if (resVis) resVis.innerText = visReq.toLocaleString('pt-PT');
 
             // Daily & Weekly Run Rates (Assuming 20 business days or 4 weeks)
             const leadDia = Math.ceil(leadsReq / 20);
             const leadSem = Math.ceil(leadsReq / 4);
 
-            document.getElementById('res-lead-dia').innerText = leadDia.toLocaleString('pt-BR') + ' / dia';
-            document.getElementById('res-lead-sem').innerText = leadSem.toLocaleString('pt-BR') + ' / sem';
+            const resLeadDia = document.getElementById('res-lead-dia');
+            if (resLeadDia) resLeadDia.innerText = leadDia.toLocaleString('pt-PT') + ' / dia';
+
+            const resLeadSem = document.getElementById('res-lead-sem');
+            if (resLeadSem) resLeadSem.innerText = leadSem.toLocaleString('pt-PT') + ' / sem';
         }
 
         // Trigger calculation on load
@@ -964,10 +976,6 @@
             alert('Inscrição pré-registrada com sucesso! Redirecionando para o fechamento e pagamento seguro...');
             closeModal();
             window.open('https://wa.me/5521988845872?text=Ol%C3%A1!%20Preenchi%20o%20formul%C3%A1rio%20no%20site%20e%20gostaria%20de%20receber%20o%20link%20do%20Mercado%20Pago%20para%20confirmar%20minha%20vaga.', '_blank');
-        }
-
-        function comprarPlanilha(nomePlanilha) {
-            window.open('https://wa.me/5521988845872?text=Ol%C3%A1!%20Gostaria%20de%20adquirir%20a%20' + encodeURIComponent(nomePlanilha), '_blank');
         }
     </script>
 </body>
