@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Módulo 1: Produtividade Essencial | Hub Planilhas</title>
-    <!-- Favicon Oficial -->
-    <link rel="icon" type="image/png" href="favicon.png">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
@@ -200,6 +198,56 @@
         </div>
     </section>
 
+    <!-- BLOCO DE CONVERSÃO / CHECKOUT -->
+    <section class="py-16 bg-gray-100">
+        <div class="max-w-2xl mx-auto px-4">
+            <div class="bg-brand-navy rounded-2xl p-8 shadow-2xl text-white">
+                <div class="space-y-6">
+                    <div class="space-y-1 text-center">
+                        <span class="text-xs text-gray-400 uppercase tracking-widest font-semibold block">Condição de Lançamento</span>
+                        <div class="flex items-baseline justify-center gap-2">
+                            <span class="text-gray-400 line-through text-sm">R$ 347,00</span>
+                            <span class="text-4xl font-extrabold text-brand-emerald font-heading">R$ 179,90</span>
+                        </div>
+                        <p class="text-sm text-gray-300">ou em até <strong>4x de R$ 49,90</strong> no cartão de crédito</p>
+                    </div>
+
+                    <div class="space-y-3 text-sm text-gray-200">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-emerald"></i>
+                            <span>Aulas 100% ao vivo</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-emerald"></i>
+                            <span>Estudos de caso reais a cada aula</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-emerald"></i>
+                            <span>Suporte individual nas suas planilhas</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-emerald"></i>
+                            <span>Certificado oficial de conclusão</span>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-white/5 border border-white/10 text-center">
+                        <span class="text-sm text-brand-emerald font-semibold flex items-center justify-center gap-2">
+                            <i data-lucide="shield-check" class="w-5 h-5"></i> Garantia de Aprendizado
+                        </span>
+                    </div>
+
+                    <div class="pt-4 space-y-3">
+                        <a href="webcheckout.html" class="w-full bg-brand-emerald hover:bg-brand-emeraldHover text-brand-navyDark font-heading font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-center text-lg">
+                            Garantir Minha Vaga <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </a>
+                        <p class="text-xs text-center text-gray-400">Restam poucas vagas para a próxima turma.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- FOOTER -->
     <footer class="bg-brand-navyDark text-white py-8 text-center text-xs text-gray-400 border-t border-white/10">
         <p>© 2026 Hub Planilhas. Todos os direitos reservados.</p>
@@ -207,6 +255,65 @@
 
     <script>
         lucide.createIcons();
+
+        // Prevenção de erro: A função calcularFunil está protegida para não falhar
+        // caso a calculadora não exista na página atual (como no caso do modulo1.html).
+        function calcularFunil() {
+            const metaInput = document.getElementById('input-meta');
+            const ticketInput = document.getElementById('input-ticket');
+            const txVisLeadInput = document.getElementById('tx-vis-lead');
+            const txLeadOppInput = document.getElementById('tx-lead-opp');
+            const txOppCliInput = document.getElementById('tx-opp-cli');
+
+            // Se os elementos não existirem na página atual, a execução para suavemente sem dar erro no console
+            if (!metaInput || !ticketInput || !txVisLeadInput || !txLeadOppInput || !txOppCliInput) {
+                return; 
+            }
+
+            const meta = parseFloat(metaInput.value) || 0;
+            const ticket = parseFloat(ticketInput.value) || 1;
+            
+            const txVisLead = (parseFloat(txVisLeadInput.value) || 1) / 100;
+            const txLeadOpp = (parseFloat(txLeadOppInput.value) || 1) / 100;
+            const txOppCli = (parseFloat(txOppCliInput.value) || 1) / 100;
+
+            const clientesReq = Math.ceil(meta / ticket);
+            const clientesReqEl = document.getElementById('calc-clientes-req');
+            if (clientesReqEl) {
+                clientesReqEl.value = clientesReq;
+            }
+
+            const oppsReq = Math.ceil(clientesReq / txOppCli);
+            const leadsReq = Math.ceil(oppsReq / txLeadOpp);
+            const visReq = Math.ceil(leadsReq / txVisLead);
+
+            const resClientes = document.getElementById('res-clientes');
+            if (resClientes) resClientes.innerText = clientesReq.toLocaleString('pt-PT');
+
+            const resOpps = document.getElementById('res-opps');
+            if (resOpps) resOpps.innerText = oppsReq.toLocaleString('pt-PT');
+
+            const resLeads = document.getElementById('res-leads');
+            if (resLeads) resLeads.innerText = leadsReq.toLocaleString('pt-PT');
+
+            const resVis = document.getElementById('res-vis');
+            if (resVis) resVis.innerText = visReq.toLocaleString('pt-PT');
+
+            // Taxa diária/semanal baseada em aproximadamente 20 dias úteis/4 semanas
+            const leadDia = Math.ceil(leadsReq / 20);
+            const leadSem = Math.ceil(leadsReq / 4);
+
+            const resLeadDia = document.getElementById('res-lead-dia');
+            if (resLeadDia) resLeadDia.innerText = leadDia.toLocaleString('pt-PT') + ' / dia';
+
+            const resLeadSem = document.getElementById('res-lead-sem');
+            if (resLeadSem) resLeadSem.innerText = leadSem.toLocaleString('pt-PT') + ' / sem';
+        }
+
+        // Executar após carregamento do DOM
+        window.addEventListener('DOMContentLoaded', () => {
+            calcularFunil();
+        });
     </script>
 </body>
 </html>
