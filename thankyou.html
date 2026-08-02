@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento Aprovado! | Hub Planilhas</title>
+    <!-- Favicon Oficial -->
+    <link rel="icon" type="image/png" href="FavIcon.png">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts: Montserrat & Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            navy: '#0D264C',
+                            navyDark: '#081933',
+                            emerald: '#26C983',
+                            emeraldHover: '#1eb072',
+                            grayLight: '#EBEBEB',
+                            orange: '#FF9012'
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['Montserrat', 'sans-serif'],
+                        body: ['Poppins', 'sans-serif'],
+                    },
+                    animation: {
+                        'bounce-slight': 'bounce-slight 2s infinite',
+                        'scale-in': 'scale-in 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        'bounce-slight': {
+                            '0%, 100%': { transform: 'translateY(-5%)' },
+                            '50%': { transform: 'translateY(0)' },
+                        },
+                        'scale-in': {
+                            '0%': { transform: 'scale(0.8)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Montserrat', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased min-h-screen flex flex-col selection:bg-brand-emerald selection:text-white">
+
+    <!-- HEADER MINIMALISTA -->
+    <header class="bg-brand-navyDark py-6 border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 flex justify-center">
+            <img src="http://www.hubplanilhas.com.br/imagens/LogoHubPlanilhas.png" alt="Hub Planilhas" class="h-10 w-auto object-contain" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'150\' height=\'40\'><text x=\'0\' y=\'25\' fill=\'%2326C983\' font-family=\'Montserrat\' font-size=\'18\' font-weight=\'bold\'>HUB PLANILHAS</text></svg>';">
+        </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL (MENSAGEM DE SUCESSO) -->
+    <main class="flex-grow flex items-center justify-center py-12 px-4">
+        <div class="max-w-3xl w-full bg-white rounded-3xl shadow-xl overflow-hidden animate-scale-in">
+            
+            <!-- TOPO DO CARD: SUCESSO -->
+            <div class="bg-brand-emerald/10 px-8 py-10 text-center border-b border-brand-emerald/20 relative overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-40 h-40 bg-brand-emerald/20 rounded-full blur-3xl"></div>
+                <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-brand-emerald/20 rounded-full blur-3xl"></div>
+                
+                <div class="relative z-10">
+                    <div class="w-20 h-20 bg-brand-emerald text-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-brand-emerald/30">
+                        <i data-lucide="check" class="w-10 h-10 stroke-[3]"></i>
+                    </div>
+                    
+                    <h1 class="font-heading text-3xl sm:text-4xl font-extrabold text-brand-navy mb-2 tracking-tight">
+                        Pagamento Aprovado!
+                    </h1>
+                    <p class="text-gray-600 text-sm sm:text-base font-medium">
+                        Seja muito bem-vindo(a) à Hub Planilhas. Sua vaga no treinamento está garantida.
+                    </p>
+                </div>
+            </div>
+
+            <!-- CORPO DO CARD: PRÓXIMOS PASSOS -->
+            <div class="p-8 sm:p-10">
+                <h2 class="font-heading text-xl font-bold text-brand-navy mb-6 text-center">
+                    Siga os 3 passos abaixo para iniciar:
+                </h2>
+
+                <div class="space-y-6">
+                    <!-- PASSO 1 -->
+                    <div class="flex gap-4 items-start">
+                        <div class="w-12 h-12 rounded-xl bg-gray-100 border border-gray-200 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="mail" class="w-6 h-6 text-brand-navy"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-brand-navy">1. Verifique seu E-mail</h3>
+                            <p class="text-sm text-gray-600 mt-1">
+                                As instruções iniciais e o recibo foram enviados para o e-mail cadastrado na compra. 
+                                <span class="block text-xs mt-1 text-orange-600 font-medium">Importante: Verifique a caixa de SPAM ou Promoções.</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- PASSO 2 -->
+                    <div class="flex gap-4 items-start">
+                        <div class="w-12 h-12 rounded-xl bg-gray-100 border border-gray-200 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="message-circle" class="w-6 h-6 text-brand-emerald"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-brand-navy">2. Entre no Grupo de Alunos</h3>
+                            <p class="text-sm text-gray-600 mt-1">
+                                O link das aulas ao vivo, materiais de apoio e avisos importantes serão enviados no nosso grupo silencioso de WhatsApp.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- PASSO 3 -->
+                    <div class="flex gap-4 items-start">
+                        <div class="w-12 h-12 rounded-xl bg-gray-100 border border-gray-200 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="calendar" class="w-6 h-6 text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-brand-navy">3. Anote na Agenda</h3>
+                            <p class="text-sm text-gray-600 mt-1">
+                                Nossas aulas acontecem ao vivo. Reserve os horários dos encontros na sua agenda para não perder nenhum conteúdo importante.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOTÕES DE AÇÃO -->
+                <div class="mt-10 space-y-4">
+                    <a href="https://chat.whatsapp.com/seu-link-aqui" target="_blank" class="w-full bg-brand-emerald hover:bg-brand-emeraldHover text-brand-navyDark font-heading font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-center text-base sm:text-lg">
+                        <i data-lucide="smartphone" class="w-5 h-5"></i>
+                        Entrar no Grupo de Alunos (WhatsApp)
+                    </a>
+                </div>
+
+                <!-- SUPORTE -->
+                <div class="mt-8 pt-6 border-t border-gray-100 text-center">
+                    <p class="text-xs text-gray-500 flex items-center justify-center gap-1.5">
+                        <i data-lucide="help-circle" class="w-4 h-4 text-gray-400"></i>
+                        Não recebeu o e-mail? Fale com nosso <a href="mailto:suporte@hubplanilhas.com.br" class="text-brand-emerald font-semibold hover:underline">suporte técnico</a>.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white py-6 border-t border-gray-200 text-center">
+        <p class="text-xs text-gray-400">
+            © 2026 Hub Planilhas. Todos os direitos reservados.
+        </p>
+    </footer>
+
+    <!-- INICIALIZAÇÃO DOS ÍCONES -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
