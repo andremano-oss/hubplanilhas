@@ -6,7 +6,7 @@
     <title>Checkout Seguro | Hub Planilhas</title>
     <!-- Favicon Oficial -->
     <link rel="icon" type="image/png" href="FavIcon.png">
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -44,9 +44,16 @@
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
         }
+        .pulse-subtle {
+            animation: pulse-border 2s infinite;
+        }
+        @keyframes pulse-border {
+            0%, 100% { border-color: rgba(38, 201, 131, 0.4); }
+            50% { border-color: rgba(38, 201, 131, 0.9); }
+        }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 antialiased selection:bg-brand-emerald selection:text-white">
+<body class="bg-gray-50 text-gray-800 antialiased selection:bg-brand-emerald selection:text-white min-h-screen flex flex-col justify-between">
 
     <!-- HEADER / NAVIGATION -->
     <header class="sticky top-0 z-50 bg-brand-navyDark/95 text-white backdrop-blur border-b border-white/10 shadow-lg">
@@ -69,13 +76,13 @@
 
             <!-- CTA BUTTON -->
             <div class="hidden md:flex items-center gap-3">
-                <a href="index.html" class="text-xs bg-white/10 hover:bg-white/20 text-brand-emerald font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5">
+                <a href="index.html" class="text-xs bg-white/10 hover:bg-white/20 text-brand-emerald font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5 border border-brand-emerald/30">
                     <i data-lucide="arrow-left" class="w-4 h-4"></i> Voltar ao Início
                 </a>
             </div>
 
             <!-- MOBILE MENU BUTTON -->
-            <button id="mobile-menu-btn" class="md:hidden text-gray-300 hover:text-white p-2">
+            <button id="mobile-menu-btn" aria-label="Abrir Menu" class="md:hidden text-gray-300 hover:text-white p-2 focus:outline-none">
                 <i data-lucide="menu" class="w-6 h-6"></i>
             </button>
         </div>
@@ -94,12 +101,13 @@
     </header>
 
     <!-- CHECKOUT MAIN SECTION -->
-    <main class="py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-        <div class="text-center space-y-3 mb-12">
+    <main class="py-12 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto flex-grow">
+        <!-- HEADER HEADING -->
+        <div class="text-center space-y-3 mb-10">
             <span class="bg-brand-emerald/10 text-brand-emerald text-xs font-semibold px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-flex items-center gap-1.5 border border-brand-emerald/30">
-                <i data-lucide="shield-check" class="w-4 h-4"></i> Ambiente 100% Seguro • Mercado Pago
+                <i data-lucide="shield-check" class="w-4 h-4 text-brand-emerald"></i> Ambiente 100% Seguro • Mercado Pago
             </span>
-            <h1 class="font-heading text-3xl sm:text-4xl font-extrabold text-brand-navy">
+            <h1 class="font-heading text-2xl sm:text-4xl font-extrabold text-brand-navy leading-tight">
                 Finalizar Inscrição — Módulo 1: Produtividade Essencial
             </h1>
             <p class="text-gray-600 text-sm sm:text-base max-w-xl mx-auto">
@@ -111,22 +119,42 @@
             
             <!-- LEFT: RESUMO DO PEDIDO -->
             <div class="lg:col-span-5 bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-6">
-                <h3 class="font-heading font-bold text-lg text-brand-navy pb-4 border-b border-gray-100 flex items-center justify-between">
-                    <span>Resumo do Pedido</span>
-                    <span class="text-xs bg-brand-navy/10 text-brand-navy px-2.5 py-1 rounded">Turma Ao Vivo</span>
-                </h3>
+                <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+                    <h2 class="font-heading font-bold text-lg text-brand-navy flex items-center gap-2">
+                        <i data-lucide="shopping-bag" class="w-5 h-5 text-brand-emerald"></i> Resumo do Pedido
+                    </h2>
+                    <span class="text-xs bg-brand-navy/10 text-brand-navy font-semibold px-2.5 py-1 rounded-md">Turma Ao Vivo</span>
+                </div>
 
                 <div class="space-y-4">
                     <div class="flex justify-between items-start gap-4">
                         <div>
-                            <h4 class="font-bold text-sm text-brand-navy">Curso Excel Corporativo - Módulo 1</h4>
-                            <p class="text-xs text-gray-500 mt-0.5">8 encontros ao vivo via Google Meet + Gravações + Material de Apoio (Vertex Distribuidora)</p>
+                            <h3 class="font-bold text-sm text-brand-navy">Curso Excel Corporativo - Módulo 1</h3>
+                            <p class="text-xs text-gray-500 mt-1 leading-relaxed">
+                                8 encontros ao vivo via Google Meet + Gravações ilimitadas + Material Prático de Apoio.
+                            </p>
                         </div>
-                        <span class="font-heading font-bold text-brand-navy text-sm">R$ 179,90</span>
+                        <span class="font-heading font-bold text-brand-navy text-sm whitespace-nowrap">R$ 179,90</span>
+                    </div>
+
+                    <!-- BENEFÍCIOS RÁPIDOS -->
+                    <div class="pt-2 space-y-2 border-t border-gray-100 text-xs text-gray-600">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-emerald shrink-0"></i>
+                            <span>Certificado Digital Incluso</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-emerald shrink-0"></i>
+                            <span>Acesso às Gravações por 1 Ano</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-emerald shrink-0"></i>
+                            <span>Suporte com Mentores no WhatsApp</span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="pt-6 border-t border-gray-100 flex items-center justify-between">
+                <div class="pt-4 border-t border-gray-100 flex items-center justify-between">
                     <div>
                         <span class="text-xs text-gray-500 block">Total do Investimento</span>
                         <span class="text-xs text-gray-400">ou em até 4x de R$ 49,90</span>
@@ -138,57 +166,92 @@
                     <div class="flex items-center gap-2 font-bold text-brand-navy">
                         <i data-lucide="lock" class="w-4 h-4 text-brand-emerald"></i> Pagamento Processado pelo Mercado Pago
                     </div>
-                    <p>Aceitamos Pix com aprovação instantânea e cartões de crédito em até 4 parcelas sem juros abusivos.</p>
+                    <p class="leading-relaxed">Aceitamos Pix com aprovação imediata e cartões de crédito em até 4 parcelas sem juros abusivos.</p>
                 </div>
             </div>
 
             <!-- RIGHT: FORMULÁRIO DE DADOS E BOTÕES DE PAGAMENTO -->
             <div class="lg:col-span-7 bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-6">
-                <h3 class="font-heading font-bold text-lg text-brand-navy pb-4 border-b border-gray-100">
-                    Preencha seus dados e escolha a forma de pagamento
-                </h3>
+                <div class="pb-4 border-b border-gray-100">
+                    <h2 class="font-heading font-bold text-lg text-brand-navy">
+                        Preencha seus dados para liberação do acesso
+                    </h2>
+                    <p class="text-xs text-gray-500 mt-1">
+                        Utilizaremos estes dados para enviar os links das aulas e sua nota fiscal/recibo.
+                    </p>
+                </div>
 
-                <div class="space-y-4">
+                <form id="checkout-form" onsubmit="return false;" class="space-y-4">
+                    <!-- NOME -->
                     <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Nome Completo</label>
-                        <input type="text" id="checkout-nome" required placeholder="Digite seu nome completo" class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-emerald focus:outline-none">
+                        <label for="checkout-nome" class="block text-xs font-semibold text-gray-700 mb-1">
+                            Nome Completo <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <i data-lucide="user" class="w-4 h-4 absolute left-3.5 top-3.5 text-gray-400"></i>
+                            <input type="text" id="checkout-nome" required placeholder="Digite seu nome completo" class="w-full border border-gray-300 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-emerald focus:border-brand-emerald focus:outline-none transition-all">
+                        </div>
+                        <p id="error-nome" class="text-xs text-red-500 mt-1 hidden">Por favor, informe seu nome completo.</p>
                     </div>
 
+                    <!-- EMAIL & WHATSAPP GRID -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">E-mail Principal</label>
-                            <input type="email" id="checkout-email" required placeholder="seuemail@empresa.com" class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-emerald focus:outline-none">
+                            <label for="checkout-email" class="block text-xs font-semibold text-gray-700 mb-1">
+                                E-mail Principal <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <i data-lucide="mail" class="w-4 h-4 absolute left-3.5 top-3.5 text-gray-400"></i>
+                                <input type="email" id="checkout-email" required placeholder="seuemail@empresa.com" class="w-full border border-gray-300 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-emerald focus:border-brand-emerald focus:outline-none transition-all">
+                            </div>
+                            <p id="error-email" class="text-xs text-red-500 mt-1 hidden">Por favor, insira um e-mail válido.</p>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">WhatsApp de Contato</label>
-                            <input type="tel" id="checkout-whatsapp" required placeholder="(21) 98884-5872" class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-emerald focus:outline-none">
+                            <label for="checkout-whatsapp" class="block text-xs font-semibold text-gray-700 mb-1">
+                                WhatsApp de Contato <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <i data-lucide="phone" class="w-4 h-4 absolute left-3.5 top-3.5 text-gray-400"></i>
+                                <input type="tel" id="checkout-whatsapp" required placeholder="(21) 98884-5872" maxlength="15" class="w-full border border-gray-300 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-emerald focus:border-brand-emerald focus:outline-none transition-all">
+                            </div>
+                            <p id="error-whatsapp" class="text-xs text-red-500 mt-1 hidden">Informe um WhatsApp válido com DDD.</p>
                         </div>
                     </div>
 
+                    <!-- ALERTA DE INSTRUÇÃO -->
                     <div class="p-4 rounded-xl bg-brand-emerald/10 border border-brand-emerald/30 text-xs text-brand-navyDark space-y-1">
-                        <strong class="block font-bold">Escolha a opção de pagamento:</strong>
-                        <span>Clique em uma das opções abaixo para concluir o pagamento de forma segura no Mercado Pago. Após a confirmação, o acesso à turma será liberado.</span>
+                        <strong class="font-bold flex items-center gap-1.5 text-brand-navy">
+                            <i data-lucide="info" class="w-4 h-4 text-brand-emerald"></i> Escolha a forma de pagamento:
+                        </strong>
+                        <p class="text-gray-700 leading-relaxed">
+                            Ao escolher uma das opções abaixo, seus dados serão registrados e você será direcionado ao ambiente seguro do Mercado Pago.
+                        </p>
                     </div>
 
-                    <!-- 2 BOTÕES DE PAGAMENTO -->
+                    <!-- BOTÕES DE PAGAMENTO -->
                     <div class="space-y-3 pt-2">
-                        <a href="https://mpago.la/23wwPvP" target="_blank" onclick="validarFormulario(event, this.href)" class="w-full bg-brand-emerald hover:bg-brand-emeraldHover text-brand-navyDark font-heading font-bold py-4 px-6 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-base">
-                            <i data-lucide="zap" class="w-5 h-5"></i> Pagamento no Pix (R$ 179,90)
-                        </a>
-                        <a href="https://mpago.li/2Z4S2f2" target="_blank" onclick="validarFormulario(event, this.href)" class="w-full bg-brand-navy hover:bg-brand-navyDark text-white font-heading font-bold py-4 px-6 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-base">
-                            <i data-lucide="credit-card" class="w-5 h-5"></i> Pagamento Parcelado (Até 4x)
-                        </a>
+                        <button type="button" id="btn-pix" onclick="processarPagamento('https://mpago.la/23wwPvP', this)" class="w-full bg-brand-emerald hover:bg-brand-emeraldHover text-brand-navyDark font-heading font-bold py-3.5 px-6 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 text-base group">
+                            <i data-lucide="zap" class="w-5 h-5 fill-current"></i>
+                            <span>Pagamento no Pix (R$ 179,90)</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 ml-auto group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+
+                        <button type="button" id="btn-card" onclick="processarPagamento('https://mpago.li/2Z4S2f2', this)" class="w-full bg-brand-navy hover:bg-brand-navyDark text-white font-heading font-bold py-3.5 px-6 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 text-base group">
+                            <i data-lucide="credit-card" class="w-5 h-5"></i>
+                            <span>Pagamento Parcelado (Até 4x)</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 ml-auto group-hover:translate-x-1 transition-transform"></i>
+                        </button>
                     </div>
-                </div>
+                </form>
             </div>
 
         </div>
     </main>
 
     <!-- FOOTER -->
-    <footer class="bg-brand-navyDark text-white pt-16 pb-12 border-t border-white/10 mt-20">
+    <footer class="bg-brand-navyDark text-white pt-12 pb-10 border-t border-white/10 mt-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 pb-12 border-b border-white/10">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-white/10">
                 <div class="md:col-span-5 space-y-4">
                     <div class="flex items-center gap-3">
                         <img src="http://www.hubplanilhas.com.br/imagens/LogoHubPlanilhas.png" alt="Hub Planilhas" class="h-8 w-auto object-contain" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'130\' height=\'30\'><text x=\'0\' y=\'20\' fill=\'%2326C983\' font-family=\'Montserrat\' font-size=\'16\' font-weight=\'bold\'>HUB PLANILHAS</text></svg>';">
@@ -200,66 +263,147 @@
                 <div class="md:col-span-3 space-y-3">
                     <h4 class="font-heading font-bold text-sm text-white">Navegação</h4>
                     <ul class="text-xs text-gray-400 space-y-2">
-                        <li><a href="index.html#cursos" class="hover:text-brand-emerald">Curso de Excel Módulo 1</a></li>
-                        <li><a href="index.html#planilhas" class="hover:text-brand-emerald">Planilhas Comerciais & DRE</a></li>
-                        <li><a href="index.html#calculadora" class="hover:text-brand-emerald">Calculadora de Funil</a></li>
-                        <li><a href="index.html#mentor" class="hover:text-brand-emerald">Sobre o Instrutor</a></li>
+                        <li><a href="index.html#cursos" class="hover:text-brand-emerald transition-colors">Curso de Excel Módulo 1</a></li>
+                        <li><a href="index.html#planilhas" class="hover:text-brand-emerald transition-colors">Planilhas Comerciais & DRE</a></li>
+                        <li><a href="index.html#calculadora" class="hover:text-brand-emerald transition-colors">Calculadora de Funil</a></li>
+                        <li><a href="index.html#mentor" class="hover:text-brand-emerald transition-colors">Sobre o Instrutor</a></li>
                     </ul>
                 </div>
                 <div class="md:col-span-4 space-y-3">
                     <h4 class="font-heading font-bold text-sm text-white">Suporte ao Aluno</h4>
-                    <p class="text-xs text-gray-400">Dúvidas sobre o pagamento ou liberação de acesso? Entre em contato por nossa central.</p>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        Dúvidas sobre o pagamento ou liberação de acesso? Entre em contato por nossa central de atendimento no WhatsApp.
+                    </p>
                 </div>
             </div>
             <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-4">
                 <p>© 2026 Hub Planilhas. Todos os direitos reservados.</p>
                 <div class="flex items-center gap-6">
-                    <a href="#" class="hover:text-gray-400">Termos de Uso</a>
-                    <a href="#" class="hover:text-gray-400">Política de Privacidade</a>
+                    <a href="#" class="hover:text-gray-400 transition-colors">Termos de Uso</a>
+                    <a href="#" class="hover:text-gray-400 transition-colors">Política de Privacidade</a>
                 </div>
             </div>
         </div>
     </footer>
 
+    <!-- SCRIPT LOGIC -->
     <script>
+        // Inicializa Ícones
         lucide.createIcons();
 
         // Mobile Menu Toggle
         const mobileBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
-        mobileBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
+        if (mobileBtn && mobileMenu) {
+            mobileBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
 
-        function validarFormulario(e, urlDestino) {
-            e.preventDefault(); // Evita a abertura imediata para garantir o envio dos dados
+        // Máscara Automática de WhatsApp / Telefone
+        const whatsappInput = document.getElementById('checkout-whatsapp');
+        if (whatsappInput) {
+            whatsappInput.addEventListener('input', (e) => {
+                let v = e.target.value.replace(/\D/g, '');
+                if (v.length > 11) v = v.substring(0, 11);
+                if (v.length > 10) {
+                    v = v.replace(/^(\d\d)(\d{5})(\d{4})$/, '($1) $2-$3');
+                } else if (v.length > 6) {
+                    v = v.replace(/^(\d\d)(\d{4})(\d{0,4})$/, '($1) $2-$3');
+                } else if (v.length > 2) {
+                    v = v.replace(/^(\d\d)(\d{0,5})$/, '($1) $2');
+                } else if (v.length > 0) {
+                    v = v.replace(/^(\d*)$/, '($1');
+                }
+                e.target.value = v;
+            });
+        }
 
-            const nome = document.getElementById('checkout-nome').value;
-            const email = document.getElementById('checkout-email').value;
-            const whatsapp = document.getElementById('checkout-whatsapp').value;
+        // Validação Auxiliar
+        function validarEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
 
-            if (!nome || !email || !whatsapp) {
-                alert('Por favor, preencha todos os campos do formulário antes de prosseguir para o pagamento.');
-                document.getElementById('checkout-nome').focus();
-                return false;
+        function processarPagamento(urlDestino, btnElement) {
+            const nomeInput = document.getElementById('checkout-nome');
+            const emailInput = document.getElementById('checkout-email');
+            const whatsappInput = document.getElementById('checkout-whatsapp');
+
+            const errorNome = document.getElementById('error-nome');
+            const errorEmail = document.getElementById('error-email');
+            const errorWhatsapp = document.getElementById('error-whatsapp');
+
+            let isValid = true;
+
+            // Reset erros
+            errorNome.classList.add('hidden');
+            errorEmail.classList.add('hidden');
+            errorWhatsapp.classList.add('hidden');
+            nomeInput.classList.remove('border-red-500');
+            emailInput.classList.remove('border-red-500');
+            whatsappInput.classList.remove('border-red-500');
+
+            const nome = nomeInput.value.trim();
+            const email = emailInput.value.trim();
+            const whatsapp = whatsappInput.value.trim();
+
+            if (!nome || nome.length < 3) {
+                errorNome.classList.remove('hidden');
+                nomeInput.classList.add('border-red-500');
+                isValid = false;
             }
 
-            // URL oficial do Google Apps Script configurada
+            if (!email || !validarEmail(email)) {
+                errorEmail.classList.remove('hidden');
+                emailInput.classList.add('border-red-500');
+                isValid = false;
+            }
+
+            const rawPhone = whatsapp.replace(/\D/g, '');
+            if (!whatsapp || rawPhone.length < 10) {
+                errorWhatsapp.classList.remove('hidden');
+                whatsappInput.classList.add('border-red-500');
+                isValid = false;
+            }
+
+            if (!isValid) return;
+
+            // Feedback visual no botão
+            const originalContent = btnElement.innerHTML;
+            btnElement.disabled = true;
+            btnElement.classList.add('opacity-80', 'cursor-not-allowed');
+            btnElement.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> <span>Redirecionando...</span>`;
+            lucide.createIcons();
+
+            // Webhook do Google Apps Script
             const scriptURL = 'https://script.google.com/macros/s/AKfycbzt5ujVbJUYqWiY_mV-xeAXfTnft9zkm1z2-U9KTET9CGqxmmbS23G3-eabLWGeJ08IKA/exec';
 
-            // Monta a string de parâmetros para envio seguro ignorando barreiras de CORS do navegador
-            const urlCompleta = `${scriptURL}?nome=${encodeURIComponent(nome)}&email=${encodeURIComponent(email)}&whatsapp=${encodeURIComponent(whatsapp)}&curso=${encodeURIComponent('Curso Excel Corporativo - Módulo 1')}`;
+            // Monta o corpo da requisição POST em formato de formulário
+            const formData = new URLSearchParams();
+            formData.append('nome', nome);
+            formData.append('email', email);
+            formData.append('whatsapp', whatsapp);
+            formData.append('curso', 'Curso Excel Corporativo - Módulo 1');
 
-            // Dispara o registro em segundo plano utilizando um elemento de imagem
-            const img = new Image();
-            img.src = urlCompleta;
+            // Dispara requisição POST para acionar a função doPost(e) do Google Apps Script
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: formData.toString()
+            }).catch(err => console.error('Erro ao registrar lead:', err));
 
-            // Aguarda 400 milissegundos para garantir o envio ao Google Sheets e abre o link do Mercado Pago
+            // Aguarda e abre o link de pagamento do Mercado Pago em nova aba
             setTimeout(() => {
                 window.open(urlDestino, '_blank');
-            }, 400);
-
-            return false;
+                btnElement.disabled = false;
+                btnElement.classList.remove('opacity-80', 'cursor-not-allowed');
+                btnElement.innerHTML = originalContent;
+                lucide.createIcons();
+            }, 300);
         }
     </script>
 </body>
