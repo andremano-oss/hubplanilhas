@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout Seguro | Hub Planilhas</title>
     <!-- Favicon Oficial -->
-    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="icon" type="image/png" href="FavIcon.png">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
@@ -48,7 +48,7 @@
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased selection:bg-brand-emerald selection:text-white">
 
-    <!-- HEADER / NAVIGATION (Idêntico ao index.html) -->
+    <!-- HEADER / NAVIGATION -->
     <header class="sticky top-0 z-50 bg-brand-navyDark/95 text-white backdrop-blur border-b border-white/10 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <!-- LOGO COM URL OFICIAL -->
@@ -100,7 +100,7 @@
                 <i data-lucide="shield-check" class="w-4 h-4"></i> Ambiente 100% Seguro • Mercado Pago
             </span>
             <h1 class="font-heading text-3xl sm:text-4xl font-extrabold text-brand-navy">
-                Finalizar Inscrição Módulo 1: Produtividade Essencial e Lógica de Dados para Negócios
+                Finalizar Inscrição — Módulo 1: Produtividade Essencial
             </h1>
             <p class="text-gray-600 text-sm sm:text-base max-w-xl mx-auto">
                 Garanta sua vaga na turma reduzida (Máximo de 10 alunos) com suporte individualizado e encontros ao vivo.
@@ -119,8 +119,8 @@
                 <div class="space-y-4">
                     <div class="flex justify-between items-start gap-4">
                         <div>
-                            <h4 class="font-bold text-sm text-brand-navy">Curso Módulo 1: Produtividade Essencial e Lógica de Dados para Negócios</h4>
-                            <p class="text-xs text-gray-500 mt-0.5">8 encontros ao vivo via Google Meet + Material de Apoio (Vertex Distribuidora)</p>
+                            <h4 class="font-bold text-sm text-brand-navy">Curso Excel Corporativo - Módulo 1</h4>
+                            <p class="text-xs text-gray-500 mt-0.5">8 encontros ao vivo via Google Meet + Gravações + Material de Apoio (Vertex Distribuidora)</p>
                         </div>
                         <span class="font-heading font-bold text-brand-navy text-sm">R$ 179,90</span>
                     </div>
@@ -232,19 +232,34 @@
         });
 
         function validarFormulario(e, urlDestino) {
+            e.preventDefault(); // Evita a abertura imediata para garantir o envio dos dados
+
             const nome = document.getElementById('checkout-nome').value;
             const email = document.getElementById('checkout-email').value;
             const whatsapp = document.getElementById('checkout-whatsapp').value;
 
             if (!nome || !email || !whatsapp) {
-                e.preventDefault();
                 alert('Por favor, preencha todos os campos do formulário antes de prosseguir para o pagamento.');
                 document.getElementById('checkout-nome').focus();
                 return false;
             }
 
-            // Permite abrir o link do Mercado Pago em nova aba após validar os dados
-            return true;
+            // URL oficial do Google Apps Script configurada
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbzt5ujVbJUYqWiY_mV-xeAXfTnft9zkm1z2-U9KTET9CGqxmmbS23G3-eabLWGeJ08IKA/exec';
+
+            // Monta a string de parâmetros para envio seguro ignorando barreiras de CORS do navegador
+            const urlCompleta = `${scriptURL}?nome=${encodeURIComponent(nome)}&email=${encodeURIComponent(email)}&whatsapp=${encodeURIComponent(whatsapp)}&curso=${encodeURIComponent('Curso Excel Corporativo - Módulo 1')}`;
+
+            // Dispara o registro em segundo plano utilizando um elemento de imagem
+            const img = new Image();
+            img.src = urlCompleta;
+
+            // Aguarda 400 milissegundos para garantir o envio ao Google Sheets e abre o link do Mercado Pago
+            setTimeout(() => {
+                window.open(urlDestino, '_blank');
+            }, 400);
+
+            return false;
         }
     </script>
 </body>
