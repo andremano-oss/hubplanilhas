@@ -1,12 +1,9 @@
-<!-- STREAMING_CHUNK:Adicionando URL principal da página inicial... -->
 <url>
     <loc>https://hubplanilhas.com.br/index.html</loc>
     <lastmod>2026-08-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
 </url>
-
-<!-- STREAMING_CHUNK:Adicionando URL do Módulo 1... -->
 <url>
     <loc>https://hubplanilhas.com.br/modulo1.html</loc>
     <lastmod>2026-08-22</lastmod>
