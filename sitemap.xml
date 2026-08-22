@@ -1,0 +1,23 @@
+<!-- STREAMING_CHUNK:Adicionando URL principal da página inicial... -->
+<!-- Página Inicial / Homepage -->
+<url>
+    <loc>https://hubplanilhas.com.br/index.html</loc>
+    <lastmod>2026-08-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+</url>
+
+<!-- STREAMING_CHUNK:Adicionando URL do Módulo 1... -->
+<!-- Módulo 1 -->
+<url>
+    <loc>https://hubplanilhas.com.br/modulo1.html</loc>
+    <lastmod>2026-08-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+</url>
+
+<!-- NOTA: As páginas a seguir foram intencionalmente omitidas do sitemap 
+     por não serem indexáveis (checkout e agradecimento):
+     - https://hubplanilhas.com.br/webcheckoutmod1.html
+     - https://hubplanilhas.com.br/thankyou.html
+-->
