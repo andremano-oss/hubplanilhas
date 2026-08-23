@@ -415,6 +415,25 @@
         </main>
     </div>
 
+    <!-- MODAL DE EXCLUSÃO CUSTOMIZADO -->
+    <div id="modal-exclusao" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-brand-navyDark/60 backdrop-blur-sm transition-opacity">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden transform transition-all">
+            <div class="p-6 text-center space-y-4">
+                <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="alert-triangle" class="w-8 h-8 text-red-500"></i>
+                </div>
+                <h3 class="text-xl font-heading font-bold text-brand-navy">Confirmar Exclusão</h3>
+                <p class="text-sm text-gray-500">Tem certeza que deseja apagar este registro? Essa ação não poderá ser desfeita.</p>
+            </div>
+            <div class="bg-gray-50 px-6 py-4 flex items-center justify-end gap-3 border-t border-gray-100">
+                <button onclick="fecharModalExclusao()" class="px-5 py-2.5 text-sm font-bold text-gray-600 hover:bg-gray-200 rounded-lg transition-colors">Cancelar</button>
+                <button onclick="confirmarExclusao()" class="px-5 py-2.5 text-sm font-bold text-white bg-red-500 hover:bg-red-600 rounded-lg flex items-center gap-2 transition-colors">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i> Sim, Apagar
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none"></div>
 
     <script>
@@ -470,10 +489,13 @@
             lucide.createIcons();
 
             try {
-                const actionName = 'listar' + tabela.charAt(0).toUpperCase() + tabela.slice(1); 
+                let actionName = '';
+                if (tabela === 'produtos') actionName = 'listarProdutos';
+                else if (tabela === 'cursos') actionName = 'listarCursos';
+                else if (tabela === 'alunos') actionName = 'listarAlunos';
+
                 const res = await fetch(`${API_URL}?action=${actionName}`);
                 const json = await res.json();
-                
                 const dadosCarregados = json.data || [];
 
                 if (tabela === 'produtos') {
@@ -488,7 +510,7 @@
             }
         }
 
-        async function enviarAPI(tabela, acao, dados, btnId) {
+        async function enviarAPI(tabela, dados, btnId) {
             const btn = document.getElementById(btnId);
             const originalContent = btn.innerHTML; 
             btn.disabled = true; 
@@ -528,7 +550,7 @@
             lucide.createIcons();
         }
 
-        // --- NOVA LÓGICA DE EXCLUSÃO COM MODAL ---
+        // --- LÓGICA DE EXCLUSÃO COM MODAL ---
         let itemParaExcluir = null;
 
         function excluirItem(tabela, id, btnElement) {
@@ -542,7 +564,7 @@
             else if (tabela === 'cursos') actionName = 'excluirCurso';
             else if (tabela === 'alunos') actionName = 'excluirAluno';
 
-            // Salva as referências e abre o modal ao invés de usar o confirm() bloqueado
+            // Salva as referências e abre o modal
             itemParaExcluir = { tabela, actionName, id: String(id).trim(), btnElement };
             document.getElementById('modal-exclusao').classList.remove('hidden');
             lucide.createIcons();
@@ -555,11 +577,11 @@
 
         function confirmarExclusao() {
             if (itemParaExcluir) {
+                const { tabela, actionName, id, btnElement } = itemParaExcluir;
                 fecharModalExclusao();
-                executarExclusao(itemParaExcluir.tabela, itemParaExcluir.actionName, itemParaExcluir.id, itemParaExcluir.btnElement);
+                executarExclusao(tabela, actionName, id, btnElement);
             }
         }
-        // ----------------------------------------
 
         async function executarExclusao(tabela, actionName, id, btn) {
             const originalHTML = btn.innerHTML;
@@ -579,7 +601,7 @@
                 try {
                     json = JSON.parse(text);
                 } catch(e) {
-                    throw new Error("Resposta inválida: " + text.substring(0,50));
+                    throw new Error("Resposta inválida do servidor: " + text.substring(0,50));
                 }
 
                 if (json.status === 'success') {
@@ -587,11 +609,11 @@
                     await carregarDados(tabela);
                     if(tabela === 'alunos') await carregarDados('cursos'); 
                 } else {
-                    showToast('Falha na Planilha: ' + json.message, 'bg-red-500', 6000);
+                    showToast('Falha na exclusão: ' + json.message, 'bg-red-500', 6000);
                     btn.disabled = false; btn.innerHTML = originalHTML; lucide.createIcons();
                 }
             } catch(e) {
-                showToast('Erro Crítico: ' + e.message, 'bg-red-500', 6000);
+                showToast('Erro Crítico ao excluir: ' + e.message, 'bg-red-500', 6000);
                 btn.disabled = false; btn.innerHTML = originalHTML; lucide.createIcons();
             }
         }
@@ -683,7 +705,7 @@
                 destaque2: document.getElementById('prod-dest2').value, destaque3: document.getElementById('prod-dest3').value,
                 preco: document.getElementById('prod-preco').value, url: document.getElementById('prod-url').value
             };
-            await enviarAPI('produtos', idProdutoEmEdicao ? 'alterar' : 'inserir', dados, 'btn-salvar-produto');
+            await enviarAPI('produtos', dados, 'btn-salvar-produto');
             cancelarEdicaoProduto();
         }
 
@@ -837,9 +859,9 @@
                 id: idCursoEmEdicao, modulo: moduloF, titulo: document.getElementById('cur-titulo').value,
                 status: document.getElementById('cur-status').value, data: document.getElementById('cur-data').value, diaSemana: document.getElementById('cur-dia').value,
                 horario: document.getElementById('cur-horario').value, duracao: document.getElementById('cur-duracao').value, valor: document.getElementById('cur-valor').value,
-                urlCheckout: document.getElementById('cur-urlcheckout').value, urlCronograma: document.getElementById('cur-urlcronograma').value
+                linkPix: document.getElementById('cur-urlcheckout').value, urlCronograma: document.getElementById('cur-urlcronograma').value
             };
-            await enviarAPI('cursos', idCursoEmEdicao ? 'alterar' : 'inserir', dados, 'btn-salvar-curso');
+            await enviarAPI('cursos', dados, 'btn-salvar-curso');
             cancelarEdicaoCurso();
         }
 
@@ -857,7 +879,7 @@
             document.getElementById('cur-status').value = c.status; document.getElementById('cur-data').value = formatarDataBr(c.data);
             document.getElementById('cur-dia').value = c.diaSemana || ''; document.getElementById('cur-horario').value = c.horario || '';
             document.getElementById('cur-duracao').value = c.duracao || ''; document.getElementById('cur-valor').value = c.valor || '';
-            document.getElementById('cur-urlcheckout').value = c.urlCheckout || ''; document.getElementById('cur-urlcronograma').value = c.urlCronograma || '';
+            document.getElementById('cur-urlcheckout').value = c.linkPix || ''; document.getElementById('cur-urlcronograma').value = c.urlCronograma || '';
             
             idCursoEmEdicao = id;
             document.querySelector('#btn-salvar-curso span span').innerText = 'Atualizar Turma';
@@ -982,7 +1004,7 @@
                 dataCadastro: document.getElementById('alu-data').value
             };
             
-            await enviarAPI('alunos', idAlunoEmEdicao ? 'alterar' : 'inserir', dados, 'btn-salvar-aluno');
+            await enviarAPI('alunos', dados, 'btn-salvar-aluno');
             cancelarEdicaoAluno();
         }
 
