@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Painel de Controle | Hub Planilhas</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { navy: '#0D264C', navyDark: '#081933', emerald: '#26C983', emeraldHover: '#1eb072', orange: '#FF9012' }
+                    },
+                    fontFamily: { heading: ['Montserrat', 'sans-serif'], body: ['Poppins', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Montserrat', sans-serif; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .custom-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    </style>
+</head>
+<body class="text-gray-800 antialiased flex flex-col min-h-screen">
+
+    <header class="sticky top-0 z-50 bg-brand-navy border-b border-brand-navyDark shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <img src="http://www.hubplanilhas.com.br/imagens/LogoHubPlanilhas.png" alt="Hub Planilhas" class="h-8 w-auto object-contain" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'130\' height=\'30\'><text x=\'0\' y=\'20\' fill=\'%2326C983\' font-family=\'Montserrat\' font-size=\'16\' font-weight=\'bold\'>HUB PLANILHAS</text></svg>';">
+                <span class="text-white/40 text-sm hidden sm:block">|</span>
+                <span class="text-white font-heading font-bold text-sm tracking-wide hidden sm:block"><i data-lucide="shield" class="w-4 h-4 inline mr-1 text-brand-emerald"></i> Painel Admin</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex-grow w-full max-w-7xl mx-auto px-4 py-8 flex flex-col gap-6">
+        
+        <nav class="w-full flex flex-row gap-2 overflow-x-auto custom-scrollbar pb-0 border-b border-gray-200">
+            <button onclick="switchTab('tab-instagram')" id="btn-tab-instagram" class="flex-shrink-0 tab-btn w-auto flex items-center gap-2 px-6 py-3.5 rounded-t-xl text-sm font-semibold bg-brand-emerald/10 text-brand-emerald border-b-2 border-brand-emerald transition-colors">
+                <i data-lucide="instagram" class="w-5 h-5"></i> Gestão Instagram
+            </button>
+            <button onclick="switchTab('tab-produtos')" id="btn-tab-produtos" class="flex-shrink-0 tab-btn w-auto flex items-center gap-2 px-6 py-3.5 rounded-t-xl text-sm font-semibold text-gray-500 border-b-2 border-transparent hover:bg-gray-100 hover:text-gray-700 transition-colors">
+                <i data-lucide="shopping-bag" class="w-5 h-5"></i> Produtos Digitais
+            </button>
+            <button onclick="switchTab('tab-cursos')" id="btn-tab-cursos" class="flex-shrink-0 tab-btn w-auto flex items-center gap-2 px-6 py-3.5 rounded-t-xl text-sm font-semibold text-gray-500 border-b-2 border-transparent hover:bg-gray-100 hover:text-gray-700 transition-colors">
+                <i data-lucide="monitor-play" class="w-5 h-5"></i> Cursos Ao Vivo
+            </button>
+            <button onclick="switchTab('tab-alunos')" id="btn-tab-alunos" class="flex-shrink-0 tab-btn w-auto flex items-center gap-2 px-6 py-3.5 rounded-t-xl text-sm font-semibold text-gray-500 border-b-2 border-transparent hover:bg-gray-100 hover:text-gray-700 transition-colors">
+                <i data-lucide="users" class="w-5 h-5"></i> Alunos
+            </button>
+        </nav>
+
+        <main class="w-full overflow-hidden">
+            
+            <!-- INSTAGRAM -->
+            <div id="tab-instagram" class="tab-content active space-y-6">
+                <div>
+                    <h2 class="text-2xl font-heading font-bold text-brand-navy">Gestão de Conteúdo</h2>
+                    <p class="text-sm text-gray-500">Agende posts, reels e stories direto na sua conta do Instagram.</p>
+                </div>
+                <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm flex items-center justify-between gap-4 relative overflow-hidden">
+                    <div class="flex items-center gap-4 z-10">
+                        <div id="insta-avatar" class="w-14 h-14 rounded-full bg-gray-100 border-2 border-dashed border-gray-300 flex items-center justify-center">
+                            <i data-lucide="instagram" class="w-6 h-6 text-gray-400"></i>
+                        </div>
+                        <div>
+                            <h3 id="insta-name" class="font-bold text-gray-800 text-lg">Conta não conectada</h3>
+                            <div class="flex items-center gap-2">
+                                <span id="insta-status-dot" class="w-2 h-2 rounded-full bg-gray-300"></span>
+                                <span id="insta-status-text" class="text-xs text-gray-500 font-medium">Requer autenticação</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="btn-conectar-insta" onclick="simularConexaoInstagram()" class="z-10 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold px-6 py-2.5 rounded-lg shadow-md flex items-center gap-2 text-sm">
+                        <i data-lucide="link" class="w-4 h-4"></i> Conectar Instagram
+                    </button>
+                </div>
+            </div>
+
+            <!-- PRODUTOS -->
+            <div id="tab-produtos" class="tab-content space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h2 class="text-2xl font-heading font-bold text-brand-navy">Produtos Digitais</h2>
+                        <p class="text-sm text-gray-500">Gerencie planilhas, e-books e materiais gravados.</p>
+                    </div>
+                    <button onclick="abrirNovoProduto()" class="bg-brand-emerald hover:bg-brand-emeraldHover text-white font-bold py-2.5 px-5 rounded-lg flex items-center gap-2 text-sm shadow-md transition-colors">
+                        <i data-lucide="plus" class="w-5 h-5"></i> Cadastrar Produto
+                    </button>
+                </div>
+                
+                <div id="form-container-produtos" class="hidden bg-white rounded-2xl border border-gray-200 p-6 shadow-sm relative mt-4">
+                    <button onclick="cancelarEdicaoProduto()" type="button" class="absolute top-5 right-5 text-gray-400 hover:text-red-500 transition-colors" title="Fechar formulário"><i data-lucide="x" class="w-5 h-5"></i></button>
+                    <h3 class="font-heading font-bold text-brand-navy mb-6 border-b border-gray-100 pb-3">Formulário de Produto</h3>
+                    <form id="form-produtos" class="space-y-6" onsubmit="salvarProduto(event)">
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                            <div class="md:col-span-6">
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">Nome do Produto</label>
+                                <input type="text" id="prod-nome" required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-brand-emerald">
+                            </div>
+                            <div class="md:col-span-3">
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">Tipo</label>
+                                <select id="prod-tipo" required onchange="verificarNovo('prod-tipo', 'prod-tipo-novo')" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-brand-emerald">
+                                    <option value="" disabled selected>Carregando...</option>
+                                </select>
+                                <input type="text" id="prod-tipo-novo" placeholder="Novo tipo..." class="hidden mt-2 w-full border border-gray-300 rounded-lg px-4 py-2 text-sm">
+                            </div>
+                            <div class="md:col-span-3">
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">Categoria</label>
+                                <select id="prod-categoria" required onchange="verificarNovo('prod-categoria', 'prod-categoria-novo')" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-brand-emerald">
+                                    <option value="" disabled selected>Carregando...</option>
+                                </select>
+                                <input type="text" id="prod-categoria-novo" placeholder="Nova categoria..." class="hidden mt-2 w-full border border-gray-300 rounded-lg px-4 py-2 text-sm">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Descrição</label>
+                            <textarea id="prod-desc" required rows="2" class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-brand-emerald"></textarea>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div><label class="block text-xs font-semibold text-gray-600 mb-1">Destaque 1</label><input type="text" id="prod-dest1" required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-brand-emerald"></div>
+                            <div><label class="block text-xs font-semibold text-gray-600 mb-1">Destaque 2</label><input type="text" id="prod-dest2" required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-brand-emerald"></div>
+                            <div><label class="block text-xs font-semibold text-gray-600 mb-1">Destaque 3</label><input type="text" id="prod-dest3" required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-brand-emerald"></div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><label class="block text-xs font-semibold text-gray-600 mb-1">Preço</label><input type="text" id="prod-preco" required placeholder="49,90" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-brand-emerald"></div>
+                            <div><label class="block text-xs font-semibold text-gray-600 mb-1">URL de Checkout</label><input type="url" id="prod-url" required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-brand-emerald"></div>
+                        </div>
+                        <div class="pt-4 flex items-center gap-3">
+                            <button type="submit" id="btn-salvar-produto" class="bg-brand-emerald hover:bg-brand-emeraldHover text-brand-navyDark font-bold py-3 px-8 rounded-lg flex items-center gap-2"><span class="flex items-center gap-2"><i data-lucide="save" class="w-5 h-5"></i> <span>Salvar Produto</span></span></button>
+                            <button type="button" id="btn-cancelar-edicao-produto" onclick="cancelarEdicaoProduto()" class="hidden bg-gray-200 text-gray-700 font-bold py-3 px-6 rounded-lg">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden mt-8">
+                    <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex flex-col md:flex-row gap-4 justify-between items-center">
+                        <div class="flex flex-col md:flex-row gap-3 w-full md:w-auto">
+                            <div class="relative w-full md:w-64">
+                                <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-2.5"></i>
+                                <input type="text" id="busca-produto" placeholder="Buscar produto..." class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:border-brand-emerald" onkeyup="renderizarProdutos()">
+                            </div>
+                            <select id="filtro-tipo-produto" class="py-2 px-3 border border-gray-300 rounded-lg text-xs text-gray-600 focus:outline-none focus:border-brand-emerald" onchange="renderizarProdutos()">
+                                <option value="Todos">Todos os Tipos</option>
+                            </select>
+                            <select id="filtro-cat-produto" class="py-2 px-3 border border-gray-300 rounded-lg text-xs text-gray-600 focus:outline-none focus:border-brand-emerald" onchange="renderizarProdutos()">
+                                <option value="Todos">Todas as Categorias</option>
+                            </select>
+                        </div>
+                        <button onclick="carregarDados('produtos')" class="text-xs text-brand-navy font-semibold flex items-center gap-1 shrink-0"><i data-lucide="refresh-cw" class="w-3 h-3"></i> Atualizar</button>
+                    </div>
+                    <div class="overflow-x-auto custom-scrollbar">
+                        <table class="w-full text-left text-sm whitespace-nowrap">
+                            <thead class="bg-gray-50 text-gray-500 text-xs uppercase border-b border-gray-100">
+                                <tr><th class="px-4 py-3">Produto</th><th class="px-4 py-3">Tipo</th><th class="px-4 py-3">Categoria</th><th class="px-4 py-3">Preço</th><th class="px-4 py-3">Cliques</th><th class="px-4 py-3 text-right">Ações</th></tr>
+                            </thead>
+                            <tbody id="tbody-produtos"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CURSOS -->
+            <div id="tab-cursos" class="tab-content space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h2 class="text-2xl font-heading font-bold text-brand-navy">Gestão de Turmas (Ao Vivo)</h2>
+                        <p class="text-sm text-gray-500">Cadastre e gerencie novas turmas, cronogramas e inscritos.</p>
+                    </div>
+                    <button onclick="abrirNovoCurso()" class="bg-brand-emerald hover:bg-brand-emeraldHover text-white font-bold py-2.5 px-5 rounded-lg flex items-center gap-2 text-sm shadow-md transition-colors">
+                        <i data-lucide="plus" class="w-5 h-5"></i> Nova Turma
+                    </button>
+                </div>
+
+                <div id="form-container-cursos" class="hidden bg-white rounded-2xl border border-gray-200 p-6 shadow-sm relative mt-4">
+                    <button onclick="cancelarEdicaoCurso()" type="button" class="absolute top-5 right-5 text-gray-400 hover:text-red-500 transition-colors" title="Fechar formulário"><i data-lucide="x" class="w-5 h-5"></i></button>
+                    <h3 class="font-heading font-bold text-brand-navy mb-6 border-b border-gray-100 pb-3">Formulário de Turma</h3>
+                    <form id="form-cursos" class="space-y-6" onsubmit="salvarCurso(event)">
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 pb-6 border-b border-gray-100">
+                            <div class="md:col-span-3">
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">Módulo / Sigla</label>
+                                <select id="cur-modulo" required onchange="aoMudarModulo()" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-brand-emerald">
+                                    <option value="" disabled selected>Carregando...</option>
+                                </select>
+                                <input type="text" id="cur-modulo-novo" placeholder="Nome do novo módulo..." class="hidden mt-2 w-full border border-gray-300 rounded-lg px-4 py-2 text-sm">
+                            </div>
+                            <div class="md:col-span-6">
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">Título Completo</label>
+                                <input type="text" id="cur-titulo" required placeholder="Ex: Produtividade Essencial..." class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-brand-emerald transition-colors">
+                            </div>
+                            <div class="md:col-span-3">
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">Status da Turma</label>
+                                <select id="cur-status" required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-brand-emerald font-medium">
+                                    <option value="Inscrições Abertas" class="text-brand-emerald">Inscrições Abertas</option>
+                                    <option value="Em Breve" class="text-brand-orange">Em Breve (Lista)</option>
+                                    <option value="Em Andamento" class="text-blue-600">Em Andamento</option>
+                                    <option value="Concluído" class="text-gray-500">Turma Concluída</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                            <div><label class="block text-xs font-semibold text-gray-600 mb-1">Data Início</label><input type="text" id="cur-data" placeholder="01/09/2026" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm"></div>
+                            <div><label class="block text-xs font-semibold text-gray-600 mb-1">Dia da Semana</label><input type="text" id="cur-dia" placeholder="Terça-Feira" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm"></div>
+                            <div><label class="block text-xs font-semibold text-gray-600 mb-1">Horário</label><input type="text" id="cur-horario" placeholder="19h às 20h" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm"></div>
+                            <div><label class="block text-xs font-semibold text-gray-600 mb-1">Duração Total</label><input type="text" id="cur-duracao" placeholder="8 Encontros" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm"></div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                            <div class="md:col-span-3">
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">Valor</label>
+                                <input type="text" id="cur-valor" placeholder="R$ 179,90" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm">
+                            </div>
+                            <div class="md:col-span-4">
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">URL Checkout / WhatsApp</label>
+                                <input type="url" id="cur-urlcheckout" placeholder="https://..." class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm">
+                            </div>
+                            <div class="md:col-span-3">
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">URL Cronograma (Opcional)</label>
+                                <input type="text" id="cur-urlcronograma" placeholder="modulo1.html" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">Qtd. Inscritos</label>
+                                <input type="number" id="cur-inscritos" value="0" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm font-bold text-center bg-gray-50" readonly title="Atualizado automaticamente">
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-gray-100 flex items-center gap-3">
+                            <button type="submit" id="btn-salvar-curso" class="bg-brand-emerald hover:bg-brand-emeraldHover text-brand-navyDark font-bold py-3 px-8 rounded-lg flex items-center gap-2">
+                                <span class="flex items-center gap-2"><i data-lucide="save" class="w-5 h-5"></i> <span>Salvar Turma</span></span>
+                            </button>
+                            <button type="button" id="btn-cancelar-edicao-curso" onclick="cancelarEdicaoCurso()" class="hidden bg-gray-200 text-gray-700 font-bold py-3 px-6 rounded-lg">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden mt-8">
+                    <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex flex-col md:flex-row gap-4 justify-between items-center">
+                        <div class="flex flex-col md:flex-row gap-3 w-full md:w-auto">
+                            <div class="relative w-full md:w-64">
+                                <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-2.5"></i>
+                                <input type="text" id="busca-curso" placeholder="Buscar módulo ou título..." class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:border-brand-emerald" onkeyup="renderizarCursos()">
+                            </div>
+                            <select id="filtro-status-curso" class="py-2 px-3 border border-gray-300 rounded-lg text-xs text-gray-600 focus:outline-none focus:border-brand-emerald" onchange="renderizarCursos()">
+                                <option value="Todos">Todos os Status</option>
+                                <option value="Inscrições Abertas">Inscrições Abertas</option>
+                                <option value="Em Breve">Em Breve (Lista)</option>
+                                <option value="Em Andamento">Em Andamento</option>
+                                <option value="Concluído">Turma Concluída</option>
+                            </select>
+                        </div>
+                        <button onclick="carregarDados('cursos')" class="text-xs text-brand-navy font-semibold flex items-center gap-1 shrink-0"><i data-lucide="refresh-cw" class="w-3 h-3"></i> Atualizar</button>
+                    </div>
+                    <div class="overflow-x-auto custom-scrollbar">
+                        <table class="w-full text-left text-sm whitespace-nowrap">
+                            <thead class="bg-gray-50 text-gray-500 text-xs uppercase border-b border-gray-100">
+                                <tr>
+                                    <th class="px-4 py-3">Módulo & Título</th>
+                                    <th class="px-4 py-3">Data & Horário</th>
+                                    <th class="px-4 py-3">Status</th>
+                                    <th class="px-4 py-3 text-center">Inscritos</th>
+                                    <th class="px-4 py-3 text-right">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-cursos"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ALUNOS -->
+            <div id="tab-alunos" class="tab-content space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h2 class="text-2xl font-heading font-bold text-brand-navy">Gestão de Alunos</h2>
+                        <p class="text-sm text-gray-500">Cadastre e gerencie os alunos matriculados.</p>
+                    </div>
+                    <button onclick="abrirNovoAluno()" class="bg-brand-emerald hover:bg-brand-emeraldHover text-white font-bold py-2.5 px-5 rounded-lg flex items-center gap-2 text-sm shadow-md transition-colors">
+                        <i data-lucide="user-plus" class="w-5 h-5"></i> Cadastrar Aluno
+                    </button>
+                </div>
+
+                <div id="form-container-alunos" class="hidden bg-white rounded-2xl border border-gray-200 p-6 shadow-sm relative mt-4">
+                    <button onclick="cancelarEdicaoAluno()" type="button" class="absolute top-5 right-5 text-gray-400 hover:text-red-500 transition-colors" title="Fechar formulário"><i data-lucide="x" class="w-5 h-5"></i></button>
+                    <h3 class="font-heading font-bold text-brand-navy mb-6 border-b border-gray-100 pb-3">Formulário de Aluno</h3>
+                    <form id="form-alunos" class="space-y-6" onsubmit="salvarAluno(event)">
+                        
+                        <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100 mb-6 flex flex-col md:flex-row gap-4 justify-between items-center">
+                            <div>
+                                <p class="text-xs text-blue-600 font-bold uppercase mb-1">Dica de Cadastro Rápido</p>
+                                <p class="text-sm text-gray-600">Digite o e-mail primeiro. Se o aluno já existir, o Nome e WhatsApp serão preenchidos sozinhos!</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 pb-6 border-b border-gray-100">
+                            <div class="md:col-span-4">
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">E-mail do Aluno</label>
+                                <input type="email" id="alu-email" required onblur="buscarAlunoPorEmail()" placeholder="aluno@email.com" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-brand-emerald">
+                            </div>
+                            <div class="md:col-span-5">
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">Nome Completo</label>
+                                <input type="text" id="alu-nome" required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-brand-emerald">
+                            </div>
+                            <div class="md:col-span-3">
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">WhatsApp</label>
+                                <input type="text" id="alu-whatsapp" placeholder="(00) 00000-0000" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-brand-emerald">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">Status da Matrícula</label>
+                                <select id="alu-status" required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-brand-emerald bg-gray-50">
+                                    <option value="Ativo" class="text-brand-emerald font-semibold">🟢 Ativo (Conta Vaga)</option>
+                                    <option value="Pendente" class="text-blue-500 font-semibold">🔵 Pendente</option>
+                                    <option value="Inativo" class="text-orange-500 font-semibold">🟠 Inativo</option>
+                                    <option value="Cancelado" class="text-red-500 font-semibold">🔴 Cancelado</option>
+                                </select>
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">Turma Vinculada (Curso)</label>
+                                <select id="alu-produto" required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-brand-emerald">
+                                    <option value="" disabled selected>Carregando turmas...</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">Data de Cadastro</label>
+                                <input type="text" id="alu-data" placeholder="01/09/2026" required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-brand-emerald">
+                            </div>
+                        </div>
+
+                        <div class="pt-4 flex items-center gap-3">
+                            <button type="submit" id="btn-salvar-aluno" class="bg-brand-emerald hover:bg-brand-emeraldHover text-brand-navyDark font-bold py-3 px-8 rounded-lg flex items-center gap-2">
+                                <span class="flex items-center gap-2"><i data-lucide="save" class="w-5 h-5 inline mr-1"></i> <span>Salvar Matrícula</span></span>
+                            </button>
+                            <button type="button" id="btn-cancelar-edicao-aluno" onclick="cancelarEdicaoAluno()" class="hidden bg-gray-200 text-gray-700 font-bold py-3 px-6 rounded-lg">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden mt-8">
+                    <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex flex-col md:flex-row gap-4 justify-between items-center">
+                        <div class="flex flex-col xl:flex-row gap-3 w-full items-start xl:items-center">
+                            <div class="relative w-full md:w-64 shrink-0">
+                                <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-2.5"></i>
+                                <input type="text" id="busca-aluno" placeholder="Buscar nome ou e-mail..." class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:border-brand-emerald" onkeyup="renderizarAlunos()">
+                            </div>
+                            <div class="flex bg-gray-200/80 p-1 rounded-lg border border-gray-200 w-max shrink-0" id="filtro-status-aluno">
+                                <button onclick="setFiltroStatusAluno('Todos')" id="btn-filtro-Todos" class="px-3 py-1.5 rounded-md text-xs font-bold text-gray-800 bg-white shadow-sm transition-all">Todos</button>
+                                <button onclick="setFiltroStatusAluno('Ativo')" id="btn-filtro-Ativo" class="px-3 py-1.5 rounded-md text-xs font-bold text-gray-500 hover:text-gray-700 transition-all">Ativo</button>
+                                <button onclick="setFiltroStatusAluno('Pendente')" id="btn-filtro-Pendente" class="px-3 py-1.5 rounded-md text-xs font-bold text-gray-500 hover:text-gray-700 transition-all">Pendente</button>
+                                <button onclick="setFiltroStatusAluno('Inativo')" id="btn-filtro-Inativo" class="px-3 py-1.5 rounded-md text-xs font-bold text-gray-500 hover:text-gray-700 transition-all">Inativo</button>
+                                <button onclick="setFiltroStatusAluno('Cancelado')" id="btn-filtro-Cancelado" class="px-3 py-1.5 rounded-md text-xs font-bold text-gray-500 hover:text-gray-700 transition-all">Cancelado</button>
+                            </div>
+                            <input type="hidden" id="status-aluno-selecionado" value="Todos">
+                            <select id="filtro-turma-aluno" class="py-2 px-3 border border-gray-300 rounded-lg text-xs text-gray-600 focus:outline-none focus:border-brand-emerald max-w-[200px] shrink-0" onchange="renderizarAlunos()">
+                                <option value="Todas">Todas as Turmas</option>
+                            </select>
+                        </div>
+                        <button onclick="carregarDados('alunos')" class="text-xs text-brand-navy font-semibold flex items-center gap-1 shrink-0"><i data-lucide="refresh-cw" class="w-3 h-3"></i> Atualizar</button>
+                    </div>
+                    <div class="overflow-x-auto custom-scrollbar">
+                        <table class="w-full text-left text-sm whitespace-nowrap">
+                            <thead class="bg-gray-50 text-gray-500 text-xs uppercase border-b border-gray-100">
+                                <tr>
+                                    <th class="px-4 py-3">Matrícula & Aluno</th>
+                                    <th class="px-4 py-3">Contato</th>
+                                    <th class="px-4 py-3">Turma Vinculada</th>
+                                    <th class="px-4 py-3">Status</th>
+                                    <th class="px-4 py-3 text-right">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-alunos"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+    <script>
+        lucide.createIcons();
+        
+        // A URL DEFINITIVA DA SUA API DO GOOGLE APPS SCRIPT
+        const API_URL = 'https://script.google.com/macros/s/AKfycbySvQgral7VU1MqbtE8YAIoDeXNhxXvBIkJgYBuuQPvIOlcIOKAmMBYGjlk-hr_SQRI/exec';
+        
+        let produtosGlobais = []; let idProdutoEmEdicao = null;
+        let cursosGlobais = []; let idCursoEmEdicao = null;
+        let alunosGlobais = []; let idAlunoEmEdicao = null;
+
+        function formatarDataBr(dataBase) {
+            if (!dataBase) return '';
+            if (typeof dataBase === 'string' && dataBase.includes('/')) return dataBase; 
+            const dataObj = new Date(dataBase);
+            if (!isNaN(dataObj)) {
+                const dtz = new Date(dataObj.getTime() + (dataObj.getTimezoneOffset() * 60000));
+                const dia = String(dtz.getDate()).padStart(2, '0');
+                const mes = String(dtz.getMonth() + 1).padStart(2, '0');
+                return `${dia}/${mes}/${dtz.getFullYear()}`;
+            }
+            return dataBase; 
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => { 
+                el.classList.remove('bg-brand-emerald/10', 'text-brand-emerald', 'border-brand-emerald'); 
+                el.classList.add('text-gray-500', 'border-transparent'); 
+            });
+            document.getElementById(tabId).classList.add('active');
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.remove('text-gray-500', 'border-transparent'); 
+            activeBtn.classList.add('bg-brand-emerald/10', 'text-brand-emerald', 'border-brand-emerald');
+        }
+
+        function showToast(message, colorClass = 'bg-brand-emerald', duration = 3000) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `${colorClass} text-white px-5 py-3 rounded-lg shadow-lg flex items-center gap-3 transform translate-y-10 opacity-0 transition-all duration-300 max-w-sm`;
+            toast.innerHTML = `<i data-lucide="${colorClass.includes('red') ? 'alert-circle' : 'check-circle'}" class="w-5 h-5 shrink-0"></i> <span class="text-sm font-semibold">${message}</span>`;
+            container.appendChild(toast);
+            lucide.createIcons();
+            setTimeout(() => { toast.classList.remove('translate-y-10', 'opacity-0'); }, 10);
+            setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-2'); setTimeout(() => toast.remove(), 300); }, duration);
+        }
+
+        async function carregarDados(tabela) {
+            const tbodyId = 'tbody-' + tabela;
+            const tbody = document.getElementById(tbodyId);
+            if(tbody) tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-8 text-center text-gray-500"><i data-lucide="loader" class="w-5 h-5 mx-auto animate-spin mb-2 text-brand-emerald"></i> Buscando dados...</td></tr>`;
+            lucide.createIcons();
+
+            try {
+                const actionName = 'listar' + tabela.charAt(0).toUpperCase() + tabela.slice(1); 
+                const res = await fetch(`${API_URL}?action=${actionName}`);
+                const json = await res.json();
+                
+                const dadosCarregados = json.data || [];
+
+                if (tabela === 'produtos') {
+                    produtosGlobais = dadosCarregados; atualizarFiltrosProdutoSelects(); renderizarProdutos();
+                } else if (tabela === 'cursos') {
+                    cursosGlobais = dadosCarregados; preencherSelectTurmas(); renderizarCursos();
+                } else if (tabela === 'alunos') {
+                    alunosGlobais = dadosCarregados; renderizarAlunos();
+                }
+            } catch (e) {
+                if(tbody) tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-8 text-center text-red-500">Erro de conexão com API.</td></tr>`;
+            }
+        }
+
+        async function enviarAPI(tabela, acao, dados, btnId) {
+            const btn = document.getElementById(btnId);
+            const originalContent = btn.innerHTML; 
+            btn.disabled = true; 
+            btn.innerHTML = `<span class="flex items-center gap-2"><i data-lucide="loader" class="w-5 h-5 animate-spin"></i> <span>Salvando...</span></span>`;
+            lucide.createIcons();
+            
+            try {
+                let actionName = '';
+                if (tabela === 'produtos') actionName = 'salvarProduto';
+                else if (tabela === 'cursos') actionName = 'salvarCurso';
+                else if (tabela === 'alunos') actionName = 'salvarAluno';
+                
+                const payload = { action: actionName, dados: dados };
+
+                const res = await fetch(API_URL, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'text/plain' }, 
+                    body: JSON.stringify(payload) 
+                });
+                
+                const text = await res.text();
+                let json;
+                try { json = JSON.parse(text); } catch(e) { throw new Error("A API retornou um erro: " + text.substring(0, 50)); }
+
+                if (json.status === 'success') { 
+                    showToast('Registro salvo com sucesso!'); 
+                    await carregarDados(tabela); 
+                    if(tabela === 'alunos') await carregarDados('cursos'); 
+                } else { 
+                    showToast('Erro da API: ' + (json.message || "Erro desconhecido"), 'bg-red-500', 5000); 
+                }
+            } catch(e) { 
+                showToast('Falha na comunicação: ' + e.message, 'bg-red-500', 5000); 
+            }
+            
+            btn.disabled = false; btn.innerHTML = originalContent;
+            lucide.createIcons();
+        }
+
+        function excluirItem(tabela, id, btnElement) {
+            if (!id || String(id).trim() === '' || id === 'undefined') {
+                showToast('Ação bloqueada. Este registro é antigo e não possui ID.', 'bg-red-500');
+                return;
+            }
+            if (!confirm("Tem certeza que deseja excluir permanentemente este registro da planilha?")) return;
+            
+            // Aqui enviamos diretamente e de forma explícita a ação correta
+            let actionName = '';
+            if (tabela === 'produtos') actionName = 'excluirProduto';
+            else if (tabela === 'cursos') actionName = 'excluirCurso';
+            else if (tabela === 'alunos') actionName = 'excluirAluno';
+
+            executarExclusao(tabela, actionName, String(id).trim(), btnElement);
+        }
+
+        async function executarExclusao(tabela, actionName, id, btn) {
+            const originalHTML = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<i data-lucide="loader" class="w-4 h-4 animate-spin text-gray-500"></i>`;
+            lucide.createIcons();
+
+            try {
+                const res = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({ action: actionName, id: id })
+                });
+
+                const text = await res.text();
+                let json;
+                try {
+                    json = JSON.parse(text);
+                } catch(e) {
+                    throw new Error("Resposta inválida: " + text.substring(0,50));
+                }
+
+                if (json.status === 'success') {
+                    showToast('Registro excluído com sucesso!');
+                    await carregarDados(tabela);
+                    if(tabela === 'alunos') await carregarDados('cursos'); 
+                } else {
+                    showToast('Falha na Planilha: ' + json.message, 'bg-red-500', 6000);
+                    btn.disabled = false; btn.innerHTML = originalHTML; lucide.createIcons();
+                }
+            } catch(e) {
+                showToast('Erro Crítico: ' + e.message, 'bg-red-500', 6000);
+                btn.disabled = false; btn.innerHTML = originalHTML; lucide.createIcons();
+            }
+        }
+
+        // === PRODUTOS ===
+        function abrirNovoProduto() {
+            cancelarEdicaoProduto(); 
+            document.getElementById('form-container-produtos').classList.remove('hidden');
+        }
+
+        function atualizarFiltrosProdutoSelects() {
+            const tipos = [...new Set(produtosGlobais.map(p => p.tipo).filter(Boolean))];
+            const cats = [...new Set(produtosGlobais.map(p => p.categoria).filter(Boolean))];
+            
+            const selFormTipo = document.getElementById('prod-tipo');
+            const selFormCat = document.getElementById('prod-categoria');
+            selFormTipo.innerHTML = '<option value="" disabled selected>Selecione...</option>' + tipos.map(t => `<option value="${t}">${t}</option>`).join('') + '<option value="novo" class="font-bold text-brand-emerald">+ Novo Tipo...</option>';
+            selFormCat.innerHTML = '<option value="" disabled selected>Selecione...</option>' + cats.map(c => `<option value="${c}">${c}</option>`).join('') + '<option value="novo" class="font-bold text-brand-emerald">+ Nova Categoria...</option>';
+
+            const selFiltroTipo = document.getElementById('filtro-tipo-produto');
+            const selFiltroCat = document.getElementById('filtro-cat-produto');
+            const currTipo = selFiltroTipo.value || 'Todos';
+            const currCat = selFiltroCat.value || 'Todos';
+            
+            selFiltroTipo.innerHTML = '<option value="Todos">Todos os Tipos</option>' + tipos.map(t => `<option value="${t}">${t}</option>`).join('');
+            selFiltroCat.innerHTML = '<option value="Todos">Todas as Categorias</option>' + cats.map(c => `<option value="${c}">${c}</option>`).join('');
+            
+            selFiltroTipo.value = currTipo; selFiltroCat.value = currCat;
+        }
+
+        function renderizarProdutos() {
+            const tbody = document.getElementById('tbody-produtos');
+            tbody.innerHTML = '';
+            
+            const termoBusca = document.getElementById('busca-produto').value.toLowerCase();
+            const tipoFiltro = document.getElementById('filtro-tipo-produto').value;
+            const catFiltro = document.getElementById('filtro-cat-produto').value;
+
+            const filtrados = produtosGlobais.filter(p => {
+                const matchBusca = (p.nome || '').toLowerCase().includes(termoBusca);
+                const matchTipo = (tipoFiltro === 'Todos' || p.tipo === tipoFiltro);
+                const matchCat = (catFiltro === 'Todos' || p.categoria === catFiltro);
+                return matchBusca && matchTipo && matchCat;
+            });
+
+            if(filtrados.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-8 text-center text-gray-500">Nenhum produto encontrado.</td></tr>`;
+                return;
+            }
+
+            filtrados.forEach(prod => {
+                let catBg = 'bg-gray-100 text-gray-600';
+                if ((prod.categoria||'').toLowerCase().includes('finan')) catBg = 'bg-emerald-50 text-emerald-700';
+                else if ((prod.categoria||'').toLowerCase().includes('comercial') || (prod.categoria||'').toLowerCase().includes('venda')) catBg = 'bg-blue-50 text-blue-700';
+                
+                const isIdVazio = (!prod.id || String(prod.id).trim() === '' || String(prod.id) === 'undefined');
+
+                tbody.innerHTML += `
+                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                        <td class="px-4 py-3"><p class="font-bold text-brand-navy">${prod.nome}</p><a href="${prod.url}" target="_blank" class="text-[10px] text-gray-400 hover:text-brand-emerald">Ver Link</a></td>
+                        <td class="px-4 py-3"><span class="bg-gray-100 text-gray-600 text-[10px] font-bold px-2 py-1 rounded border flex items-center gap-1 w-max"><i data-lucide="${(prod.tipo||'').toLowerCase().includes('curso') ? 'play-circle' : 'table-2'}" class="w-3 h-3"></i> ${prod.tipo}</span></td>
+                        <td class="px-4 py-3"><span class="${catBg} text-[10px] font-bold px-2 py-1 rounded border uppercase">${prod.categoria}</span></td>
+                        <td class="px-4 py-3 font-semibold">R$ ${prod.preco}</td>
+                        <td class="px-4 py-3"><div class="bg-emerald-50 text-emerald-700 text-xs font-bold px-2 py-1 rounded inline-flex gap-1 border border-emerald-100"><i data-lucide="mouse-pointer-click" class="w-3 h-3"></i> ${prod.cliques}</div></td>
+                        <td class="px-4 py-3 text-right">
+                            <button onclick="prepararEdicaoProduto('${prod.id}')" class="text-blue-500 bg-blue-50 p-1.5 rounded" ${isIdVazio ? 'disabled style="opacity:0.3"' : ''}><i data-lucide="pencil" class="w-4 h-4"></i></button>
+                            <button onclick="excluirItem('produtos', '${prod.id}', this)" class="text-red-500 bg-red-50 p-1.5 rounded ml-1" ${isIdVazio ? 'disabled style="opacity:0.3"' : ''}><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                        </td>
+                    </tr>`;
+            });
+            lucide.createIcons();
+        }
+
+        function verificarNovo(selectId, inputId) {
+            const val = document.getElementById(selectId).value;
+            const input = document.getElementById(inputId);
+            if (val === 'novo') { input.classList.remove('hidden'); input.required = true; } 
+            else { input.classList.add('hidden'); input.required = false; input.value = ''; }
+        }
+
+        async function salvarProduto(e) {
+            e.preventDefault();
+            const tipoF = document.getElementById('prod-tipo').value === 'novo' ? document.getElementById('prod-tipo-novo').value : document.getElementById('prod-tipo').value;
+            const catF = document.getElementById('prod-categoria').value === 'novo' ? document.getElementById('prod-categoria-novo').value : document.getElementById('prod-categoria').value;
+            
+            const dados = {
+                id: idProdutoEmEdicao, nome: document.getElementById('prod-nome').value, tipo: tipoF, categoria: catF,
+                descricao: document.getElementById('prod-desc').value, destaque1: document.getElementById('prod-dest1').value,
+                destaque2: document.getElementById('prod-dest2').value, destaque3: document.getElementById('prod-dest3').value,
+                preco: document.getElementById('prod-preco').value, url: document.getElementById('prod-url').value
+            };
+            await enviarAPI('produtos', idProdutoEmEdicao ? 'alterar' : 'inserir', dados, 'btn-salvar-produto');
+            cancelarEdicaoProduto();
+        }
+
+        function prepararEdicaoProduto(id) {
+            const p = produtosGlobais.find(x => String(x.id) === String(id));
+            if(!p) return;
+            document.getElementById('prod-nome').value = p.nome; document.getElementById('prod-desc').value = p.descricao;
+            document.getElementById('prod-dest1').value = p.destaque1; document.getElementById('prod-dest2').value = p.destaque2;
+            document.getElementById('prod-dest3').value = p.destaque3; document.getElementById('prod-preco').value = p.preco;
+            document.getElementById('prod-url').value = p.url;
+            
+            const sT = document.getElementById('prod-tipo'); const sC = document.getElementById('prod-categoria');
+            if(![...sT.options].some(o=>o.value===p.tipo)) sT.add(new Option(p.tipo, p.tipo));
+            if(![...sC.options].some(o=>o.value===p.categoria)) sC.add(new Option(p.categoria, p.categoria));
+            sT.value = p.tipo; sC.value = p.categoria;
+            verificarNovo('prod-tipo', 'prod-tipo-novo'); verificarNovo('prod-categoria', 'prod-categoria-novo');
+            
+            idProdutoEmEdicao = id;
+            document.querySelector('#btn-salvar-produto span span').innerText = 'Atualizar Produto';
+            document.getElementById('btn-cancelar-edicao-produto').classList.remove('hidden');
+            document.getElementById('form-container-produtos').classList.remove('hidden');
+            window.scrollTo({top:0, behavior:'smooth'});
+        }
+
+        function cancelarEdicaoProduto() {
+            document.getElementById('form-produtos').reset();
+            verificarNovo('prod-tipo', 'prod-tipo-novo'); verificarNovo('prod-categoria', 'prod-categoria-novo');
+            idProdutoEmEdicao = null;
+            document.querySelector('#btn-salvar-produto span span').innerText = 'Salvar Produto';
+            document.getElementById('btn-cancelar-edicao-produto').classList.add('hidden');
+            document.getElementById('form-container-produtos').classList.add('hidden');
+        }
+
+        // === CURSOS ===
+        function abrirNovoCurso() {
+            cancelarEdicaoCurso();
+            document.getElementById('form-container-cursos').classList.remove('hidden');
+        }
+
+        function preencherSelectTurmas() {
+            const select = document.getElementById('alu-produto');
+            if (select) {
+                const currentVal = select.value;
+                select.innerHTML = '<option value="" disabled selected>Selecione a Turma...</option>';
+                cursosGlobais.forEach(cur => {
+                    if (cur.id && cur.id.trim() !== '') {
+                        const opt = document.createElement('option');
+                        opt.value = cur.id; 
+                        opt.textContent = `${cur.modulo} - ${cur.titulo}`;
+                        select.appendChild(opt);
+                    }
+                });
+                if (currentVal && [...select.options].some(o => o.value === currentVal)) select.value = currentVal;
+            }
+            
+            const filtroTurma = document.getElementById('filtro-turma-aluno');
+            if (filtroTurma) {
+                const currFiltro = filtroTurma.value || 'Todas';
+                filtroTurma.innerHTML = '<option value="Todas">Todas as Turmas</option>';
+                cursosGlobais.forEach(cur => {
+                    if (cur.id && cur.id.trim() !== '') {
+                        const opt = document.createElement('option');
+                        opt.value = cur.id; 
+                        opt.textContent = `${cur.modulo} - ${cur.titulo}`;
+                        filtroTurma.appendChild(opt);
+                    }
+                });
+                filtroTurma.value = currFiltro;
+            }
+        }
+
+        function renderizarCursos() {
+            const tbody = document.getElementById('tbody-cursos');
+            tbody.innerHTML = '';
+
+            const termoBusca = document.getElementById('busca-curso').value.toLowerCase();
+            const statusFiltro = document.getElementById('filtro-status-curso').value;
+
+            const filtrados = cursosGlobais.filter(c => {
+                const searchTxt = ((c.modulo||'') + ' ' + (c.titulo||'')).toLowerCase();
+                const matchBusca = searchTxt.includes(termoBusca);
+                const matchStatus = (statusFiltro === 'Todos' || c.status === statusFiltro);
+                return matchBusca && matchStatus;
+            });
+
+            const selectMod = document.getElementById('cur-modulo');
+            const modulosUnicos = [];
+            cursosGlobais.forEach(c => {
+                if(c.modulo && !modulosUnicos.some(m => m.nome === c.modulo)) {
+                    modulosUnicos.push({ nome: c.modulo, titulo: c.titulo });
+                }
+            });
+            selectMod.innerHTML = '<option value="" disabled selected>Selecione o Módulo...</option>' + 
+                modulosUnicos.map(m => `<option value="${m.nome}">${m.nome}</option>`).join('') + 
+                '<option value="novo" class="font-bold text-brand-emerald">+ Novo Módulo...</option>';
+
+            if(filtrados.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-8 text-center text-gray-500">Nenhuma turma encontrada.</td></tr>`;
+                return;
+            }
+
+            filtrados.forEach(cur => {
+                let statusBg = 'bg-gray-100 text-gray-600';
+                if ((cur.status||'').includes('Abertas')) statusBg = 'bg-emerald-100 text-emerald-800';
+                else if ((cur.status||'').includes('Breve')) statusBg = 'bg-orange-100 text-orange-800';
+                else if ((cur.status||'').includes('Andamento')) statusBg = 'bg-blue-100 text-blue-800';
+
+                let dataExibicao = formatarDataBr(cur.data);
+                const isIdVazio = (!cur.id || String(cur.id).trim() === '' || String(cur.id) === 'undefined');
+
+                tbody.innerHTML += `
+                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                        <td class="px-4 py-3"><p class="font-bold text-brand-navy">${cur.modulo} <span class="text-[10px] font-normal text-gray-400">(${cur.id || 'Sem ID'})</span></p><p class="text-[10px] text-gray-500 truncate max-w-[250px]">${cur.titulo}</p></td>
+                        <td class="px-4 py-3"><p class="text-xs font-semibold">${dataExibicao}</p><p class="text-[10px] text-gray-500">${cur.diaSemana || '-'} • ${cur.horario || '-'}</p></td>
+                        <td class="px-4 py-3"><span class="${statusBg} text-[10px] font-bold px-2 py-1 rounded">${cur.status || 'Previsto'}</span></td>
+                        <td class="px-4 py-3 text-center"><div class="bg-brand-navy text-white text-xs font-bold px-2 py-1 rounded inline-block">${cur.inscritos || 0}</div></td>
+                        <td class="px-4 py-3 text-right">
+                            <button onclick="prepararEdicaoCurso('${cur.id}')" class="text-blue-500 bg-blue-50 p-1.5 rounded" ${isIdVazio ? 'disabled style="opacity:0.3"' : ''}><i data-lucide="pencil" class="w-4 h-4"></i></button>
+                            <button onclick="excluirItem('cursos', '${cur.id}', this)" class="text-red-500 bg-red-50 p-1.5 rounded ml-1" ${isIdVazio ? 'disabled style="opacity:0.3"' : ''}><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                        </td>
+                    </tr>`;
+            });
+            lucide.createIcons();
+        }
+
+        function aoMudarModulo() {
+            const val = document.getElementById('cur-modulo').value;
+            const inputNovo = document.getElementById('cur-modulo-novo');
+            const inputTitulo = document.getElementById('cur-titulo');
+
+            if (val === 'novo') {
+                inputNovo.classList.remove('hidden'); inputNovo.required = true;
+                inputTitulo.value = ''; inputTitulo.readOnly = false;
+                inputTitulo.classList.remove('bg-gray-100', 'cursor-not-allowed', 'text-gray-500');
+            } else {
+                inputNovo.classList.add('hidden'); inputNovo.required = false; inputNovo.value = '';
+                const c = cursosGlobais.find(x => x.modulo === val);
+                if (c) {
+                    inputTitulo.value = c.titulo;
+                    inputTitulo.readOnly = true; 
+                    inputTitulo.classList.add('bg-gray-100', 'cursor-not-allowed', 'text-gray-500');
+                }
+            }
+        }
+
+        async function salvarCurso(e) {
+            e.preventDefault();
+            const moduloF = document.getElementById('cur-modulo').value === 'novo' ? document.getElementById('cur-modulo-novo').value : document.getElementById('cur-modulo').value;
+
+            const dados = {
+                id: idCursoEmEdicao, modulo: moduloF, titulo: document.getElementById('cur-titulo').value,
+                status: document.getElementById('cur-status').value, data: document.getElementById('cur-data').value, diaSemana: document.getElementById('cur-dia').value,
+                horario: document.getElementById('cur-horario').value, duracao: document.getElementById('cur-duracao').value, valor: document.getElementById('cur-valor').value,
+                urlCheckout: document.getElementById('cur-urlcheckout').value, urlCronograma: document.getElementById('cur-urlcronograma').value
+            };
+            await enviarAPI('cursos', idCursoEmEdicao ? 'alterar' : 'inserir', dados, 'btn-salvar-curso');
+            cancelarEdicaoCurso();
+        }
+
+        function prepararEdicaoCurso(id) {
+            if (!id || id === 'undefined') return; 
+            const c = cursosGlobais.find(x => String(x.id) === String(id));
+            if(!c) return;
+
+            const sM = document.getElementById('cur-modulo');
+            if(![...sM.options].some(o=>o.value===c.modulo)) sM.add(new Option(c.modulo, c.modulo));
+            sM.value = c.modulo;
+            aoMudarModulo(); 
+
+            document.getElementById('cur-titulo').value = c.titulo;
+            document.getElementById('cur-status').value = c.status; document.getElementById('cur-data').value = formatarDataBr(c.data);
+            document.getElementById('cur-dia').value = c.diaSemana || ''; document.getElementById('cur-horario').value = c.horario || '';
+            document.getElementById('cur-duracao').value = c.duracao || ''; document.getElementById('cur-valor').value = c.valor || '';
+            document.getElementById('cur-urlcheckout').value = c.urlCheckout || ''; document.getElementById('cur-urlcronograma').value = c.urlCronograma || '';
+            
+            idCursoEmEdicao = id;
+            document.querySelector('#btn-salvar-curso span span').innerText = 'Atualizar Turma';
+            document.getElementById('btn-cancelar-edicao-curso').classList.remove('hidden');
+            document.getElementById('form-container-cursos').classList.remove('hidden');
+            window.scrollTo({top:0, behavior:'smooth'});
+        }
+
+        function cancelarEdicaoCurso() {
+            document.getElementById('form-cursos').reset();
+            idCursoEmEdicao = null;
+            document.querySelector('#btn-salvar-curso span span').innerText = 'Salvar Turma';
+            document.getElementById('btn-cancelar-edicao-curso').classList.add('hidden');
+            document.getElementById('form-container-cursos').classList.add('hidden');
+            document.getElementById('cur-modulo-novo').classList.add('hidden');
+            document.getElementById('cur-titulo').readOnly = false;
+            document.getElementById('cur-titulo').classList.remove('bg-gray-100', 'cursor-not-allowed', 'text-gray-500');
+        }
+
+        // === ALUNOS ===
+        function abrirNovoAluno() {
+            cancelarEdicaoAluno();
+            const hoje = new Date();
+            const dia = String(hoje.getDate()).padStart(2, '0');
+            const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+            document.getElementById('alu-data').value = `${dia}/${mes}/${hoje.getFullYear()}`;
+            document.getElementById('form-container-alunos').classList.remove('hidden');
+        }
+
+        function setFiltroStatusAluno(status) {
+            document.getElementById('status-aluno-selecionado').value = status;
+            const statuses = ['Todos', 'Ativo', 'Pendente', 'Inativo', 'Cancelado'];
+            statuses.forEach(s => {
+                const btn = document.getElementById('btn-filtro-' + s);
+                if (btn) {
+                    if (s === status) {
+                        btn.classList.replace('text-gray-500', 'text-gray-800');
+                        btn.classList.add('bg-white', 'shadow-sm');
+                        btn.classList.remove('hover:text-gray-700');
+                    } else {
+                        btn.classList.replace('text-gray-800', 'text-gray-500');
+                        btn.classList.remove('bg-white', 'shadow-sm');
+                        btn.classList.add('hover:text-gray-700');
+                    }
+                }
+            });
+            renderizarAlunos();
+        }
+
+        function buscarAlunoPorEmail() {
+            const emailDigitado = document.getElementById('alu-email').value.trim().toLowerCase();
+            if(!emailDigitado) return;
+            const alunoEncontrado = alunosGlobais.find(a => (a.email||'').toLowerCase() === emailDigitado);
+            if(alunoEncontrado) {
+                document.getElementById('alu-nome').value = alunoEncontrado.nome;
+                if(alunoEncontrado.whatsapp) document.getElementById('alu-whatsapp').value = alunoEncontrado.whatsapp;
+            }
+        }
+
+        function renderizarAlunos() {
+            const tbody = document.getElementById('tbody-alunos');
+            tbody.innerHTML = '';
+
+            const termoBusca = document.getElementById('busca-aluno').value.toLowerCase();
+            const statusFiltro = document.getElementById('status-aluno-selecionado').value;
+            const turmaFiltro = document.getElementById('filtro-turma-aluno').value;
+
+            const filtrados = alunosGlobais.filter(alu => {
+                const searchTxt = ((alu.nome||'') + ' ' + (alu.email||'')).toLowerCase();
+                const matchBusca = searchTxt.includes(termoBusca);
+                const matchStatus = (statusFiltro === 'Todos' || (alu.status||'').toLowerCase() === statusFiltro.toLowerCase());
+                const matchTurma = (turmaFiltro === 'Todas' || alu.turma === turmaFiltro);
+                return matchBusca && matchStatus && matchTurma;
+            });
+
+            if(filtrados.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-8 text-center text-gray-500">Nenhum aluno encontrado.</td></tr>`;
+                return;
+            }
+
+            filtrados.forEach(alu => {
+                let statusBg = 'bg-gray-100 text-gray-600';
+                if ((alu.status||'').toLowerCase() === 'ativo') statusBg = 'bg-emerald-100 text-emerald-800';
+                else if ((alu.status||'').toLowerCase() === 'pendente') statusBg = 'bg-blue-100 text-blue-800';
+                else if ((alu.status||'').toLowerCase() === 'cancelado') statusBg = 'bg-red-100 text-red-800';
+                else if ((alu.status||'').toLowerCase() === 'inativo') statusBg = 'bg-orange-100 text-orange-800';
+
+                let dataExibicao = formatarDataBr(alu.dataCadastro);
+                const cursoVinculado = cursosGlobais.find(c => String(c.id) === String(alu.turma));
+                const nomeTurmaExibicao = cursoVinculado ? `${cursoVinculado.modulo} <span class="text-[9px] text-gray-400">(${cursoVinculado.id})</span>` : (alu.turma || alu.modulo || '-');
+                
+                const isIdVazio = (!alu.id || String(alu.id).trim() === '' || String(alu.id) === 'undefined');
+
+                tbody.innerHTML += `
+                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                        <td class="px-4 py-3"><p class="font-bold text-brand-navy">${alu.nome}</p><p class="text-[10px] text-gray-500 font-mono">Matrícula: ${alu.id || '-'} • ${dataExibicao}</p></td>
+                        <td class="px-4 py-3"><p class="text-xs font-semibold text-gray-700">${alu.email}</p><p class="text-[10px] text-gray-500">${alu.whatsapp || '-'}</p></td>
+                        <td class="px-4 py-3"><span class="text-[11px] font-semibold text-brand-navy bg-brand-navy/5 border border-brand-navy/10 px-2 py-1 rounded truncate max-w-[200px] inline-block" title="${alu.turma}">${nomeTurmaExibicao}</span></td>
+                        <td class="px-4 py-3"><span class="${statusBg} text-[10px] font-bold px-2 py-1 rounded">${alu.status || 'Ativo'}</span></td>
+                        <td class="px-4 py-3 text-right">
+                            <button onclick="prepararEdicaoAluno('${alu.id}')" class="text-blue-500 bg-blue-50 p-1.5 rounded" ${isIdVazio ? 'disabled style="opacity:0.3" title="Cadastre um ID"' : ''}><i data-lucide="pencil" class="w-4 h-4"></i></button>
+                            <button onclick="excluirItem('alunos', '${alu.id}', this)" class="text-red-500 bg-red-50 p-1.5 rounded ml-1" ${isIdVazio ? 'disabled style="opacity:0.3" title="Cadastre um ID"' : ''}><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                        </td>
+                    </tr>`;
+            });
+            lucide.createIcons();
+        }
+
+        async function salvarAluno(e) {
+            e.preventDefault();
+            const turmaId = document.getElementById('alu-produto').value;
+            const cursoSelecionado = cursosGlobais.find(c => String(c.id) === String(turmaId));
+            
+            const dados = {
+                id: idAlunoEmEdicao, 
+                nome: document.getElementById('alu-nome').value, 
+                email: document.getElementById('alu-email').value,
+                whatsapp: document.getElementById('alu-whatsapp').value, 
+                modulo: cursoSelecionado ? cursoSelecionado.modulo : '',
+                turma: turmaId, 
+                status: document.getElementById('alu-status').value,
+                dataCadastro: document.getElementById('alu-data').value
+            };
+            
+            await enviarAPI('alunos', idAlunoEmEdicao ? 'alterar' : 'inserir', dados, 'btn-salvar-aluno');
+            cancelarEdicaoAluno();
+        }
+
+        function prepararEdicaoAluno(id) {
+            if (!id || id === 'undefined') return; 
+            const a = alunosGlobais.find(x => String(x.id) === String(id));
+            if(!a) return;
+
+            document.getElementById('alu-nome').value = a.nome;
+            document.getElementById('alu-email').value = a.email;
+            document.getElementById('alu-whatsapp').value = a.whatsapp;
+            
+            const selectTurma = document.getElementById('alu-produto');
+            if (a.turma && ![...selectTurma.options].some(o => o.value === a.turma)) selectTurma.add(new Option(a.turma, a.turma));
+            selectTurma.value = a.turma || a.modulo || "";
+            document.getElementById('alu-status').value = a.status;
+            document.getElementById('alu-data').value = formatarDataBr(a.dataCadastro);
+            
+            idAlunoEmEdicao = id;
+            document.querySelector('#btn-salvar-aluno span span').innerText = 'Atualizar Matrícula';
+            document.getElementById('btn-cancelar-edicao-aluno').classList.remove('hidden');
+            document.getElementById('form-container-alunos').classList.remove('hidden');
+            window.scrollTo({top:0, behavior:'smooth'});
+        }
+
+        function cancelarEdicaoAluno() {
+            document.getElementById('form-alunos').reset();
+            idAlunoEmEdicao = null;
+            document.querySelector('#btn-salvar-aluno span span').innerText = 'Salvar Matrícula';
+            document.getElementById('btn-cancelar-edicao-aluno').classList.add('hidden');
+            document.getElementById('form-container-alunos').classList.add('hidden');
+        }
+
+        function simularConexaoInstagram() {
+            const btn = document.getElementById('btn-conectar-insta');
+            btn.innerHTML = `<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Conectando...`;
+            lucide.createIcons(); btn.disabled = true;
+            setTimeout(() => {
+                showToast('Autenticado com a Meta via OAuth2');
+                document.getElementById('insta-name').innerText = '@hubplanilhas';
+                document.getElementById('insta-status-text').innerText = 'Conectado • Token válido';
+                document.getElementById('insta-status-dot').classList.replace('bg-gray-300', 'bg-brand-emerald');
+                btn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i> Conectado`;
+                btn.classList.replace('from-purple-600', 'from-emerald-500'); btn.classList.replace('to-pink-600', 'to-teal-500');
+                lucide.createIcons();
+            }, 1500);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => { 
+            carregarDados('produtos'); carregarDados('cursos'); carregarDados('alunos');
+        });
+    </script>
+</body>
+</html>
