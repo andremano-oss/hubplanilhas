@@ -326,7 +326,7 @@
             return re.test(email);
         }
 
-        function processarPagamento(urlDestino, btnElement) {
+        async function processarPagamento(urlDestino, btnElement) {
             const nomeInput = document.getElementById('checkout-nome');
             const emailInput = document.getElementById('checkout-email');
             const whatsappInput = document.getElementById('checkout-whatsapp');
@@ -374,37 +374,77 @@
             const originalContent = btnElement.innerHTML;
             btnElement.disabled = true;
             btnElement.classList.add('opacity-80', 'cursor-not-allowed');
-            btnElement.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> <span>Redirecionando...</span>`;
+            btnElement.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> <span>Registrando...</span>`;
             lucide.createIcons();
 
-            // Webhook do Google Apps Script
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbzt5ujVbJUYqWiY_mV-xeAXfTnft9zkm1z2-U9KTET9CGqxmmbS23G3-eabLWGeJ08IKA/exec';
+            // A URL DEFINITIVA DA SUA API DO GOOGLE APPS SCRIPT
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbySvQgral7VU1MqbtE8YAIoDeXNhxXvBIkJgYBuuQPvIOlcIOKAmMBYGjlk-hr_SQRI/exec';
 
-            // Monta o corpo da requisição POST em formato de formulário
-            const formData = new URLSearchParams();
-            formData.append('nome', nome);
-            formData.append('email', email);
-            formData.append('whatsapp', whatsapp);
-            formData.append('curso', 'Curso Excel Corporativo - Módulo 1');
+            try {
+                // 1. Busca as turmas para encontrar qual está "Aberta" no Módulo 1
+                const responseCursos = await fetch(scriptURL + '?action=listarCursos');
+                const jsonCursos = await responseCursos.json();
 
-            // Dispara requisição POST para acionar a função doPost(e) do Google Apps Script
-            fetch(scriptURL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: formData.toString()
-            }).catch(err => console.error('Erro ao registrar lead:', err));
+                let turmaIdAberta = "";
+                let moduloNome = "MÓDULO 1"; // Ajuste conforme cadastrado na sua planilha
 
-            // Aguarda e abre o link de pagamento do Mercado Pago em nova aba
-            setTimeout(() => {
+                if (jsonCursos.status === 'success') {
+                    const turmas = jsonCursos.data;
+                    
+                    // Procura pela primeira turma do Módulo 1 com status "Inscrições Abertas"
+                    const turmaAberta = turmas.find(t => 
+                        t.modulo.toUpperCase().includes("MÓDULO 1") && 
+                        t.status === "Inscrições Abertas"
+                    );
+                    
+                    if (turmaAberta) {
+                        turmaIdAberta = turmaAberta.id;
+                        moduloNome = turmaAberta.modulo;
+                    }
+                }
+
+                // 2. Pega a data de hoje formatada no padrão DD/MM/AAAA
+                const hoje = new Date();
+                const dataFormatada = String(hoje.getDate()).padStart(2, '0') + '/' + 
+                                      String(hoje.getMonth() + 1).padStart(2, '0') + '/' + 
+                                      hoje.getFullYear();
+
+                // 3. Monta o pacote de dados EXATAMENTE como o painel admin envia
+                const payload = {
+                    action: 'salvarAluno',
+                    dados: {
+                        id: "", // Deixa vazio para o Google Sheets gerar a matrícula (ex: 2026...)
+                        nome: nome,
+                        email: email,
+                        whatsapp: whatsapp,
+                        modulo: moduloNome,
+                        turma: turmaIdAberta, // Vai injetar o ID encontrado (Ex: MODULO1Turma2)
+                        status: "Pendente",
+                        dataCadastro: dataFormatada
+                    }
+                };
+
+                // 4. Envia o aluno para a aba "Alunos" através da sua API do Google Sheets
+                await fetch(scriptURL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' }, // Usa text/plain para evitar bloqueios de CORS
+                    body: JSON.stringify(payload)
+                });
+
+                // 5. Após registrar com sucesso, abre o link de pagamento do Mercado Pago em nova aba
                 window.open(urlDestino, '_blank');
+
+            } catch (error) {
+                console.error('Erro ao processar a inscrição no banco de dados:', error);
+                // Mesmo que o registro falhe por instabilidade, não impedimos o usuário de comprar
+                window.open(urlDestino, '_blank');
+            } finally {
+                // Restaura o botão após concluir
                 btnElement.disabled = false;
                 btnElement.classList.remove('opacity-80', 'cursor-not-allowed');
                 btnElement.innerHTML = originalContent;
                 lucide.createIcons();
-            }, 300);
+            }
         }
     </script>
 </body>
