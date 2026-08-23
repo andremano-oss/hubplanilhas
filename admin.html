@@ -89,6 +89,21 @@
                         <i data-lucide="link" class="w-4 h-4"></i> Conectar Instagram
                     </button>
                 </div>
+
+                <div class="bg-blue-50/40 rounded-2xl border border-blue-100/60 p-6 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div class="flex items-start gap-4">
+                        <div class="bg-blue-100 text-blue-600 p-2.5 rounded-xl shrink-0">
+                            <i data-lucide="external-link" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-brand-navy text-base">Meta Business Suite</h3>
+                            <p class="text-sm text-gray-600 mt-0.5">Acesso rápido ao gerenciador oficial enquanto configuramos o Token definitivo do aplicativo.</p>
+                        </div>
+                    </div>
+                    <a href="https://business.facebook.com/latest/home?business_id=802617012546690&asset_id=829782950219020" target="_blank" class="shrink-0 bg-white hover:bg-gray-50 border border-gray-200 text-brand-navy font-bold py-2.5 px-5 rounded-lg flex items-center gap-2 text-sm shadow-sm transition-colors">
+                        <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Acessar Painel Meta
+                    </a>
+                </div>
             </div>
 
             <!-- PRODUTOS -->
@@ -510,21 +525,38 @@
             lucide.createIcons();
         }
 
+        // --- NOVA LÓGICA DE EXCLUSÃO COM MODAL ---
+        let itemParaExcluir = null;
+
         function excluirItem(tabela, id, btnElement) {
             if (!id || String(id).trim() === '' || id === 'undefined') {
                 showToast('Ação bloqueada. Este registro é antigo e não possui ID.', 'bg-red-500');
                 return;
             }
-            if (!confirm("Tem certeza que deseja excluir permanentemente este registro da planilha?")) return;
             
-            // Aqui enviamos diretamente e de forma explícita a ação correta
             let actionName = '';
             if (tabela === 'produtos') actionName = 'excluirProduto';
             else if (tabela === 'cursos') actionName = 'excluirCurso';
             else if (tabela === 'alunos') actionName = 'excluirAluno';
 
-            executarExclusao(tabela, actionName, String(id).trim(), btnElement);
+            // Salva as referências e abre o modal ao invés de usar o confirm() bloqueado
+            itemParaExcluir = { tabela, actionName, id: String(id).trim(), btnElement };
+            document.getElementById('modal-exclusao').classList.remove('hidden');
+            lucide.createIcons();
         }
+
+        function fecharModalExclusao() {
+            document.getElementById('modal-exclusao').classList.add('hidden');
+            itemParaExcluir = null;
+        }
+
+        function confirmarExclusao() {
+            if (itemParaExcluir) {
+                fecharModalExclusao();
+                executarExclusao(itemParaExcluir.tabela, itemParaExcluir.actionName, itemParaExcluir.id, itemParaExcluir.btnElement);
+            }
+        }
+        // ----------------------------------------
 
         async function executarExclusao(tabela, actionName, id, btn) {
             const originalHTML = btn.innerHTML;
