@@ -859,7 +859,7 @@
                 id: idCursoEmEdicao, modulo: moduloF, titulo: document.getElementById('cur-titulo').value,
                 status: document.getElementById('cur-status').value, data: document.getElementById('cur-data').value, diaSemana: document.getElementById('cur-dia').value,
                 horario: document.getElementById('cur-horario').value, duracao: document.getElementById('cur-duracao').value, valor: document.getElementById('cur-valor').value,
-                linkPix: document.getElementById('cur-urlcheckout').value, urlCronograma: document.getElementById('cur-urlcronograma').value
+                urlCheckout: document.getElementById('cur-urlcheckout').value, urlCronograma: document.getElementById('cur-urlcronograma').value
             };
             await enviarAPI('cursos', dados, 'btn-salvar-curso');
             cancelarEdicaoCurso();
@@ -879,7 +879,7 @@
             document.getElementById('cur-status').value = c.status; document.getElementById('cur-data').value = formatarDataBr(c.data);
             document.getElementById('cur-dia').value = c.diaSemana || ''; document.getElementById('cur-horario').value = c.horario || '';
             document.getElementById('cur-duracao').value = c.duracao || ''; document.getElementById('cur-valor').value = c.valor || '';
-            document.getElementById('cur-urlcheckout').value = c.linkPix || ''; document.getElementById('cur-urlcronograma').value = c.urlCronograma || '';
+            document.getElementById('cur-urlcheckout').value = c.urlCheckout || ''; document.getElementById('cur-urlcronograma').value = c.urlCronograma || '';
             
             idCursoEmEdicao = id;
             document.querySelector('#btn-salvar-curso span span').innerText = 'Atualizar Turma';
