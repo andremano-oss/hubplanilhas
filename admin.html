@@ -33,14 +33,20 @@
         .tab-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         .custom-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .dark-scrollbar::-webkit-scrollbar { height: 8px; width: 8px; }
+        .dark-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 8px; }
+        .dark-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 8px; border: 2px solid transparent; background-clip: padding-box; }
+        .dark-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); border: 2px solid transparent; background-clip: padding-box; }
     </style>
 </head>
 <body class="text-gray-800 antialiased flex flex-col min-h-screen">
 
     <header class="sticky top-0 z-50 bg-brand-navy border-b border-brand-navyDark shadow-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center gap-4">
                 <img src="http://www.hubplanilhas.com.br/imagens/LogoHubPlanilhas.png" alt="Hub Planilhas" class="h-8 w-auto object-contain" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'130\' height=\'30\'><text x=\'0\' y=\'20\' fill=\'%2326C983\' font-family=\'Montserrat\' font-size=\'16\' font-weight=\'bold\'>HUB PLANILHAS</text></svg>';">
                 <span class="text-white/40 text-sm hidden sm:block">|</span>
@@ -49,7 +55,7 @@
         </div>
     </header>
 
-    <div class="flex-grow w-full max-w-7xl mx-auto px-4 py-8 flex flex-col gap-6">
+    <div class="flex-grow w-full max-w-[1400px] mx-auto px-4 py-8 flex flex-col gap-6">
         
         <nav class="w-full flex flex-row gap-2 overflow-x-auto custom-scrollbar pb-0 border-b border-gray-200">
             <button onclick="switchTab('tab-alunos')" id="btn-tab-alunos" class="flex-shrink-0 tab-btn w-auto flex items-center gap-2 px-6 py-3.5 rounded-t-xl text-sm font-semibold bg-brand-emerald/10 text-brand-emerald border-b-2 border-brand-emerald transition-colors">
@@ -65,7 +71,7 @@
                 <i data-lucide="instagram" class="w-5 h-5"></i> Gestão Instagram
             </button>
             <button onclick="switchTab('tab-prompts')" id="btn-tab-prompts" class="flex-shrink-0 tab-btn w-auto flex items-center gap-2 px-6 py-3.5 rounded-t-xl text-sm font-semibold text-gray-500 border-b-2 border-transparent hover:bg-gray-100 hover:text-gray-700 transition-colors">
-                <i data-lucide="library" class="w-5 h-5"></i> Prompts IA
+                <i data-lucide="sparkles" class="w-5 h-5"></i> Prompts IA
             </button>
         </nav>
 
@@ -419,7 +425,7 @@
                             <div class="bg-brand-emerald/20 p-2 rounded-lg text-brand-emerald"><i data-lucide="sparkles" class="w-5 h-5"></i></div>
                             <div>
                                 <h3 class="font-heading font-bold text-lg">AI Content Studio</h3>
-                                <p class="text-xs text-gray-400">Geração de roteiros estruturados baseados nos seus prompts salvos.</p>
+                                <p class="text-xs text-gray-400">Geração de roteiros e prompts baseados nas suas diretrizes.</p>
                             </div>
                         </div>
                     </div>
@@ -438,22 +444,42 @@
                             </div>
                         </div>
                         
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-4 border-t border-white/5">
-                            <div class="space-y-4 flex flex-col">
-                                <div class="flex-grow flex flex-col">
+                        <!-- GRID Assimétrica de Criação -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-4 border-t border-white/5 items-stretch">
+                            
+                            <div class="flex flex-col gap-4">
+                                <div class="flex flex-col flex-grow">
                                     <label class="block text-xs font-semibold text-gray-300 mb-2">2. Tema do Conteúdo (Hoje)</label>
-                                    <textarea id="ia-topic" placeholder="Ex: Carrossel com 4 dicas para não perder os prazos usando planilhas..." class="w-full flex-grow bg-[#051024] border border-white/10 rounded-lg px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-brand-emerald resize-none shadow-inner custom-scrollbar min-h-[150px]"></textarea>
+                                    <textarea id="ia-topic" placeholder="Ex: Carrossel com 4 dicas para não perder os prazos usando planilhas..." class="w-full h-full flex-grow bg-[#051024] border border-white/10 rounded-lg px-4 py-4 text-sm text-gray-200 focus:outline-none focus:border-brand-emerald resize-none shadow-inner dark-scrollbar"></textarea>
                                 </div>
-                                <button onclick="gerarRoteiroIA()" id="btn-gerar-roteiro" class="w-full bg-brand-emerald hover:bg-brand-emeraldHover text-brand-navyDark font-bold py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 text-sm shadow-md transition-all shrink-0">
+                                <button onclick="gerarRoteiroIA()" id="btn-gerar-roteiro" class="w-full bg-brand-emerald hover:bg-brand-emeraldHover text-brand-navyDark font-bold py-4 px-4 rounded-xl flex items-center justify-center gap-2 text-[15px] shadow-md transition-all shrink-0">
                                     <i data-lucide="pen-tool" class="w-5 h-5"></i> Gerar Estrutura e Roteiro
                                 </button>
                             </div>
 
-                            <div class="flex flex-col h-full">
-                                <label class="block text-xs font-semibold text-brand-emerald mb-2">3. Estrutura Gerada (Pronta para copiar)</label>
-                                <div class="relative flex-grow min-h-[220px]">
-                                    <textarea id="ia-script-result" placeholder="O roteiro do seu conteúdo aparecerá aqui..." class="w-full h-full min-h-[220px] bg-[#051024] border border-white/10 rounded-lg px-4 py-4 pr-12 text-sm text-gray-300 focus:outline-none focus:border-brand-emerald custom-scrollbar shadow-inner resize-none"></textarea>
-                                    <button onclick="copiarTexto('ia-script-result')" class="absolute top-3 right-3 bg-brand-navy border border-white/10 text-gray-400 hover:text-white p-2 rounded-md transition-colors" title="Copiar Roteiro"><i data-lucide="copy" class="w-4 h-4"></i></button>
+                            <div class="flex flex-col gap-6">
+                                <div class="flex flex-col h-full">
+                                    <label class="block text-xs font-semibold text-brand-emerald mb-2">3. Estrutura Gerada (Roteiro)</label>
+                                    <div class="relative h-full">
+                                        <textarea id="ia-script-result" rows="32" placeholder="O roteiro do seu conteúdo aparecerá aqui..." class="w-full h-full bg-[#051024] border border-white/10 rounded-lg px-4 py-4 pr-12 text-sm text-gray-300 focus:outline-none focus:border-brand-emerald dark-scrollbar shadow-inner resize-y"></textarea>
+                                        <button onclick="copiarTexto('ia-script-result')" class="absolute top-3 right-3 bg-brand-navy border border-white/10 text-gray-400 hover:text-white p-2 rounded-md transition-colors" title="Copiar Roteiro"><i data-lucide="copy" class="w-4 h-4"></i></button>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col h-full">
+                                    <label class="block text-xs font-semibold text-blue-400 mb-2">4. Prompt para Imagens (Gemini/Midjourney)</label>
+                                    <div class="relative h-full">
+                                        <textarea id="ia-prompt-gemini-result" rows="32" placeholder="O prompt para você colar no Gemini gerar as artes aparecerá aqui..." class="w-full h-full bg-[#030917] border border-white/10 rounded-lg px-4 py-4 pr-12 text-sm text-gray-300 focus:outline-none focus:border-blue-400 dark-scrollbar shadow-inner resize-y"></textarea>
+                                        <button onclick="copiarTexto('ia-prompt-gemini-result')" class="absolute top-3 right-3 bg-brand-navy border border-white/10 text-gray-400 hover:text-white p-2 rounded-md transition-colors" title="Copiar Prompt Visual"><i data-lucide="copy" class="w-4 h-4"></i></button>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col h-full">
+                                    <label class="block text-xs font-semibold text-brand-orange mb-2">5. Legenda do Post</label>
+                                    <div class="relative h-full">
+                                        <textarea id="ia-legenda-result" rows="32" placeholder="A legenda com hashtags aparecerá aqui..." class="w-full h-full bg-[#051024] border border-white/10 rounded-lg px-4 py-4 pr-12 text-sm text-gray-300 focus:outline-none focus:border-brand-orange dark-scrollbar shadow-inner resize-y"></textarea>
+                                        <button onclick="copiarTexto('ia-legenda-result')" class="absolute top-3 right-3 bg-brand-navy border border-white/10 text-gray-400 hover:text-white p-2 rounded-md transition-colors" title="Copiar Legenda"><i data-lucide="copy" class="w-4 h-4"></i></button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -516,8 +542,8 @@
     <script>
         lucide.createIcons();
         
+        // --- LEMBRETE: ATUALIZAR URL CASO FAÇA NOVA IMPLANTAÇÃO NO APPS SCRIPT ---
         const API_URL = 'https://script.google.com/macros/s/AKfycbySvQgral7VU1MqbtE8YAIoDeXNhxXvBIkJgYBuuQPvIOlcIOKAmMBYGjlk-hr_SQRI/exec';
-        const GEMINI_API_KEY = "AQ.Ab8RN6LvuwZlmT5tN1tbEvckMRqRbOUof7j3XBA_uN9FLfSk0g";
         
         let produtosGlobais = []; let idProdutoEmEdicao = null;
         let cursosGlobais = []; let idCursoEmEdicao = null;
@@ -1004,8 +1030,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-gray-400 mb-1">Diretrizes (Texto Completo)</label>
-                        <!-- AQUI DOBRAMOS A ALTURA PARA ROWS 8 E PERMITIMOS REDIMENSIONAMENTO VERTICAL (RESIZE-Y) -->
-                        <textarea id="prompt-texto-${p.id}" rows="8" class="w-full bg-brand-navyDark/80 border border-white/10 rounded-lg px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-brand-emerald resize-y min-h-[150px] custom-scrollbar shadow-inner placeholder-gray-600" placeholder="Insira o comportamento, regras e tom de voz que a IA deve seguir...">${p.texto}</textarea>
+                        <textarea id="prompt-texto-${p.id}" rows="8" class="w-full bg-brand-navyDark/80 border border-white/10 rounded-lg px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-brand-emerald resize-y min-h-[150px] dark-scrollbar shadow-inner placeholder-gray-600" placeholder="Insira o comportamento, regras e tom de voz que a IA deve seguir...">${p.texto}</textarea>
                     </div>
 
                     <div id="ia-suggestion-box-${p.id}" class="hidden mt-4 bg-purple-900/20 border border-purple-500/30 rounded-xl p-4 relative">
@@ -1015,10 +1040,10 @@
                             <h4 class="text-sm font-bold">Sugestão da IA</h4>
                         </div>
                         <p id="ia-explanation-${p.id}" class="text-xs text-purple-200 mb-3"></p>
-                        <textarea id="ia-new-prompt-${p.id}" rows="4" class="w-full bg-black/30 border border-purple-500/20 rounded-lg px-3 py-2 text-sm text-gray-300 focus:outline-none custom-scrollbar resize-y mb-3" readonly></textarea>
+                        <textarea id="ia-new-prompt-${p.id}" rows="6" class="w-full bg-black/30 border border-purple-500/20 rounded-lg px-3 py-2 text-sm text-gray-300 focus:outline-none dark-scrollbar resize-y mb-3" readonly></textarea>
                         <div class="flex items-center gap-2">
-                            <button onclick="aplicarMelhoriaPrompt('${p.id}')" class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-lg text-xs font-bold transition-colors">Atualizar prompt</button>
-                            <button onclick="copiarTexto('ia-new-prompt-${p.id}')" class="bg-black/40 hover:bg-black/60 border border-purple-500/30 text-purple-300 px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition-colors"><i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar prompt</button>
+                            <button onclick="aplicarMelhoriaPrompt('${p.id}')" class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-lg text-xs font-bold transition-colors">Atualizar prompt original</button>
+                            <button onclick="copiarTexto('ia-new-prompt-${p.id}')" class="bg-black/40 hover:bg-black/60 border border-purple-500/30 text-purple-300 px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition-colors"><i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar sugestão</button>
                         </div>
                     </div>
                 </div>`;
@@ -1044,22 +1069,6 @@
             await enviarAPI('salvarPrompt', dados, `btn-salvar-prompt-${id}`);
         }
 
-        function simularConexaoInstagram() {
-            const btn = document.getElementById('btn-conectar-insta');
-            btn.innerHTML = `<i data-lucide="loader" class="w-3.5 h-3.5 animate-spin"></i> Conectando...`;
-            lucide.createIcons(); btn.disabled = true;
-            setTimeout(() => {
-                showToast('Autenticado com a Meta via OAuth2');
-                document.getElementById('insta-name').innerText = '@hubplanilhas';
-                document.getElementById('insta-status-text').innerText = 'Conectado • Token Válido';
-                document.getElementById('insta-status-text').classList.replace('text-gray-500', 'text-emerald-600');
-                document.getElementById('insta-status-dot').classList.replace('bg-gray-300', 'bg-brand-emerald');
-                btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i> Conectado`;
-                btn.classList.replace('from-purple-600', 'from-emerald-500'); btn.classList.replace('to-pink-600', 'to-teal-500');
-                lucide.createIcons();
-            }, 1500);
-        }
-
         function atualizarSelectPrompts() {
             const select = document.getElementById('ia-prompt-selector');
             if(!select) return;
@@ -1081,23 +1090,43 @@
             }
         }
 
-        async function chamarGemini(payload, maxRetries = 2) {
-            const modelos = ["gemini-3.7-flash", "gemini-3.6-flash", "gemini-3.5-flash"];
-            
-            for (let i = 0; i < modelos.length; i++) {
-                try {
-                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelos[i]}:generateContent?key=${GEMINI_API_KEY}`;
-                    const res = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                    if (!res.ok) throw new Error(`Modelo ${modelos[i]} indisponível.`);
-                    const result = await res.json();
-                    if (result.candidates && result.candidates[0] && result.candidates[0].content) {
-                        return result.candidates[0].content.parts[0].text;
-                    }
-                } catch (e) {
-                    console.log(`Tentativa falhou com ${modelos[i]}. Próximo fallback...`);
+        function simularConexaoInstagram() {
+            const btn = document.getElementById('btn-conectar-insta');
+            btn.innerHTML = `<i data-lucide="loader" class="w-3.5 h-3.5 animate-spin"></i> Conectando...`;
+            lucide.createIcons(); btn.disabled = true;
+            setTimeout(() => {
+                showToast('Autenticado com a Meta via OAuth2');
+                document.getElementById('insta-name').innerText = '@hubplanilhas';
+                document.getElementById('insta-status-text').innerText = 'Conectado • Token Válido';
+                document.getElementById('insta-status-text').classList.replace('text-gray-500', 'text-emerald-600');
+                document.getElementById('insta-status-dot').classList.replace('bg-gray-300', 'bg-brand-emerald');
+                btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i> Conectado`;
+                btn.classList.replace('from-purple-600', 'from-emerald-500'); btn.classList.replace('to-pink-600', 'to-teal-500');
+                lucide.createIcons();
+            }, 1500);
+        }
+
+        // Função de comunicação com o Backend (A chave não existe mais aqui no front-end)
+        async function chamarGemini(payload) {
+            try {
+                // Envia a requisição para o nosso Apps Script, que fará a ponte segura com o Gemini
+                const res = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' }, 
+                    body: JSON.stringify({ action: "chamarGemini", dados: payload })
+                });
+
+                const json = await res.json();
+                
+                if (json.status === 'success') {
+                    return json.data;
+                } else {
+                    throw new Error(json.message || "Erro desconhecido retornado pelo servidor.");
                 }
+            } catch (e) {
+                console.error(e);
+                throw new Error("Falha de comunicação com o servidor de IA. Verifique sua implantação.");
             }
-            throw new Error("Todos os modelos falharam. Verifique a chave da API ou limites de cota.");
         }
 
         async function gerarDescricaoProdutoIA() {
@@ -1108,7 +1137,7 @@
 
             if (!nome || !tipo) { showToast('Preencha o Nome e o Tipo primeiro.', 'bg-orange-500'); return; }
 
-            const originalVal = descBox.value; descBox.value = "Gerando descrição com IA..."; descBox.disabled = true;
+            const originalVal = descBox.value; descBox.value = "Gerando descrição mágica com IA..."; descBox.disabled = true;
 
             const prompt = `Crie uma descrição curta e persuasiva (máximo 2 frases) para este produto digital focada em conversão. Nome: ${nome}, Tipo: ${tipo}, Categoria: ${cat || 'Geral'}. Não use aspas.`;
             const payload = { contents: [{ parts: [{ text: prompt }] }] };
@@ -1127,7 +1156,7 @@
             const textoInput = document.getElementById(`prompt-texto-${id}`);
             const btn = document.getElementById(`btn-completar-${id}`);
 
-            if (!nomeInput.value.trim()) { showToast('Dê um título ao prompt (Ex: Carrossel de Dicas) primeiro.', 'bg-orange-500'); return; }
+            if (!nomeInput.value.trim()) { showToast('Dê um título ao prompt primeiro.', 'bg-orange-500'); return; }
 
             const originalBtn = btn.innerHTML; btn.disabled = true; btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>`;
             const originalText = textoInput.value; textoInput.value = "A IA está estruturando regras profissionais baseadas no título...";
@@ -1144,33 +1173,6 @@
             btn.disabled = false; btn.innerHTML = originalBtn; lucide.createIcons();
         }
 
-        async function gerarRoteiroIA() {
-            const promptId = document.getElementById('ia-prompt-selector').value;
-            const topic = document.getElementById('ia-topic').value;
-            const btn = document.getElementById('btn-gerar-roteiro');
-            const resultBox = document.getElementById('ia-script-result');
-
-            if (!promptId) { showToast('Selecione um Prompt Guia na lista.', 'bg-orange-500'); return; }
-            if (!topic.trim()) { showToast('Escreva o Tema do Conteúdo primeiro.', 'bg-orange-500'); return; }
-
-            const promptObj = promptsGlobais.find(p => p.id === promptId);
-            const brandPrompt = promptObj ? promptObj.texto : '';
-
-            const originalBtn = btn.innerHTML; btn.disabled = true; btn.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Gerando...`;
-            resultBox.value = "Criando roteiro com a IA Gemini..."; lucide.createIcons();
-
-            const promptFinal = `DIRETRIZES DA MARCA/FORMATO:\n${brandPrompt}\n\nTEMA DO DIA:\n${topic}\n\nCrie o conteúdo/roteiro exato seguindo rigorosamente as diretrizes acima.`;
-            const payload = { contents: [{ parts: [{ text: promptFinal }] }] };
-
-            try {
-                const text = await chamarGemini(payload);
-                resultBox.value = text; showToast('Roteiro gerado!', 'bg-brand-emerald');
-            } catch (error) {
-                resultBox.value = "Houve uma falha na geração do roteiro. Verifique a chave de API."; showToast("Falha na IA", "bg-red-500");
-            }
-            btn.disabled = false; btn.innerHTML = originalBtn; lucide.createIcons();
-        }
-
         async function melhorarPromptIA(id) {
             const textoInput = document.getElementById(`prompt-texto-${id}`);
             const btn = document.getElementById(`btn-melhorar-prompt-${id}`);
@@ -1178,14 +1180,9 @@
             const explanationEl = document.getElementById(`ia-explanation-${id}`);
             const newPromptEl = document.getElementById(`ia-new-prompt-${id}`);
 
-            if (!textoInput.value.trim()) {
-                showToast('Escreva algo no prompt primeiro para a IA poder melhorar.', 'bg-orange-500');
-                return;
-            }
+            if (!textoInput.value.trim()) { showToast('Escreva algo no prompt primeiro.', 'bg-orange-500'); return; }
 
-            const originalBtn = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = `<i data-lucide="loader" class="w-4 h-4 animate-spin"></i>`;
+            const originalBtn = btn.innerHTML; btn.disabled = true; btn.innerHTML = `<i data-lucide="loader" class="w-4 h-4 animate-spin"></i>`;
             lucide.createIcons();
 
             const promptTexto = textoInput.value;
@@ -1200,7 +1197,8 @@
 
             try {
                 const text = await chamarGemini(payload);
-                const parsed = JSON.parse(text);
+                const cleanText = text.replace(/```json/gi, '').replace(/```/g, '').trim();
+                const parsed = JSON.parse(cleanText);
                 
                 explanationEl.innerText = parsed.explicacao;
                 newPromptEl.value = parsed.novoPrompt;
@@ -1212,9 +1210,7 @@
                 console.error(error);
             }
             
-            btn.disabled = false;
-            btn.innerHTML = originalBtn;
-            lucide.createIcons();
+            btn.disabled = false; btn.innerHTML = originalBtn; lucide.createIcons();
         }
 
         function aplicarMelhoriaPrompt(id) {
@@ -1229,6 +1225,62 @@
 
         function fecharSugestaoPrompt(id) {
             document.getElementById(`ia-suggestion-box-${id}`).classList.add('hidden');
+        }
+
+        async function gerarRoteiroIA() {
+            const promptId = document.getElementById('ia-prompt-selector').value;
+            const topic = document.getElementById('ia-topic').value;
+            const btn = document.getElementById('btn-gerar-roteiro');
+            
+            const resultBox = document.getElementById('ia-script-result');
+            const promptVisualBox = document.getElementById('ia-prompt-gemini-result');
+            const legendaBox = document.getElementById('ia-legenda-result');
+
+            if (!promptId) { showToast('Selecione um Prompt Guia na lista.', 'bg-orange-500'); return; }
+            if (!topic.trim()) { showToast('Escreva o Tema do Conteúdo primeiro.', 'bg-orange-500'); return; }
+
+            const promptObj = promptsGlobais.find(p => p.id === promptId);
+            const brandPrompt = promptObj ? promptObj.texto : '';
+
+            const originalBtn = btn.innerHTML; 
+            btn.disabled = true; 
+            btn.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Processando...`;
+            
+            resultBox.value = "Criando roteiro mestre..."; 
+            promptVisualBox.value = "Escrevendo prompts visuais...";
+            legendaBox.value = "Escrevendo legenda e hashtags...";
+            lucide.createIcons();
+
+            const promptFinal = `DIRETRIZES DA MARCA/FORMATO:\n${brandPrompt}\n\nTEMA DO DIA:\n${topic}\n\nVocê deve atuar como um gerador de conteúdo completo e retornar EXATAMENTE um objeto JSON com as seguintes chaves:\n"roteiro": (STRING) O roteiro estrutural dos slides passo a passo.\n"prompt_imagens": (STRING) O prompt em texto com as instruções detalhadas para o gerador de imagens.\n"legenda": (STRING) A legenda do post com hashtags.\n\nIMPORTANTE: Os valores do JSON devem ser TEXTOS PUROS (Strings). NÃO utilize sub-objetos ou listas aninhadas em nenhuma hipótese.`;
+            
+            const payload = { 
+                contents: [{ parts: [{ text: promptFinal }] }],
+                generationConfig: { responseMimeType: "application/json" }
+            };
+
+            try {
+                const text = await chamarGemini(payload);
+                const cleanText = text.replace(/```json/gi, '').replace(/```/g, '').trim();
+                const parsed = JSON.parse(cleanText);
+                
+                const formatOutput = (val) => {
+                    if (typeof val === 'object' && val !== null) return JSON.stringify(val, null, 2);
+                    return val || '';
+                };
+                
+                resultBox.value = formatOutput(parsed.roteiro) || 'Roteiro não gerado.';
+                promptVisualBox.value = formatOutput(parsed.prompt_imagens) || 'Prompt de imagens não gerado.';
+                legendaBox.value = formatOutput(parsed.legenda) || 'Legenda não gerada.';
+                
+                showToast('Conteúdo gerado com sucesso!', 'bg-brand-emerald');
+            } catch (error) {
+                resultBox.value = "Falha ao estruturar os dados. Verifique sua cota ou a formatação da resposta da IA."; 
+                promptVisualBox.value = "";
+                legendaBox.value = "";
+                showToast("Falha na geração do conteúdo", "bg-red-500");
+                console.error(error);
+            }
+            btn.disabled = false; btn.innerHTML = originalBtn; lucide.createIcons();
         }
 
         window.addEventListener('DOMContentLoaded', () => { 
