@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão 5W2H Kanban • Google Sheets</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        [draggable="true"] { cursor: grab; }
+        [draggable="true"]:active { cursor: grabbing; }
+        .drag-over { background-color: rgba(59, 130, 246, 0.05); border: 2px dashed #3b82f6 !important; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 h-full flex flex-col overflow-hidden">
+
+    <div id="app" class="flex h-full w-full overflow-hidden">
+        
+        <!-- Sidebar: Projetos e Pastas -->
+        <aside id="sidebar" class="w-80 bg-slate-900 text-slate-100 flex flex-col flex-shrink-0 transition-all duration-300 z-20">
+            <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-blue-600 text-white p-2 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
+                        <i class="fa-solid fa-table-cells text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-base tracking-wide">Kanban 5W2H</h1>
+                        <p class="text-xs text-slate-400">Google Sheets Sync</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botões de Ação Rápida e Sincronização -->
+            <div class="p-3 border-b border-slate-800 space-y-2">
+                <div class="flex gap-2">
+                    <button onclick="openProjectModal()" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium py-2 px-3 rounded-lg shadow transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-plus"></i> Novo Projeto
+                    </button>
+                    <button onclick="openFolderModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium py-2 px-3 rounded-lg border border-slate-700 transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-folder-plus text-blue-400"></i> Nova Pasta
+                    </button>
+                </div>
+                <div class="flex items-center justify-between pt-1">
+                    <button onclick="syncWithCloud()" id="sync-btn" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-medium py-2 px-3 rounded-lg border border-slate-700 transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-rotate text-emerald-400" id="sync-icon"></i> <span id="sync-text">Sincronizar Planilha</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Árvore de Projetos e Pastas -->
+            <div id="sidebar-tree" class="flex-1 overflow-y-auto p-3 space-y-3 custom-scrollbar">
+                <!-- Preenchido via JavaScript -->
+            </div>
+
+            <!-- Rodapé Sidebar -->
+            <div class="p-3 border-t border-slate-800 text-[11px] text-slate-500 text-center flex items-center justify-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block" id="status-dot"></span>
+                <span id="status-text">Conectado ao Sheets</span>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 flex flex-col overflow-hidden bg-slate-100 relative">
+            
+            <!-- Top Header -->
+            <header class="bg-white border-b border-slate-200 h-16 px-6 flex items-center justify-between flex-shrink-0 shadow-sm z-10">
+                <div class="flex items-center space-x-4">
+                    <button onclick="toggleSidebar()" class="text-slate-500 hover:text-slate-700 p-2 rounded-lg hover:bg-slate-100 transition">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+                    <div>
+                        <h2 id="current-title" class="font-bold text-lg text-slate-800">Selecione um projeto ou pasta</h2>
+                        <p id="current-subtitle" class="text-xs text-slate-500">Nenhum item selecionado</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-3" id="project-actions" style="display: none;">
+                    <button onclick="openColumnModal()" class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-sm font-medium py-2 px-4 rounded-xl transition flex items-center gap-2 shadow-sm">
+                        <i class="fa-solid fa-columns text-slate-500"></i> Gerenciar Etapas
+                    </button>
+                    <button onclick="openCardModal()" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 px-4 rounded-xl shadow-md shadow-blue-500/20 transition flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Novo Card 5W2H
+                    </button>
+                </div>
+            </header>
+
+            <!-- Kanban Board Container -->
+            <div id="kanban-container" class="flex-1 overflow-x-auto overflow-y-hidden p-6 custom-scrollbar flex items-start space-x-6">
+                <!-- Estado Vazio Inicial -->
+                <div class="w-full h-full flex flex-col items-center justify-center text-slate-400">
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 text-center max-w-md">
+                        <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl shadow-inner">
+                            <i class="fa-solid fa-table-cells"></i>
+                        </div>
+                        <h3 class="font-semibold text-slate-700 text-lg mb-1">Nenhum item selecionado</h3>
+                        <p class="text-sm text-slate-500 mb-6">Escolha uma pasta dentro de um projeto na barra lateral para ver o Kanban 5W2H.</p>
+                        <button onclick="openProjectModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-2.5 rounded-xl transition shadow-md shadow-blue-500/20 text-sm">
+                            Criar Primeiro Projeto
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal: Criar/Editar Projeto -->
+    <div id="project-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform transition-all">
+            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+                <h3 id="project-modal-title" class="font-bold text-slate-800 text-lg">Novo Projeto</h3>
+                <button onclick="closeProjectModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <form onsubmit="handleProjectSubmit(event)" class="p-6 space-y-4">
+                <input type="hidden" id="project-id">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Nome do Projeto Principal</label>
+                    <input type="text" id="project-name" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ex: Expansão Comercial 2026">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Descrição</label>
+                    <textarea id="project-desc" rows="2" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Resumo do projeto..."></textarea>
+                </div>
+                <div class="flex justify-end gap-3 pt-2">
+                    <button type="button" onclick="closeProjectModal()" class="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-xl transition">Cancelar</button>
+                    <button type="submit" class="px-5 py-2 text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md transition">Salvar Projeto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Criar/Editar Pasta -->
+    <div id="folder-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform transition-all">
+            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+                <h3 id="folder-modal-title" class="font-bold text-slate-800 text-lg">Nova Pasta</h3>
+                <button onclick="closeFolderModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <form onsubmit="handleFolderSubmit(event)" class="p-6 space-y-4">
+                <input type="hidden" id="folder-id">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Projeto Pai</label>
+                    <select id="folder-project-id" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <!-- Preenchido via JS -->
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Nome da Pasta</label>
+                    <input type="text" id="folder-name" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ex: Marketing, Logística...">
+                </div>
+                <div class="flex justify-end gap-3 pt-2">
+                    <button type="button" onclick="closeFolderModal()" class="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-xl transition">Cancelar</button>
+                    <button type="submit" class="px-5 py-2 text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md transition">Salvar Pasta</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Gerenciar Etapas (Colunas) -->
+    <div id="column-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform transition-all">
+            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+                <h3 class="font-bold text-slate-800 text-lg">Gerenciar Etapas do Kanban</h3>
+                <button onclick="closeColumnModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-6 space-y-5">
+                <form onsubmit="addColumn(event)" class="flex gap-2">
+                    <input type="text" id="new-col-name" required placeholder="Nova etapa (ex: Em Revisão)..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition shadow-sm">Adicionar</button>
+                </form>
+                <div>
+                    <h4 class="text-xs font-semibold text-slate-500 uppercase mb-3">Etapas Atuais desta Pasta</h4>
+                    <div id="columns-list" class="space-y-2 max-h-60 overflow-y-auto custom-scrollbar pr-1">
+                        <!-- Renderizado via JS -->
+                    </div>
+                </div>
+            </div>
+            <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end">
+                <button onclick="closeColumnModal()" class="px-5 py-2 text-sm font-medium bg-slate-800 hover:bg-slate-700 text-white rounded-xl transition">Concluir</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Card 5W2H (Criar/Editar) -->
+    <div id="card-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl overflow-hidden transform transition-all flex flex-col max-h-[90vh]">
+            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between flex-shrink-0">
+                <h3 id="card-modal-title" class="font-bold text-slate-800 text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-file-lines text-blue-600"></i> Novo Card 5W2H
+                </h3>
+                <button onclick="closeCardModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            
+            <form onsubmit="handleCardSubmit(event)" class="p-6 overflow-y-auto space-y-5 custom-scrollbar flex-1">
+                <input type="hidden" id="card-id">
+                
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="md:col-span-3">
+                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Título da Tarefa *</label>
+                        <input type="text" id="card-title" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ex: Contratar nova ferramenta de anúncios">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Prioridade</label>
+                        <select id="card-priority" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium">
+                            <option value="baixa">Baixa</option>
+                            <option value="media" selected>Média</option>
+                            <option value="alta">Alta</option>
+                            <option value="urgente">Urgente</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Pasta Destino</label>
+                        <select id="card-folder-id" onchange="updateCardColumns()" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <!-- Preenchido via JS -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Etapa Kanban</label>
+                        <select id="card-column" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <!-- Preenchido via JS -->
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 5W2H Grid -->
+                <div class="bg-blue-50/50 border border-blue-100 p-4 rounded-2xl space-y-4">
+                    <div class="flex items-center space-x-2 text-blue-800 font-semibold text-sm pb-1 border-b border-blue-200">
+                        <i class="fa-solid fa-circle-question"></i>
+                        <span>Metodologia 5W2H (Planejamento)</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">1. What (O que será feito?)</label>
+                            <textarea id="w-what" rows="2" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Descreva a ação..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">2. Why (Por que será feito?)</label>
+                            <textarea id="w-why" rows="2" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Justificativa / Objetivo..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">3. Where (Onde será executado?)</label>
+                            <input type="text" id="w-where" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Local / Setor / Sistema...">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">4. When (Quando / Prazo?)</label>
+                            <input type="date" id="w-when" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">5. Who (Quem fará? - Responsável)</label>
+                            <input type="text" id="w-who" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nome ou equipe...">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">6. How (Como será feito? - Método)</label>
+                            <input type="text" id="w-how" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Passo a passo...">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">7. How Much (Quanto custará?)</label>
+                        <input type="text" id="w-howmuch" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ex: R$ 1.200,00 ou 10h...">
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-2">
+                    <button type="button" onclick="closeCardModal()" class="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-xl transition">Cancelar</button>
+                    <button type="submit" class="px-5 py-2 text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md transition">Salvar Card</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Visualizar Card Completo -->
+    <div id="view-card-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden transform transition-all flex flex-col max-h-[95vh]">
+            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between flex-shrink-0 bg-slate-50">
+                <div class="flex items-center space-x-2">
+                    <span id="v-badge" class="bg-blue-100 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-lg">Etapa</span>
+                    <span id="v-priority-badge" class="text-xs font-semibold px-2.5 py-1 rounded-lg">Prioridade</span>
+                    <h3 id="v-title" class="font-bold text-slate-800 text-lg">Título da Tarefa</h3>
+                </div>
+                <button onclick="closeViewCardModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            
+            <div class="p-6 overflow-y-auto space-y-4 custom-scrollbar flex-1 bg-slate-50/50">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                        <span class="text-[10px] font-bold tracking-wider text-blue-600 uppercase block mb-1">1. What (O quê)</span>
+                        <p id="v-what" class="text-sm text-slate-700 whitespace-pre-line">-</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                        <span class="text-[10px] font-bold tracking-wider text-blue-600 uppercase block mb-1">2. Why (Por quê)</span>
+                        <p id="v-why" class="text-sm text-slate-700 whitespace-pre-line">-</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                        <span class="text-[10px] font-bold tracking-wider text-blue-600 uppercase block mb-1">3. Where (Onde)</span>
+                        <p id="v-where" class="text-sm text-slate-700">-</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                        <span class="text-[10px] font-bold tracking-wider text-blue-600 uppercase block mb-1">4. When (Quando)</span>
+                        <p id="v-when" class="text-sm text-slate-700">-</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                        <span class="text-[10px] font-bold tracking-wider text-blue-600 uppercase block mb-1">5. Who (Quem)</span>
+                        <p id="v-who" class="text-sm text-slate-700">-</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                        <span class="text-[10px] font-bold tracking-wider text-blue-600 uppercase block mb-1">6. How (Como)</span>
+                        <p id="v-how" class="text-sm text-slate-700">-</p>
+                    </div>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <span class="text-[10px] font-bold tracking-wider text-blue-600 uppercase block mb-1">7. How Much (Custo)</span>
+                    <p id="v-howmuch" class="text-sm text-slate-700">-</p>
+                </div>
+            </div>
+
+            <div class="px-6 py-4 bg-white border-t border-slate-100 flex justify-between items-center">
+                <button id="v-btn-delete" class="text-rose-600 hover:text-rose-700 text-sm font-medium flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-rose-50 transition">
+                    <i class="fa-solid fa-trash"></i> Excluir Card
+                </button>
+                <div class="flex gap-2">
+                    <button id="v-btn-edit" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium px-4 py-2 rounded-xl transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-pen"></i> Editar
+                    </button>
+                    <button onclick="closeViewCardModal()" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2 rounded-xl transition shadow-md">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Dialog -->
+    <div id="custom-dialog" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden p-6 space-y-4 transform transition-all">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <h3 id="dialog-title" class="font-bold text-slate-800 text-lg">Aviso</h3>
+            </div>
+            <p id="dialog-message" class="text-sm text-slate-600">Mensagem do sistema.</p>
+            <div class="flex justify-end gap-3 pt-2" id="dialog-actions">
+                <!-- Actions injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzrJOK5eaf97lxnYBxwC-nGQR9xJFgIOpFKUU5CM3l0psTP7FHuokIPMIwfCMAI4u6Z/exec";
+
+        let appData = {
+            projects: [],
+            currentFolderId: null
+        };
+
+        // --- Dialog System ---
+        let dialogCallback = null;
+        function showDialog(title, message, isConfirm, callback) {
+            document.getElementById('dialog-title').textContent = title;
+            document.getElementById('dialog-message').textContent = message;
+            const actions = document.getElementById('dialog-actions');
+            
+            if (isConfirm) {
+                actions.innerHTML = `
+                    <button onclick="closeDialog(false)" class="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-xl transition">Cancelar</button>
+                    <button onclick="closeDialog(true)" class="px-5 py-2 text-sm font-medium bg-rose-600 hover:bg-rose-700 text-white rounded-xl shadow-md transition">Confirmar</button>
+                `;
+            } else {
+                 actions.innerHTML = `
+                    <button onclick="closeDialog(true)" class="px-5 py-2 text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md transition">OK</button>
+                `;
+            }
+            dialogCallback = callback;
+            document.getElementById('custom-dialog').classList.remove('hidden');
+        }
+
+        function closeDialog(result) {
+            document.getElementById('custom-dialog').classList.add('hidden');
+            if (dialogCallback) {
+                dialogCallback(result);
+                dialogCallback = null;
+            }
+        }
+        // -----------------------
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFromLocalStorage();
+            syncWithCloud();
+        });
+
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('kanban_5w2h_sheets_data');
+            if (saved) {
+                try {
+                    appData = JSON.parse(saved);
+                    renderSidebar();
+                    if (appData.currentFolderId) {
+                        loadFolder(appData.currentFolderId);
+                    } else if (appData.projects.length > 0 && appData.projects[0].folders.length > 0) {
+                        loadFolder(appData.projects[0].folders[0].id);
+                    }
+                } catch(e) {}
+            }
+        }
+
+        function saveLocalAndCloud() {
+            localStorage.setItem('kanban_5w2h_sheets_data', JSON.stringify(appData));
+            pushToCloud();
+        }
+
+        async function syncWithCloud() {
+            if (!WEB_APP_URL || WEB_APP_URL.includes("COLE_AQUI")) {
+                showStatus("URL do Apps Script não configurada", "error");
+                return;
+            }
+
+            showStatus("Sincronizando...", "sync");
+
+            try {
+                const response = await fetch(WEB_APP_URL);
+                const result = await response.json();
+
+                if (result.status === "success") {
+                    if (result.projects && result.projects.length > 0) {
+                        appData.projects = result.projects;
+                        if (!appData.currentFolderId && appData.projects[0]?.folders[0]) {
+                            appData.currentFolderId = appData.projects[0].folders[0].id;
+                        }
+                    } else if (appData.projects.length > 0) {
+                        pushToCloud();
+                        return;
+                    }
+                    localStorage.setItem('kanban_5w2h_sheets_data', JSON.stringify(appData));
+                    renderSidebar();
+                    if (appData.currentFolderId) loadFolder(appData.currentFolderId);
+                    showStatus("Sincronizado com a Planilha", "success");
+                } else {
+                    showStatus("Erro ao ler planilha", "error");
+                }
+            } catch (err) {
+                showStatus("Modo Offline / Local ativo", "error");
+                console.warn(err);
+            }
+        }
+
+        async function pushToCloud() {
+            if (!WEB_APP_URL || WEB_APP_URL.includes("COLE_AQUI")) return;
+
+            showStatus("Salvando na nuvem...", "sync");
+
+            try {
+                await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({
+                        action: 'save_all',
+                        projects: appData.projects
+                    })
+                });
+                showStatus("Salvo na Planilha", "success");
+            } catch (err) {
+                showStatus("Salvo Localmente (Erro nuvem)", "error");
+                console.error(err);
+            }
+        }
+
+        function showStatus(text, type) {
+            const dot = document.getElementById('status-dot');
+            const label = document.getElementById('status-text');
+            const icon = document.getElementById('sync-icon');
+
+            if (!label) return;
+            label.textContent = text;
+            if (type === "success") {
+                dot.className = "w-2 h-2 rounded-full bg-emerald-500 inline-block";
+                if(icon) icon.className = "fa-solid fa-rotate text-emerald-400";
+            } else if (type === "sync") {
+                dot.className = "w-2 h-2 rounded-full bg-amber-500 inline-block animate-pulse";
+                if(icon) icon.className = "fa-solid fa-rotate text-amber-400 animate-spin";
+            } else {
+                dot.className = "w-2 h-2 rounded-full bg-rose-500 inline-block";
+                if(icon) icon.className = "fa-solid fa-rotate text-rose-400";
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('w-80');
+            sidebar.classList.toggle('w-0');
+            sidebar.classList.toggle('overflow-hidden');
+        }
+
+        function openProjectModal(projectId = null) {
+            const modal = document.getElementById('project-modal');
+            const title = document.getElementById('project-modal-title');
+            const idInput = document.getElementById('project-id');
+            const nameInput = document.getElementById('project-name');
+            const descInput = document.getElementById('project-desc');
+
+            if (projectId) {
+                const proj = appData.projects.find(p => String(p.id) === String(projectId));
+                title.textContent = 'Editar Projeto';
+                idInput.value = proj.id;
+                nameInput.value = proj.name;
+                descInput.value = proj.description || '';
+            } else {
+                title.textContent = 'Novo Projeto Principal';
+                idInput.value = '';
+                nameInput.value = '';
+                descInput.value = '';
+            }
+            modal.classList.remove('hidden');
+        }
+
+        function closeProjectModal() {
+            document.getElementById('project-modal').classList.add('hidden');
+        }
+
+        function handleProjectSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('project-id').value;
+            const name = document.getElementById('project-name').value;
+            const description = document.getElementById('project-desc').value;
+
+            if (id) {
+                const proj = appData.projects.find(p => String(p.id) === String(id));
+                if (proj) {
+                    proj.name = name;
+                    proj.description = description;
+                }
+            } else {
+                const newProj = {
+                    id: 'proj-' + Date.now(),
+                    name: name,
+                    description: description,
+                    folders: [
+                        {
+                            id: 'folder-' + Date.now(),
+                            name: 'Geral',
+                            stages: [
+                                { id: 'col-1', name: 'A Fazer' },
+                                { id: 'col-2', name: 'Em Andamento' },
+                                { id: 'col-3', name: 'Concluído' }
+                            ],
+                            cards: []
+                        }
+                    ]
+                };
+                appData.projects.push(newProj);
+                appData.currentFolderId = newProj.folders[0].id;
+            }
+
+            saveLocalAndCloud();
+            renderSidebar();
+            if (appData.currentFolderId) loadFolder(appData.currentFolderId);
+            closeProjectModal();
+        }
+
+        function deleteProject(projectId) {
+            showDialog('Excluir Projeto', 'Deseja excluir este projeto e todas as suas pastas e cards?', true, (confirmed) => {
+                if (confirmed) {
+                    appData.projects = appData.projects.filter(p => String(p.id) !== String(projectId));
+                    if (!appData.projects.some(p => p.folders.some(f => String(f.id) === String(appData.currentFolderId)))) {
+                        appData.currentFolderId = null;
+                        resetMainView();
+                    }
+                    saveLocalAndCloud();
+                    renderSidebar();
+                }
+            });
+        }
+
+        function openFolderModal(folderId = null) {
+            const modal = document.getElementById('folder-modal');
+            const select = document.getElementById('folder-project-id');
+            const title = document.getElementById('folder-modal-title');
+            const idInput = document.getElementById('folder-id');
+            const nameInput = document.getElementById('folder-name');
+
+            select.innerHTML = appData.projects.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+            
+            if (appData.projects.length === 0) {
+                showDialog('Aviso', 'Crie um projeto primeiro antes de adicionar uma pasta.', false, () => {
+                    closeFolderModal();
+                    openProjectModal();
+                });
+                return;
+            }
+
+            if (folderId) {
+                let targetProj = null;
+                let targetFolder = null;
+                appData.projects.forEach(p => {
+                    const f = p.folders.find(f => String(f.id) === String(folderId));
+                    if (f) { targetProj = p; targetFolder = f; }
+                });
+
+                if (targetFolder) {
+                    title.textContent = 'Editar Pasta';
+                    idInput.value = targetFolder.id;
+                    nameInput.value = targetFolder.name;
+                    select.value = targetProj.id;
+                }
+            } else {
+                title.textContent = 'Nova Pasta';
+                idInput.value = '';
+                nameInput.value = '';
+                if (appData.currentFolderId) {
+                    let currProj = appData.projects.find(p => p.folders.some(f => String(f.id) === String(appData.currentFolderId)));
+                    if (currProj) select.value = currProj.id;
+                }
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeFolderModal() {
+            document.getElementById('folder-modal').classList.add('hidden');
+        }
+
+        function handleFolderSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('folder-id').value;
+            const projectId = document.getElementById('folder-project-id').value;
+            const name = document.getElementById('folder-name').value;
+
+            const targetProj = appData.projects.find(p => String(p.id) === String(projectId));
+            if (!targetProj) return;
+
+            if (id) {
+                let oldProj = null;
+                let oldFolder = null;
+                let oldFolderIndex = -1;
+                
+                appData.projects.forEach(p => {
+                    const idx = p.folders.findIndex(f => String(f.id) === String(id));
+                    if (idx !== -1) {
+                        oldProj = p;
+                        oldFolder = p.folders[idx];
+                        oldFolderIndex = idx;
+                    }
+                });
+
+                if (oldFolder) {
+                    oldFolder.name = name;
+                    // Se o projeto destino for diferente, movemos a pasta
+                    if (String(oldProj.id) !== String(projectId)) {
+                        oldProj.folders.splice(oldFolderIndex, 1);
+                        targetProj.folders.push(oldFolder);
+                    }
+                }
+            } else {
+                const newFolder = {
+                    id: 'folder-' + Date.now(),
+                    name: name,
+                    stages: [
+                        { id: 'col-1', name: 'A Fazer' },
+                        { id: 'col-2', name: 'Em Andamento' },
+                        { id: 'col-3', name: 'Concluído' }
+                    ],
+                    cards: []
+                };
+                targetProj.folders.push(newFolder);
+                appData.currentFolderId = newFolder.id;
+            }
+
+            saveLocalAndCloud();
+            renderSidebar();
+            if (appData.currentFolderId) loadFolder(appData.currentFolderId);
+            closeFolderModal();
+        }
+
+        function deleteFolder(folderId) {
+            showDialog('Excluir Pasta', 'Excluir esta pasta permanentemente e todos os seus cards?', true, (confirmed) => {
+                if (confirmed) {
+                    appData.projects.forEach(p => {
+                        p.folders = p.folders.filter(f => String(f.id) !== String(folderId));
+                    });
+                    if (String(appData.currentFolderId) === String(folderId)) {
+                        appData.currentFolderId = null;
+                        resetMainView();
+                    }
+                    saveLocalAndCloud();
+                    renderSidebar();
+                }
+            });
+        }
+
+        function loadFolder(folderId) {
+            appData.currentFolderId = folderId;
+            localStorage.setItem('kanban_5w2h_sheets_data', JSON.stringify(appData));
+            renderSidebar();
+
+            let targetFolder = null;
+            let targetProjName = '';
+
+            appData.projects.forEach(p => {
+                const f = p.folders.find(folder => String(folder.id) === String(folderId));
+                if (f) {
+                    targetFolder = f;
+                    targetProjName = p.name;
+                }
+            });
+
+            if (!targetFolder) return;
+
+            document.getElementById('current-title').textContent = targetFolder.name;
+            document.getElementById('current-subtitle').textContent = `Projeto: ${targetProjName}`;
+            document.getElementById('project-actions').style.display = 'flex';
+
+            renderKanban(targetFolder);
+        }
+
+        function resetMainView() {
+            document.getElementById('current-title').textContent = 'Selecione um projeto ou pasta';
+            document.getElementById('current-subtitle').textContent = 'Nenhum item selecionado';
+            document.getElementById('project-actions').style.display = 'none';
+            document.getElementById('kanban-container').innerHTML = `
+                <div class="w-full h-full flex flex-col items-center justify-center text-slate-400">
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 text-center max-w-md">
+                        <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl shadow-inner">
+                            <i class="fa-solid fa-table-cells"></i>
+                        </div>
+                        <h3 class="font-semibold text-slate-700 text-lg mb-1">Nenhum item selecionado</h3>
+                        <p class="text-sm text-slate-500 mb-6">Escolha uma pasta na barra lateral para ver o Kanban.</p>
+                        <button onclick="openProjectModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-2.5 rounded-xl transition shadow-md text-sm">
+                            Criar Projeto
+                        </button>
+                    </div>
+                </div>`;
+        }
+
+        function renderSidebar() {
+            const tree = document.getElementById('sidebar-tree');
+            if (!tree) return;
+            if (appData.projects.length === 0) {
+                tree.innerHTML = `<div class="text-center text-xs text-slate-500 py-6">Nenhum projeto cadastrado</div>`;
+                return;
+            }
+
+            tree.innerHTML = appData.projects.map(proj => `
+                <div class="space-y-1">
+                    <div class="flex items-center justify-between px-2 py-1 text-xs font-bold text-slate-400 uppercase tracking-wider group">
+                        <span class="truncate"><i class="fa-solid fa-folder-open mr-1.5 text-blue-400"></i> ${proj.name}</span>
+                        <div class="hidden group-hover:flex items-center gap-1.5">
+                            <button onclick="openProjectModal('${proj.id}')" title="Editar Projeto" class="hover:text-white"><i class="fa-solid fa-pen text-[10px]"></i></button>
+                            <button onclick="deleteProject('${proj.id}')" title="Excluir Projeto" class="hover:text-rose-400"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                        </div>
+                    </div>
+                    <div class="pl-3 space-y-1">
+                        ${proj.folders.length === 0 ? '<div class="text-xs text-slate-600 px-2 py-1">Sem pastas</div>' :
+                            proj.folders.map(folder => `
+                                <div onclick="loadFolder('${folder.id}')" class="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium cursor-pointer transition group/folder ${String(appData.currentFolderId) === String(folder.id) ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20' : 'text-slate-300 hover:bg-slate-800'}">
+                                    <span class="truncate"><i class="fa-solid fa-file-lines text-[9px] mr-2 ${String(appData.currentFolderId) === String(folder.id) ? 'text-white' : 'text-blue-400'}"></i> ${folder.name}</span>
+                                    <div class="opacity-0 group-hover/folder:opacity-100 flex gap-1.5 transition">
+                                        <button onclick="event.stopPropagation(); openFolderModal('${folder.id}')" title="Editar Pasta" class="${String(appData.currentFolderId) === String(folder.id) ? 'hover:text-blue-200' : 'hover:text-white'}"><i class="fa-solid fa-pen text-[10px]"></i></button>
+                                        <button onclick="event.stopPropagation(); deleteFolder('${folder.id}')" title="Excluir Pasta" class="hover:text-rose-400"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openColumnModal() {
+            renderColumnsList();
+            document.getElementById('column-modal').classList.remove('hidden');
+        }
+
+        function closeColumnModal() {
+            document.getElementById('column-modal').classList.add('hidden');
+            const folder = getCurrentFolder();
+            if (folder) renderKanban(folder);
+        }
+
+        function renderColumnsList() {
+            const folder = getCurrentFolder();
+            if (!folder) return;
+            document.getElementById('columns-list').innerHTML = folder.stages.map(col => `
+                <div class="flex items-center justify-between bg-slate-50 border border-slate-200 px-3 py-2 rounded-xl">
+                    <span class="text-sm font-medium text-slate-700">${col.name}</span>
+                    <button onclick="deleteColumn('${col.id}')" class="text-rose-500 hover:text-rose-700 text-xs p-1"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            `).join('');
+        }
+
+        function addColumn(e) {
+            e.preventDefault();
+            const folder = getCurrentFolder();
+            const input = document.getElementById('new-col-name');
+            if (!folder || !input.value.trim()) return;
+
+            folder.stages.push({
+                id: 'col-' + Date.now(),
+                name: input.value.trim()
+            });
+            input.value = '';
+            saveLocalAndCloud();
+            renderColumnsList();
+        }
+
+        function deleteColumn(colId) {
+            const folder = getCurrentFolder();
+            if (!folder) return;
+            if (folder.stages.length <= 1) {
+                showDialog('Aviso', 'A pasta precisa ter pelo menos uma etapa do Kanban.', false);
+                return;
+            }
+            showDialog('Atenção', 'Excluir esta etapa removerá permanentemente os cards associados a ela. Continuar?', true, (confirmed) => {
+                if (confirmed) {
+                    folder.stages = folder.stages.filter(s => String(s.id) !== String(colId));
+                    folder.cards = folder.cards.filter(c => String(c.columnId) !== String(colId));
+                    saveLocalAndCloud();
+                    renderColumnsList();
+                }
+            });
+        }
+
+        function getPriorityBadgeStyle(priority) {
+            switch(priority) {
+                case 'urgente': return 'bg-rose-100 text-rose-700 border-rose-200';
+                case 'alta': return 'bg-amber-100 text-amber-800 border-amber-200';
+                case 'baixa': return 'bg-slate-100 text-slate-600 border-slate-200';
+                case 'media':
+                default: return 'bg-blue-50 text-blue-700 border-blue-200';
+            }
+        }
+
+        function getPriorityLabel(priority) {
+            switch(priority) {
+                case 'urgente': return 'Urgente';
+                case 'alta': return 'Alta';
+                case 'baixa': return 'Baixa';
+                case 'media':
+                default: return 'Média';
+            }
+        }
+
+        function updateCardColumns(selectedColId = null) {
+            const folderId = document.getElementById('card-folder-id').value;
+            const colSelect = document.getElementById('card-column');
+            
+            let targetFolder = null;
+            appData.projects.forEach(p => {
+                const f = p.folders.find(f => String(f.id) === String(folderId));
+                if (f) targetFolder = f;
+            });
+
+            if (targetFolder) {
+                colSelect.innerHTML = targetFolder.stages.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+                if (selectedColId && targetFolder.stages.some(s => String(s.id) === String(selectedColId))) {
+                    colSelect.value = selectedColId;
+                }
+            } else {
+                colSelect.innerHTML = '';
+            }
+        }
+
+        function openCardModal(cardId = null) {
+            const folder = getCurrentFolder();
+            if (!folder) return;
+
+            const modal = document.getElementById('card-modal');
+            const title = document.getElementById('card-modal-title');
+            const idInput = document.getElementById('card-id');
+            const folderSelect = document.getElementById('card-folder-id');
+
+            // Popular seletor de pastas (todas as pastas de todos os projetos)
+            let folderOptions = '';
+            appData.projects.forEach(p => {
+                if (p.folders.length > 0) {
+                    folderOptions += `<optgroup label="Projeto: ${p.name}">`;
+                    p.folders.forEach(f => {
+                        folderOptions += `<option value="${f.id}">${f.name}</option>`;
+                    });
+                    folderOptions += `</optgroup>`;
+                }
+            });
+            folderSelect.innerHTML = folderOptions;
+
+            if (cardId) {
+                const card = folder.cards.find(c => String(c.id) === String(cardId));
+                title.innerHTML = '<i class="fa-solid fa-pen-to-square text-blue-600"></i> Editar Card 5W2H';
+                idInput.value = card.id;
+                
+                folderSelect.value = folder.id;
+                updateCardColumns(card.columnId); // Carrega colunas da pasta selecionada
+
+                document.getElementById('card-title').value = card.title;
+                document.getElementById('card-priority').value = card.priority || 'media';
+                document.getElementById('w-what').value = card.what || '';
+                document.getElementById('w-why').value = card.why || '';
+                document.getElementById('w-where').value = card.where || '';
+                document.getElementById('w-when').value = card.when || '';
+                document.getElementById('w-who').value = card.who || '';
+                document.getElementById('w-how').value = card.how || '';
+                document.getElementById('w-howmuch').value = card.howmuch || '';
+            } else {
+                title.innerHTML = '<i class="fa-solid fa-file-lines text-blue-600"></i> Novo Card 5W2H';
+                idInput.value = '';
+                
+                folderSelect.value = folder.id; // Pasta atual por padrão
+                updateCardColumns(); // Carrega as colunas
+
+                document.getElementById('card-title').value = '';
+                document.getElementById('card-priority').value = 'media';
+                document.getElementById('w-what').value = '';
+                document.getElementById('w-why').value = '';
+                document.getElementById('w-where').value = '';
+                document.getElementById('w-when').value = '';
+                document.getElementById('w-who').value = '';
+                document.getElementById('w-how').value = '';
+                document.getElementById('w-howmuch').value = '';
+            }
+            modal.classList.remove('hidden');
+        }
+
+        function closeCardModal() {
+            document.getElementById('card-modal').classList.add('hidden');
+        }
+
+        function handleCardSubmit(e) {
+            e.preventDefault();
+            
+            const id = document.getElementById('card-id').value;
+            const targetFolderId = document.getElementById('card-folder-id').value;
+            const columnId = document.getElementById('card-column').value;
+            
+            const cardData = {
+                id: id || 'card-' + Date.now(),
+                columnId: columnId,
+                title: document.getElementById('card-title').value,
+                priority: document.getElementById('card-priority').value,
+                what: document.getElementById('w-what').value,
+                why: document.getElementById('w-why').value,
+                where: document.getElementById('w-where').value,
+                when: document.getElementById('w-when').value,
+                who: document.getElementById('w-who').value,
+                how: document.getElementById('w-how').value,
+                howmuch: document.getElementById('w-howmuch').value
+            };
+
+            let targetFolder = null;
+            appData.projects.forEach(p => {
+                const f = p.folders.find(f => String(f.id) === String(targetFolderId));
+                if (f) targetFolder = f;
+            });
+
+            if (!targetFolder) return;
+
+            if (id) {
+                // Card já existe, verificar se mudou de pasta
+                let oldFolder = getCurrentFolder(); // assume que estamos na pasta atual
+                
+                if (String(oldFolder.id) !== String(targetFolderId)) {
+                    // Remove da pasta antiga
+                    oldFolder.cards = oldFolder.cards.filter(c => String(c.id) !== String(id));
+                    // Adiciona na nova pasta
+                    targetFolder.cards.push(cardData);
+                } else {
+                    // Atualiza na mesma pasta
+                    const idx = targetFolder.cards.findIndex(c => String(c.id) === String(id));
+                    if (idx !== -1) targetFolder.cards[idx] = cardData;
+                }
+            } else {
+                // Novo card
+                targetFolder.cards.push(cardData);
+            }
+
+            saveLocalAndCloud();
+            // Atualiza a visualização apenas se ainda estivermos visualizando a mesma pasta onde a ação ocorreu
+            const curr = getCurrentFolder();
+            if (curr) renderKanban(curr);
+            
+            closeCardModal();
+        }
+
+        function getCurrentFolder() {
+            if (!appData.currentFolderId) return null;
+            let found = null;
+            appData.projects.forEach(p => {
+                const f = p.folders.find(folder => String(folder.id) === String(appData.currentFolderId));
+                if (f) found = f;
+            });
+            return found;
+        }
+
+        function deleteCard(event, cardId) {
+            if (event) event.stopPropagation(); 
+            
+            const folder = getCurrentFolder();
+            if (!folder) return;
+            
+            showDialog('Excluir Card', 'Deseja excluir permanentemente esta tarefa?', true, (confirmed) => {
+                if (confirmed) {
+                    folder.cards = folder.cards.filter(c => String(c.id) !== String(cardId));
+                    saveLocalAndCloud();
+                    closeViewCardModal();
+                    closeCardModal();
+                    renderKanban(folder);
+                }
+            });
+        }
+
+        function viewCardDetails(cardId) {
+            const folder = getCurrentFolder();
+            if (!folder) return;
+            const card = folder.cards.find(c => String(c.id) === String(cardId));
+            if (!card) return;
+            const stage = folder.stages.find(s => String(s.id) === String(card.columnId));
+
+            document.getElementById('v-title').textContent = card.title;
+            document.getElementById('v-badge').textContent = stage ? stage.name : 'Etapa';
+            
+            const priorityBadge = document.getElementById('v-priority-badge');
+            priorityBadge.className = `text-xs font-semibold px-2.5 py-1 rounded-lg border ${getPriorityBadgeStyle(card.priority)}`;
+            priorityBadge.textContent = `Prioridade: ${getPriorityLabel(card.priority)}`;
+
+            document.getElementById('v-what').textContent = card.what || 'Não informado';
+            document.getElementById('v-why').textContent = card.why || 'Não informado';
+            document.getElementById('v-where').textContent = card.where || 'Não informado';
+            document.getElementById('v-when').textContent = card.when || 'Não informado';
+            document.getElementById('v-who').textContent = card.who || 'Não informado';
+            document.getElementById('v-how').textContent = card.how || 'Não informado';
+            document.getElementById('v-howmuch').textContent = card.howmuch || 'Não informado';
+
+            document.getElementById('v-btn-edit').onclick = () => { closeViewCardModal(); openCardModal(card.id); };
+            
+            const deleteBtn = document.getElementById('v-btn-delete');
+            deleteBtn.onclick = function(e) {
+                deleteCard(e, card.id);
+            };
+
+            document.getElementById('view-card-modal').classList.remove('hidden');
+        }
+
+        function closeViewCardModal() {
+            document.getElementById('view-card-modal').classList.add('hidden');
+        }
+
+        function renderKanban(folder) {
+            const container = document.getElementById('kanban-container');
+            if (!container) return;
+            container.innerHTML = folder.stages.map(col => {
+                const colCards = folder.cards.filter(c => String(c.columnId) === String(col.id));
+                return `
+                    <div class="w-80 flex-shrink-0 bg-slate-200/60 rounded-2xl flex flex-col max-h-full border border-slate-200/80 shadow-sm"
+                         ondragover="allowDrop(event)" ondragleave="removeDropStyle(event)" ondrop="dropCard(event, '${col.id}')">
+                        <div class="p-4 flex items-center justify-between flex-shrink-0">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-3 h-3 rounded-full bg-blue-600"></span>
+                                <h3 class="font-bold text-slate-700 text-sm">${col.name}</h3>
+                                <span class="bg-slate-300 text-slate-700 text-xs font-bold px-2 py-0.5 rounded-full">${colCards.length}</span>
+                            </div>
+                            <button onclick="openCardModal()" class="text-slate-400 hover:text-blue-600 p-1 rounded-lg transition"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+
+                        <div class="flex-1 overflow-y-auto px-3 pb-3 space-y-3 custom-scrollbar">
+                            ${colCards.length === 0 ? `
+                                <div class="text-center py-8 border-2 border-dashed border-slate-300/60 rounded-xl text-slate-400 text-xs">
+                                    Nenhum card
+                                </div>
+                            ` : colCards.map(card => `
+                                <div draggable="true" ondragstart="dragCard(event, '${card.id}')" onclick="viewCardDetails('${card.id}')"
+                                     class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 hover:shadow-md hover:border-blue-300 transition group relative cursor-pointer space-y-2">
+                                    <div class="flex items-start justify-between">
+                                        <h4 class="font-semibold text-slate-800 text-sm pr-6 leading-snug">${card.title}</h4>
+                                        <div class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition flex gap-1 bg-white pl-2">
+                                            <button onclick="event.stopPropagation(); openCardModal('${card.id}')" class="text-slate-400 hover:text-blue-600 p-1"><i class="fa-solid fa-pen text-xs"></i></button>
+                                            <button onclick="event.stopPropagation(); deleteCard(event, '${card.id}')" class="text-slate-400 hover:text-rose-600 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-wrap gap-1.5 items-center">
+                                        <span class="text-[10px] font-semibold px-2 py-0.5 rounded-md border ${getPriorityBadgeStyle(card.priority)}">
+                                            ${getPriorityLabel(card.priority)}
+                                        </span>
+                                    </div>
+                                    ${card.what ? `<p class="text-xs text-slate-500 line-clamp-2">${card.what}</p>` : ''}
+                                    <div class="flex flex-wrap gap-1.5 pt-1 border-t border-slate-100">
+                                        ${card.who ? `<span class="bg-slate-100 text-slate-600 text-[10px] px-2 py-0.5 rounded-md flex items-center gap-1"><i class="fa-solid fa-user text-[9px]"></i> ${card.who}</span>` : ''}
+                                        ${card.when ? `<span class="bg-blue-50 text-blue-700 text-[10px] px-2 py-0.5 rounded-md flex items-center gap-1"><i class="fa-regular fa-calendar text-[9px]"></i> ${card.when}</span>` : ''}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        let draggedCardId = null;
+
+        function dragCard(e, cardId) {
+            draggedCardId = cardId;
+            e.dataTransfer.setData('text/plain', cardId);
+        }
+
+        function allowDrop(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('drag-over');
+        }
+
+        function removeDropStyle(e) {
+            e.currentTarget.classList.remove('drag-over');
+        }
+
+        function dropCard(e, targetColId) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('drag-over');
+            const folder = getCurrentFolder();
+            if (!folder || !draggedCardId) return;
+
+            const card = folder.cards.find(c => String(c.id) === String(draggedCardId));
+            if (card) {
+                card.columnId = targetColId;
+                saveLocalAndCloud();
+                renderKanban(folder);
+            }
+            draggedCardId = null;
+        }
+    </script>
+</body>
+</html>
